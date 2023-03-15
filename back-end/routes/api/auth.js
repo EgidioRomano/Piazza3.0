@@ -193,9 +193,7 @@ module.exports = function (app) {
         const user = await User.findOne({where: db.where(db.fn('lower', db.col('email')), db.fn('lower', email))});
 
         if (user && user.password === cryptoLib.getHash(password, 'sha256')) {
-            const admins = req.app.get('config').admins;
             const userData = user.toJSON();
-            userData.isSuperAdmin = (admins.indexOf(user.id) >= 0);
 
             if (!user.emailIsVerified) {
                 await emailLib.sendAccountVerification(user.email, user.emailVerificationCode);
@@ -299,8 +297,6 @@ module.exports = function (app) {
 
     /**
      * Get logged in User info
-     *
-     * @deprecated Use GET /api/users/self instead.
      */
     app.get('/api/auth/status', loginCheck(), asyncMiddleware(async function (req, res) {
         const user = await User.findOne({
@@ -316,7 +312,8 @@ module.exports = function (app) {
         }
 
         const userData = user.toJSON();
-        userData.preferences = user.dataValues.preferences;
+        const admins = req.app.get('config').admins;
+        userData.isSuperAdmin = (admins.indexOf(user.id) >= 0);
 
         return res.ok(userData);
     }));
