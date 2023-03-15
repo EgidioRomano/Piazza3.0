@@ -222,7 +222,7 @@ module.exports = function (app) {
                                 topics: topics
                             });
 
-                        } else if (model === 'group' && false) { // TODO: isSuperAdmin
+                        } else if (model === 'group' && req.user.isSuperAdmin) {
                             let whereCondition = '';
                             level = 'read';
                             levelComparer = '>=';
@@ -310,7 +310,7 @@ module.exports = function (app) {
                                 topics: publicTopicsResult,
                                 status: statuses
                             });
-                        } else if (model === 'group' && false) { // TODO: isSuperAdmin
+                        } else if (model === 'group' && req.user.isSuperAdmin) {
                             const publicGroupsResult = await Group
                                 .findAndCountAll({
                                     where: {

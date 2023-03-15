@@ -312,8 +312,7 @@ module.exports = function (app) {
         }
 
         const userData = user.toJSON();
-        const admins = req.app.get('config').admins;
-        userData.isSuperAdmin = (admins.indexOf(user.id) >= 0);
+        userData.isSuperAdmin = req.user.isSuperAdmin;
 
         return res.ok(userData);
     }));

@@ -21,6 +21,7 @@ module.exports = function (app) {
     const Promise = app.get('Promise');
 
     const loginCheck = app.get('middleware.loginCheck');
+    const isSuperAdmin = app.get('middleware.isSuperAdmin');
     const asyncMiddleware = app.get('middleware.asyncMiddleware');
 
     const Group = models.Group;
@@ -115,7 +116,7 @@ module.exports = function (app) {
     /**
      * Create a new Group
      */
-    app.post('/api/users/:userId/groups', loginCheck(['partner']), asyncMiddleware(async function (req, res) {
+    app.post('/api/users/:userId/groups', isSuperAdmin(), asyncMiddleware(async function (req, res) {
         await db
             .transaction(async function (t) {
                 const group = Group
@@ -171,7 +172,7 @@ module.exports = function (app) {
             });
     }));
 
-    app.post('/api/users/:userId/groups/:groupId/upload', loginCheck(['partner']), asyncMiddleware(async function (req, res) {
+    app.post('/api/users/:userId/groups/:groupId/upload', isSuperAdmin(), asyncMiddleware(async function (req, res) {
         const groupId = req.params.groupId;
         let group = await Group.findOne({
             where: {
@@ -318,7 +319,7 @@ module.exports = function (app) {
         return group;
     };
 
-    app.get('/api/groups/:groupId', asyncMiddleware(async function (req, res) {
+    app.get('/api/groups/:groupId', isSuperAdmin(), asyncMiddleware(async function (req, res) {
         const groupId = req.params.groupId;
         const group = await _readGroupUnauth(groupId, req.user?.userId);
         if (!group) {
@@ -340,7 +341,7 @@ module.exports = function (app) {
     /**
      * Update Group info
      */
-    app.put('/api/users/:userId/groups/:groupId', loginCheck(['partner']), hasPermission(GroupMemberUser.LEVELS.admin, null, null), asyncMiddleware(async function (req, res) {
+    app.put('/api/users/:userId/groups/:groupId', isSuperAdmin(), /*loginCheck(['partner']), hasPermission(GroupMemberUser.LEVELS.admin, null, null),*/ asyncMiddleware(async function (req, res) {
         const groupId = req.params.groupId;
         const groupName = req.body.name;
         const description = req.body.description || null;
@@ -420,7 +421,7 @@ module.exports = function (app) {
     /**
      * Delete Group
      */
-    app.delete('/api/users/:userId/groups/:groupId', loginCheck(['partner']), hasPermission(GroupMemberUser.LEVELS.admin, null, null), asyncMiddleware(async function (req, res) {
+    app.delete('/api/users/:userId/groups/:groupId', isSuperAdmin(), asyncMiddleware(async function (req, res) {
         const group = await Group.findByPk(req.params.groupId);
 
         if (!group) {
@@ -667,7 +668,7 @@ module.exports = function (app) {
     /**
      * Get Group member Users
      */
-    app.get('/api/groups/:groupId/members/users', asyncMiddleware(async function (req, res) {
+    app.get('/api/groups/:groupId/members/users', isSuperAdmin(), asyncMiddleware(async function (req, res) {
         const groupId = req.params.groupId;
         const limitDefault = 10;
         const offset = parseInt(req.query.offset, 10) ? parseInt(req.query.offset, 10) : 0;
@@ -746,6 +747,8 @@ module.exports = function (app) {
             rows: members
         });
     }));
+
+
     app.get('/api/users/:userId/groups/:groupId/members/users', hasPermission(GroupMemberUser.LEVELS.read, true, null), asyncMiddleware(async function (req, res) {
         const groupId = req.params.groupId;
         const limitDefault = 10;
@@ -843,7 +846,7 @@ module.exports = function (app) {
     /**
      * Update membership information
      */
-    app.put('/api/users/:userId/groups/:groupId/members/users/:memberId', loginCheck(['partner']), hasPermission(GroupMemberUser.LEVELS.admin, null, null), asyncMiddleware(async function (req, res) {
+    app.put('/api/users/:userId/groups/:groupId/members/users/:memberId', loginCheck(), hasPermission(GroupMemberUser.LEVELS.admin, null, null), asyncMiddleware(async function (req, res) {
         const newLevel = req.body.level;
         const memberId = req.params.memberId;
         const groupId = req.params.groupId;
@@ -904,7 +907,7 @@ module.exports = function (app) {
     /**
      * Delete membership information
      */
-    app.delete('/api/users/:userId/groups/:groupId/members/users/:memberId', loginCheck(['partner']), hasPermission(GroupMemberUser.LEVELS.admin, null, true), asyncMiddleware(async function (req, res) {
+    app.delete('/api/users/:userId/groups/:groupId/members/users/:memberId', isSuperAdmin(), /*loginCheck(), hasPermission(GroupMemberUser.LEVELS.admin, null, true),*/ asyncMiddleware(async function (req, res) {
         const groupId = req.params.groupId;
         const memberId = req.params.memberId;
 
@@ -2059,7 +2062,7 @@ module.exports = function (app) {
         });
     };
 
-    app.get('/api/groups/:groupId/members/topics', asyncMiddleware(async function (req, res) {
+    app.get('/api/groups/:groupId/members/topics', loginCheck(), asyncMiddleware(async function (req, res) {
         return _getGroupMemberTopics(req, res, 'public');
     }));
 
@@ -2071,7 +2074,7 @@ module.exports = function (app) {
     /**
      * Group list
      */
-    app.get('/api/groups', asyncMiddleware(async (req, res) => {
+    app.get('/api/groups', /*isSuperAdmin(),*/ asyncMiddleware(async (req, res) => {
         const limitMax = 100;
         const limitDefault = 26;
         const userId = req.user?.userId;

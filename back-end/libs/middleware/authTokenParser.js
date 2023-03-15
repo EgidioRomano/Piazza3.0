@@ -65,6 +65,7 @@ module.exports = function (req, res, next) {
                 } else {
                     req.user = tokenData;
                     req.user.id = tokenData.userId;
+                    req.user.isSuperAdmin = (config.admins.indexOf(req.user.id) >= 0);
                 }
             }
 

@@ -7,13 +7,7 @@
  */
 module.exports = function () {
     return function (req, res, next) {
-        if (!req.user || !req.user.userId) {
-            return res.unauthorised();
-        }
-
-        var admins = req.app.get('config').admins;
-
-        if (admins.indexOf(req.user.userId) < 0) {
+        if (!req.user || !req.user.isSuperAdmin) {
             return res.unauthorised('Accesso negato. Non sei un amministratore.');
         }
 
