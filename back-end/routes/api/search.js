@@ -24,10 +24,13 @@ module.exports = function (app) {
             const limitDefault = 10;
             let userId = null;
             let partnerId = null;
+            let isSuperAdmin = false;
             const searchResults = [];
+
             if (req.user) {
                 userId = req.user.userId;
                 partnerId = req.user.partnerId;
+                isSuperAdmin = req.user.isSuperAdmin;
             }
 
             let include = req.query.include;
@@ -222,7 +225,7 @@ module.exports = function (app) {
                                 topics: topics
                             });
 
-                        } else if (model === 'group' && req.user.isSuperAdmin) {
+                        } else if (model === 'group' && isSuperAdmin) {
                             let whereCondition = '';
                             level = 'read';
                             levelComparer = '>=';
@@ -310,7 +313,7 @@ module.exports = function (app) {
                                 topics: publicTopicsResult,
                                 status: statuses
                             });
-                        } else if (model === 'group' && req.user.isSuperAdmin) {
+                        } else if (model === 'group' && isSuperAdmin) {
                             const publicGroupsResult = await Group
                                 .findAndCountAll({
                                     where: {

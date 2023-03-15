@@ -647,7 +647,7 @@
       "PLACEHOLDER_SEARCH": "@:DEFAULT.NAV_MOBILE.BTN_SEARCH"
     },
     "SEARCH": {
-      "HEADING_RESULTS_IN": "Context search results in",
+      "HEADING_RESULTS_IN": "Risultati nel contesto",
       "LNK_VIEW_MORE_RESULTS": "Mostra più risultati",
       "TXT_OOPS_NO_RESULTS": "Oops, non è stato trovato alcun risultato :(",
       "TXT_MAYBE_TYPO": "Prova a cercare qualcos'altro"
@@ -663,7 +663,7 @@
   "LBL_CONTEXT_MY_TOPICS": "i miei topic",
   "LBL_CONTEXT_MY_GROUPS": "i miei gruppi",
   "LBL_CONTEXT_PUBLIC_TOPICS": "topic pubblici",
-  "LBL_CONTEXT_PUBLIC_GROUPS": "topic pubblici",
+  "LBL_CONTEXT_PUBLIC_GROUPS": "gruppi pubblici",
   "DIRECTIVES": {
     "COS_MODAL": {
       "BTN_SAVE": "Salva modifiche",
