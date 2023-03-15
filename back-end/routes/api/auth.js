@@ -1,7 +1,5 @@
 'use strict';
 
-const isSuperAdmin = require("../../libs/middleware/isSuperAdmin");
-
 module.exports = function (app) {
 
     const logger = app.get('logger');
