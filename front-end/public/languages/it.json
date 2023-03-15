@@ -641,7 +641,7 @@
     "NAV_MOBILE": {
       "BTN_SEARCH": "Cerca",
       "BTN_OVERVIEW": "Panoramica",
-      "BTN_EDIT": "modifica",
+      "BTN_EDIT": "Modifica",
       "BTN_SETTINGS": "Azioni",
       "BTN_MENU": "Menu",
       "PLACEHOLDER_SEARCH": "@:DEFAULT.NAV_MOBILE.BTN_SEARCH"

@@ -4,6 +4,7 @@ import * as angular from 'angular';
 export class Auth {
     private user = {
         loggedIn: false,
+        isSuperAdmin: false,
         isLoading: true
     };
 

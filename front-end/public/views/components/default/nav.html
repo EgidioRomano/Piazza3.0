@@ -122,7 +122,7 @@
         </div>
 
         <!-- Nav section - Groups -->
-        <div ng-if="$ctrl.app.user.loggedIn && true" class="section">
+        <div ng-if="$ctrl.app.user.loggedIn && $ctrl.app.user.isSuperAdmin" class="section">
             <div class="section_item section_header bold_white">
                 <div class="section_icon">
                     <div class="table_cell">
