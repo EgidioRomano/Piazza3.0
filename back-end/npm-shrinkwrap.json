@@ -9944,6 +9944,7 @@
       "version": "0.6.1",
       "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz",
       "integrity": "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==",
+      "devOptional": true,
       "engines": {
         "node": ">=0.10.0"
       }
@@ -12748,6 +12749,7 @@
     },
     "campaign": {
       "version": "git+ssh://git@github.com/citizenos/campaign.git#9904ac1e3628ffa3a49beb87914679c7b61a0e06",
+      "integrity": "sha512-QyQJN5u2BMJ6lw88kLs3W/mcFYir2SOgMNyItNxtm13pl8Bp5+VOqLyojgO4h+1+BrQmrNftCDvxUjnDR9Imng==",
       "from": "campaign@git+https://github.com/citizenos/campaign#9904ac1e3628ffa3a49beb87914679c7b61a0e06",
       "requires": {
         "mime": "3.0.0",
@@ -12768,6 +12770,7 @@
     },
     "campaign-mailgun": {
       "version": "git+ssh://git@github.com/citizenos/campaign-mailgun.git#7551766491c2a6ad6cbd0367f1d6740aae9fa353",
+      "integrity": "sha512-4/QkkM7BNzn4gZE3Baut3K1bOIrZQpaNBlQwYerOzmHtGIyBmidomb/KuV/yDpP2gaQKC48JSAU9C07kyQd7VA==",
       "from": "campaign-mailgun@git+https://github.com/citizenos/campaign-mailgun.git#7551766491c2a6ad6cbd0367f1d6740aae9fa353",
       "requires": {
         "email-addresses": "5.0.0",
@@ -12913,6 +12916,7 @@
     },
     "campaign-mustache": {
       "version": "git+ssh://git@github.com/citizenos/campaign-mustache.git#0e6021098a3104011ced756e6409501cd0651f90",
+      "integrity": "sha512-P4/HW57fFthGrKeXNY4AwRMVcz/yBGOl6S//jeZro0Rs2OG/+c0GjW2GNjevD4Mn/fazkqnA55Fh49JDIArvAA==",
       "from": "campaign-mustache@git+https://github.com/citizenos/campaign-mustache#0e6021098a3104011ced756e6409501cd0651f90",
       "requires": {
         "mustache": "4.2.0"
@@ -12925,6 +12929,7 @@
     },
     "campaign-terminal": {
       "version": "git+ssh://git@github.com/citizenos/campaign-terminal.git#83bca04d61f8730b23c5439601d513ceae7c4012",
+      "integrity": "sha512-70epMZdUEbYCWO1uSYTC/3cy+hTCIMvzEfkApcYm+1grBdt1PxKy5vTxgmU/g/NGC4Ysj6tGfak+G4x+8bdmDQ==",
       "from": "campaign-terminal@git+https://github.com/citizenos/campaign-terminal#83bca04d61f8730b23c5439601d513ceae7c4012",
       "requires": {
         "html-md-2": "3.0.0",
@@ -14155,6 +14160,7 @@
     },
     "etherpad-lite-client": {
       "version": "git+ssh://git@github.com/citizenos/etherpad-lite-client-js.git#86e06b78f159f1abc7916ee5c817adb096a951f5",
+      "integrity": "sha512-985HKw4Yzc6o2rM50vbt7I6snYqwNcfGdoSnE4avDVK29lGPqXMAAvPJFzxyxMx4QOcREPyFjpQCiEKNg2Kmww==",
       "from": "etherpad-lite-client@git+https://github.com/citizenos/etherpad-lite-client-js#86e06b78f159f1abc7916ee5c817adb096a951f5",
       "requires": {
         "underscore": "1.13.1"
@@ -14328,6 +14334,7 @@
     },
     "express-rate-limit": {
       "version": "git+ssh://git@github.com/ilmartyrk/express-rate-limit.git#824644466bb9d0b5103d02c4b987d6708c03b546",
+      "integrity": "sha512-vJ2/DBhFRg0ElrRTGi2Dh+b2AJSctwxVXIPJz/fsUO6a6dPYjeGdn8eRtICHz5lXOaNNbFv0uQPxMuAgWWGdkg==",
       "from": "express-rate-limit@git+https://github.com/ilmartyrk/express-rate-limit#824644466bb9d0b5103d02c4b987d6708c03b546",
       "requires": {}
     },
@@ -19523,7 +19530,8 @@
     "source-map": {
       "version": "0.6.1",
       "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz",
-      "integrity": "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="
+      "integrity": "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==",
+      "devOptional": true
     },
     "specificity": {
       "version": "0.4.1",
@@ -20198,6 +20206,7 @@
     },
     "undersign": {
       "version": "git+ssh://git@github.com/citizenos/js-undersign.git#06e5690c8a5c19f290b6a73839f946b96acf911b",
+      "integrity": "sha512-1IG7h8OvGDXkPmJ3zW1nTA9+tsae+TY1s7IbZixK4YQO9l+Aw2wNFmFYoV+zgpP9NHcqAdbJk6jSZQrZdF6h+w==",
       "from": "undersign@git+https://github.com/citizenos/js-undersign.git#06e5690c8a5c19f290b6a73839f946b96acf911b",
       "requires": {
         "asn1.js": "^5",

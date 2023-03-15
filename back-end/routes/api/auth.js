@@ -1,10 +1,13 @@
 'use strict';
 
+const isSuperAdmin = require("../../libs/middleware/isSuperAdmin");
+
 module.exports = function (app) {
 
     const logger = app.get('logger');
     const cryptoLib = app.get('cryptoLib');
     const loginCheck = app.get('middleware.loginCheck');
+    const isSuperAdmin = app.get('middleware.isSuperAdmin');
     const asyncMiddleware = app.get('middleware.asyncMiddleware');
     const emailLib = app.get('email');
     const validator = app.get('validator');
@@ -28,7 +31,7 @@ module.exports = function (app) {
     const TokenRevocation = models.TokenRevocation;
 
 
-    app.post('/api/auth/signup', asyncMiddleware(async function (req, res) {
+    app.post('/api/auth/signup', isSuperAdmin(), asyncMiddleware(async function (req, res) {
         const email = req.body.email || ''; // HACK: Sequelize validate() is not run if value is "null". Also cannot use allowNull: false as I don' want constraint in DB. https://github.com/sequelize/sequelize/issues/2643
         const password = req.body.password || ''; // HACK: Sequelize validate() is not run if value is "null". Also cannot use allowNull: false as I don' want constraint in DB. https://github.com/sequelize/sequelize/issues/2643
         const name = req.body.name || util.emailToDisplayName(req.body.email);
@@ -192,7 +195,9 @@ module.exports = function (app) {
         const user = await User.findOne({where: db.where(db.fn('lower', db.col('email')), db.fn('lower', email))});
 
         if (user && user.password === cryptoLib.getHash(password, 'sha256')) {
+            const admins = req.app.get('config').admins;
             const userData = user.toJSON();
+            userData.isSuperAdmin = (admins.indexOf(user.id) >= 0);
 
             if (!user.emailIsVerified) {
                 await emailLib.sendAccountVerification(user.email, user.emailVerificationCode);

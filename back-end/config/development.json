@@ -216,5 +216,6 @@
   },
   "encryption": {
     "salt": "superSecretSalt"
-  }
+  },
+  "admins": ["2077c51f-7535-425d-a003-6ff8fb2c1510"]
 }

@@ -311,6 +311,7 @@ app.use(/^\/api\/.*/, function (req, res, next) {
 app.use(/^\/api\/.*/, require('./libs/middleware/authTokenParser'));
 app.use(/^\/api\/auth\/.*/, passport.initialize());
 app.set('middleware.loginCheck', require('./libs/middleware/loginCheck'));
+app.set('middleware.isSuperAdmin', require('./libs/middleware/isSuperAdmin'));
 app.set('middleware.expressRateLimitInput', require('./libs/middleware/expressRateLimitInput')(app));
 app.set('middleware.authApiKey', require('./libs/middleware/authApiKey'));
 app.set('middleware.authTokenRestrictedUse', require('./libs/middleware/authTokenRestrictedUse'));
