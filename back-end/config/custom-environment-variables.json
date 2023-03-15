@@ -1,0 +1,62 @@
+{
+  "url": {
+    "api": "CITIZENOS_URL_API",
+    "fe": "CITIZENOS_URL_FE"
+  },
+  "db": {
+    "url": "DATABASE_URL",
+    "options": {
+      "__name": "DATABASE_OPTIONS",
+      "__format": "json"
+    }
+  },
+  "topic": {
+    "titleLengthMax": "TITLE_LENGTH_MAX"
+  },
+  "session": {
+    "__name": "CITIZENOS_SESSION",
+    "__format": "json"
+  },
+  "api": {
+    "key": "CITIZENOS_API_KEY"
+  },
+  "services": {
+    "__name": "CITIZENOS_SERVICES",
+    "__format": "json"
+  },
+  "email": {
+    "__name": "CITIZENOS_EMAIL",
+    "__format": "json"
+  },
+  "logging": "CITIZENOS_LOGGING",
+  "passport": {
+    "__name": "CITIZENOS_PASSPORT",
+    "__format": "json"
+  },
+  "attachments": {
+    "limit": "ATTACHMENTS_LIMIT"
+  },
+  "storage": {
+    "__name": "CITIZENOS_STORAGE",
+    "__format": "json"
+  },
+  "features": {
+    "sendToParliament": {
+      "voteCountMin": "CITIZENOS_FEATURES_SENDTOPARLIAMENT_VOTECOUNTMIN",
+      "from": "CITIZENOS_FEATURES_SENDTOPARLIAMENT_FROM"
+    }
+  },
+  "encryption": {
+    "salt": "CITIZENOS_ENCRYPTION_SALT"
+  },
+  "rateLimit": {
+    "storageType": "CITIZENOS_RATE_LIMIT_STORAGE_TYPE",
+    "client": {
+      "url": "REDIS_TLS_URL",
+      "options": {
+        "__name": "CITIZENOS_RATE_LIMIT_CLIENT_OPTIONS",
+        "__format": "json"
+      }
+    }
+  }
+}

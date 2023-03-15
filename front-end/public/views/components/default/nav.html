@@ -1,0 +1,200 @@
+<div ng-if="$ctrl.app.wWidth > 1024">
+    <!--<div ui-sref="home">
+        <center><h1 class="ng-scope">Piazza 3.0</h1></center>
+    </div>-->
+    <div class="logo_area">
+        <div ui-sref="home">
+            <center><img src="imgs/logo.png" width="95%" height="95%" /></center>
+        </div>
+    </div>
+</div>
+
+
+<div class="nav_inside">
+
+    <!-- Only show this if the user is NOT logged in -->
+    <div class="blue_button" ng-click="$ctrl.app.doShowLogin()" ng-if="!$ctrl.app.user.loggedIn">Accedi</div>
+
+    <div ng-if="!$ctrl.app.user.loggedIn" class="line dark_line"></div>
+    <div ng-if="!$ctrl.app.user.loggedIn" class="line light_line"></div>
+
+    <!-- Nav section -->
+    <div class="section" ng-if="!$ctrl.app.user.loggedIn">
+
+        <a ui-sref="public/topics" ui-sref-active="active" class="section_item">
+            <div class="section_icon">
+                <div class="table_cell">
+                    <div class="sprite sprite-menu-icon-topics2x"></div>
+                </div>
+            </div>
+            <span>Topic</span>
+        </a>
+
+        <!--<a ui-sref="public/groups" ui-sref-active="active" class="section_item">
+            <div class="section_icon">
+                <div class="table_cell">
+                    <div class="sprite sprite-menu-icon-groups2x"></div>
+                </div>
+            </div>
+            <span>Public groups</span>
+        </a>-->
+    </div>
+
+    <!-- Only show this if the user is logged in -->
+    <div ng-if="$ctrl.app.user.loggedIn">
+        <div class="line dark_line"></div>
+        <div class="line light_line"></div><br>
+        <div id="account_area">
+            <div class="table_cell">
+                <div class="profile_image_wrapper">
+                    <!--div class="profile_moon sprite sprite-icon-certified-google2x"></div-->
+                    <div class="account_picture">
+                        <img ng-if="$ctrl.app.user.imageUrl" ng-src="{{$ctrl.app.user.imageUrl}}" src="">
+                        <div class="profile_image_filler" ng-if="!$ctrl.app.user.imageUrl">
+                            <cos-initials class="table_cell" ng-model="$ctrl.app.user.name"></cos-initials>
+                            <div class="profile_circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="account_text">
+                <div class="section_header bold_white">{{$ctrl.app.user.name}}</div>
+                <a ui-sref="account/settings" id="account_action" href="">Il mio account</a>
+            </div>
+
+        </div>
+
+        <div class="line dark_line"></div>
+        <div class="line light_line"></div>
+
+        <!-- Nav section -->
+        <div class="section">
+            <a ng-click="$ctrl.app.doShowActivityModal()" class="section_item" ng-class="{active: $ctrl.app.isShowActivityModal}">
+                <div class="section_icon">
+                    <div class="table_cell">
+                        <div ng-if="!$ctrl.app.unreadActivitiesCount" class="sprite sprite-menu-icon-activities2x"></div>
+                        <div ng-if="$ctrl.app.unreadActivitiesCount" class="activities_counter">
+                            {{$ctrl.app.unreadActivitiesCount}}
+                        </div>
+                    </div>
+                </div>
+                <span id="activity_feed_link_text">Notifiche</span>
+            </a>
+        </div>
+
+        <div class="line dark_line"></div>
+        <div class="line light_line"></div>
+
+        <div class="section">
+            <div class="section_item section_header bold_white">
+                <div class="section_icon">
+                    <div class="table_cell">
+                        <div class="sprite sprite-menu-icon-topics2x"></div>
+                    </div>
+                </div>
+                <span>Topic</span>
+            </div>
+            <a ui-sref="topics/create" ui-sref-active="active" class="section_item bold_blue">
+                <div class="section_icon">
+                    <div class="table_cell">
+                        <div class="sprite sprite-bullet-plus2x"></div>
+                    </div>
+                </div>
+                <span>Crea topic</span>
+            </a>
+            <a ui-sref="my/topics({filter: 'all'})" ui-sref-opts="{reload: true}" ui-sref-active="active" class="section_item">
+                <div class="section_icon">
+                    <div class="table_cell">
+                        <div class="sprite sprite-bullet-arrow2x"></div>
+                    </div>
+                </div>
+                <span>I miei topic</span>
+            </a>
+            <a ui-sref="public/topics" ui-sref-active="active" class="section_item">
+                <div class="section_icon">
+                    <div class="table_cell">
+                        <div class="sprite sprite-bullet-arrow2x"></div>
+                    </div>
+                </div>
+                <span>Tutti i topic</span>
+            </a>
+        </div>
+
+        <!-- Nav section - Groups -->
+        <div ng-if="$ctrl.app.user.loggedIn && true" class="section">
+            <div class="section_item section_header bold_white">
+                <div class="section_icon">
+                    <div class="table_cell">
+                        <div class="sprite sprite-menu-icon-groups2x"></div>
+                    </div>
+                </div>
+                <span translate="DEFAULT.NAV.HEADING_GROUPS">Groups</span>
+            </div>
+            <a ui-sref="my/groups/create({filter:null})" ui-sref-opts="{reload: true}" ui-sref-active="active" class="section_item bold_blue">
+                <div class="section_icon">
+                    <div class="table_cell">
+                        <div class="sprite sprite-bullet-plus2x"></div>
+                    </div>
+                </div>
+                <span translate="DEFAULT.NAV.LNK_CREATE_GROUPS">Create groups</span>
+            </a>
+            <a ui-sref="my/groups({filter: 'grouped'})" ui-sref-opts="{reload: true}" ui-sref-active="active" class="section_item">
+                <div class="section_icon">
+                    <div class="table_cell">
+                        <div class="sprite sprite-bullet-arrow2x"></div>
+                    </div>
+                </div>
+                <span translate="DEFAULT.NAV.LNK_MY_GROUPS">My groups</span>
+            </a>
+            <a ui-sref="public/groups" ui-sref-active="active" class="section_item">
+                <div class="section_icon">
+                    <div class="table_cell">
+                        <div class="sprite sprite-bullet-arrow2x"></div>
+                    </div>
+                </div>
+                <span translate="DEFAULT.NAV.LNK_PUBLIC_GROUPS">Public groups</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nav section -->
+    <div ng-if="!$ctrl.app.user.loggedIn">
+        
+        <div class="line dark_line"></div>
+        <div class="line light_line"></div>
+
+        <div class="section">
+            <a class="section_item" target="_blank" ng-href="https://facebook.com/groups/piazza3.0">Facebook</a>
+            <a class="section_item" target="_blank" ng-href="https://instagram.com/piazza3.0">Instagram</a>
+            <a class="section_item" target="_blank" ng-href="statuto.pdf">Statuto</a>
+                <!--<div class="section_icon">
+                    <div class="table_cell">
+                        <div class="sprite sprite-x0-menu-icon-help2x"></div>
+                    </div>
+                </div>
+            <span>Statuto</span>-->
+            
+        </div>
+    </div>
+
+    <!-- Only show this if the user is logged in -->
+    <div ng-if="$ctrl.app.user.loggedIn">
+
+        <div class="line dark_line"></div>
+        <div class="line light_line"></div>
+
+        <div class="section">
+
+            <a ng-click="$ctrl.app.doLogout();" class="section_item" href="">
+                <div class="section_icon">
+                    <div class="table_cell">
+                        <div class="sprite sprite-menu-icon-logout2x"></div>
+                    </div>
+                </div>
+                <span>Esci</span>
+            </a>
+
+        </div>
+    </div>
+</div>

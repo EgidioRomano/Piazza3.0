@@ -1,0 +1,42 @@
+@use 'vars';
+@use 'mixins_n_extends';
+
+.button_area {
+    display: inline;
+
+    .big_button {
+        width: auto;
+        height: auto;
+        border-radius: 4px;
+        background: vars.$deep_sky_blue;
+        color: #fff;
+        font-weight: vars.$bold;
+        display: inline-table;
+        margin: 0 20px 26px 20px;
+        cursor: pointer;
+        vertical-align: middle;
+
+
+        &:hover {
+            background: vars.$sky_blue;
+        }
+
+
+        .button_cell {
+            @extend %table_cell;
+
+            .icon_nudge {
+                margin-left: 14px;
+            }
+
+            .sprite {
+                margin: 0 auto;
+            }
+
+            .topic_text {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    }
+}

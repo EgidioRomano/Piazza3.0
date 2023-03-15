@@ -1,0 +1,283 @@
+{
+  "url": {
+    "api": "https://api.citizenos.com",
+    "fe": "https://app.citizenos.com"
+  },
+  "db": {
+    "url": "postgres://citizenos:citizenos@localhost:5432/citizenos",
+    "options": {
+      "dialect": "postgres",
+      "logging": true,
+      "benchmark": true,
+      "sync": {
+        "force": false,
+        "logging": true
+      },
+      "define": {
+        "underscored": false,
+        "freezeTableName": false,
+        "syncOnAssociation": false,
+        "charset": "utf8",
+        "collate": "utf8_general_ci",
+        "timestamps": true,
+        "paranoid": true
+      },
+      "omitNull": false,
+      "dialectOptions": {
+        "ssl": {
+          "require": true,
+          "rejectUnauthorized": false
+        }
+      },
+      "pool": {
+        "min": 0,
+        "max": 100
+      },
+      "isolationLevel": "READ COMMITTED"
+    }
+  },
+  "topic": {
+    "titleLengthMax": 1000
+  },
+  "session": {
+    "name": "app.sid",
+    "privateKey": "TO BE OVERWRITTEN IN ENV SPECIFIC CONF",
+    "publicKey": "TO BE OVERWRITTEN IN ENV SPECIFIC CONF",
+    "algorithm": "RS256",
+    "secret": "sdfsdfsdfsdfdsfdsf",
+    "resave": false,
+    "saveUninitialized": false,
+    "cookie": {
+      "path": "/api",
+      "httpOnly": true,
+      "maxAge": 12096000,
+      "domain": false,
+      "sameSite": "None"
+    }
+  },
+  "api": {
+    "cors": {
+      "paths": [
+        "/api",
+        "/static/fonts"
+      ],
+      "origin": [
+        "rahvaalgatus\\.ee(:[0-9]{2,4})?$",
+        "citizenos\\.com(:[0-9]{2,4})?$",
+        "lecielfoundation\\.com(:[0-9]{2,4})?$"
+      ],
+      "methods": [
+        "GET",
+        "PUT",
+        "POST",
+        "DELETE",
+        "PATCH"
+      ],
+      "credentials": true
+    },
+    "key": ""
+  },
+  "passport": {
+    "google": {
+      "clientId": "11623449066-fua92rmgai358bqb63hqcc4sm1j17lev.apps.googleusercontent.com",
+      "clientSecret": "7b5hFOkbU9I948EoiixQ9ezW",
+      "url": "/api/auth/google",
+      "callbackUrl": "/api/auth/google/callback"
+    },
+    "facebook": {
+      "clientId": "1673474289579933",
+      "clientSecret": "9ad10ff099bf11ad932163b9be81c595",
+      "url": "/api/auth/facebook",
+      "callbackUrl": "/api/auth/facebook/callback"
+    }
+  },
+  "email": {
+    "provider": {
+      "name": "mailgun",
+      "options": {
+        "apiKey": null,
+        "authority": "https://citizenos.com"
+      }
+    },
+    "from": "Citizen OS <no-reply@citizenos.com>",
+    "linkToPrivacyPolicy": "https://app.citizenos.com/en/topics/7abdd244-d45b-40d3-997c-a6290d4e972c",
+    "linkViewModerationGuidelines": "https://app.citizenos.com/en/topics/ac8b66a4-ca56-4d02-8406-5e19da73d7ce",
+    "trap": false,
+    "styles": {
+      "headerBackgroundColor": "#252525",
+      "logoWidth": 162,
+      "logoHeight": 30
+    },
+    "partnerStyles": {
+      "rahvaalgatus.ee": {
+        "headerBackgroundColor": "#004892",
+        "logoWidth": 360,
+        "logoHeight": 51
+      },
+      "uuseakus.rahvaalgatus.ee": {
+        "headerBackgroundColor": "#004892",
+        "logoWidth": 300,
+        "logoHeight": 91
+      }
+    }
+  },
+  "services": {
+    "etherpad": {
+      "host": "p.citizenos.com",
+      "port": "443",
+      "ssl": true,
+      "rejectUnauthorized": true
+    },
+    "signature": {
+      "certificates": {
+        "tsl": [
+          "config/tsl/test-estonian-tsl.xml",
+          "config/tsl/estonian-tsl.xml"
+        ],
+        "issuers": [
+          {
+            "C": "EE",
+            "O": "AS Sertifitseerimiskeskus",
+            "OID": "NTREE-10747013",
+            "CN": "TEST of EID-SK 2015"
+          },
+          {
+            "C": "EE",
+            "O": "AS Sertifitseerimiskeskus",
+            "OID": "NTREE-10747013",
+            "CN": "EID-SK 2016"
+          },
+          {
+            "C": "EE",
+            "O": "SK ID Solutions AS",
+            "OID": "NTREE-10747013",
+            "CN": "ESTEID2018"
+          },
+          {
+            "CN": "ESTEID-SK 2011",
+            "O": "AS Sertifitseerimiskeskus",
+            "C": "EE",
+            "E": "pki@sk.ee"
+          },
+          {
+            "CN": "EID-SK 2011",
+            "O": "AS Sertifitseerimiskeskus",
+            "C": "EE"
+          },
+          {
+            "CN": "ESTEID-SK 2015",
+            "OID": "NTREE-10747013",
+            "O": "AS Sertifitseerimiskeskus",
+            "C": "EE"
+          },
+          {
+            "C": "EE",
+            "O": "AS Sertifitseerimiskeskus",
+            "OID": "NTREE-10747013",
+            "CN": "TEST of EID-SK 2015"
+          },
+          {
+            "C": "EE",
+            "O": "AS Sertifitseerimiskeskus",
+            "OID": "NTREE-10747013",
+            "CN": "TEST of EID-SK 2016"
+          },
+          {
+            "C": "EE",
+            "O": "AS Sertifitseerimiskeskus",
+            "OID": "NTREE-10747013",
+            "CN": "TEST of ESTEID-SK 2015"
+          },
+          {
+            "C": "EE",
+            "O": "AS Sertifitseerimiskeskus",
+            "OID": "NTREE-10747013",
+            "CN": "TEST of ESTEID-SK 2016"
+          },
+          {
+            "C":"EE",
+            "O":"AS Sertifitseerimiskeskus",
+            "CN":"TEST of EID-SK 2011",
+            "E":"pki@sk.ee"
+          },
+          {
+            "CN": "TEST of ESTEID2018",
+            "OID": "NTREE-10747013",
+            "O": "SK ID Solutions AS",
+            "C":"EE"
+          }
+        ]
+      },
+      "timemarkUrl": "http://demo.sk.ee/ocsp",
+	    "timestampUrl": "http://demo.sk.ee/tsa"
+    },
+    "smartId": {
+      "hostname": "smartid.citizenos.com:8001",
+      "authorizeToken": "m3EvIdswsiIpeOXqXb185fgoS9h0zpu5jrweZWLVGeVR5FoQpE",
+      "apiPath": "/v1"
+    },
+    "mobileId": {
+      "hostname": "mobiilid.citizenos.com:8001",
+      "authorizeToken": "m3EvIdswsiIpeOXqXb185fgoS9h0zpu5jrweZWLVGeVR5FoQpE",
+      "apiPath": "/mid-api"
+    },
+    "twitter": {
+      "consumer_key": null,
+      "consumer_secret": null,
+      "access_token": null,
+      "access_token_secret": null,
+      "timeout_ms": 10000
+    },
+    "prerender": {
+      "serviceUrl": "https://citizenos-prerender-prod.herokuapp.com/",
+      "apiKey": "YOUR_KEY_HERE"
+    }
+  },
+  "logging": {
+    "log4js": {
+      "appenders": {
+        "file": {
+          "type": "dateFile",
+          "filename": "logs/app.log",
+          "pattern": "-dd",
+          "alwaysIncludePattern": false
+        },
+        "console": {
+          "type": "console"
+        }
+      },
+      "categories": {
+        "default": {
+          "appenders": [
+            "file",
+            "console"
+          ],
+          "level": "info"
+        }
+      }
+    },
+    "morgan": {
+      "format": ":remote-addr - :remote-user \":method :url HTTP/:http-version\" :status :res[content-length] - :response-time ms"
+    }
+  },
+  "features": {
+    "sendToParliament": {
+      "voteCountMin": 1000,
+      "urlPrefix": "https://rahvaalgatus.ee",
+      "from": "info@rahvaalgatus.ee",
+      "to": [
+        "riigikogu@riigikogu.ee",
+        "info@rahvaalgatus.ee",
+        "citizenos@citizenos.com"
+      ],
+      "sendContainerDownloadLinkToCreator": true
+    }
+  },
+  "attachments": {
+    "limit": 10
+  },
+  "storage": {
+    "allowedFileTypes": ["txt", "pdf", "doc", "docx", "ddoc", "bdoc", "asice", "odf", "odt", "jpg", "jpeg", "png", "rtf", "xls", "xlsx", "ppt", "pptx", "pps", "xlt"],
+    "allowedMimeTypes": ["application\/vnd\\.etsi\\.asic-e\\+zip"]
+  }
+}

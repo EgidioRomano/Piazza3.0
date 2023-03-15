@@ -1,0 +1,118 @@
+<!doctype html>
+<html ng-app="citizenos" ng-strict-di="true" lang="it" ng-csp>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <base href="/">
+    <meta name="fragment" content="!">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <!--[if lte IE 9]>
+    <script>
+        window.location.href = '/views/unknown_device.html';
+    </script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:300,400,700" rel="stylesheet">
+    <link href="styles/citizenos-fe.bundle.css" rel="stylesheet">
+    <link href="styles/easymde.min.css" rel="stylesheet">
+    <!--link href="config/styles/local.css" rel="stylesheet"-->
+
+    <script src="settings.js"></script>
+    <script src= "js/libs/marked.min.js"></script>
+    <script src="page.js" data-name="TokenSigning"></script>
+
+    <meta name="theme-color" content="#1a1a1a">
+    <title>Piazza 3.0</title>
+    <link ng-if="app.metainfo.icon" rel="shortcut icon" ng-href="{{app.metainfo.icon}}" type="image/x-icon"/>
+    <link ng-if="app.metainfo.iconHires" rel="icon" ng-href="{{app.metainfo.iconHires}}" sizes="192x192" type="image/png">
+    <meta ng-if="app.metainfo.description" content="{{app.metainfo.description}}" name="description">
+    <meta ng-if="app.metainfo.keywords" name="keywords" content="{{app.metainfo.keywords}}">
+    <meta ng-if="app.metainfo.author" name="author" content="{{app.metainfo.author}}">
+
+    <meta ng-if="app.metainfo.title" property="og:title" content="{{app.metainfo.title}}">
+    <meta ng-if="app.metainfo.image" property="og:image" content="{{app.metainfo.image}}">
+    <meta ng-if="app.metainfo.description" property="og:description" content="{{app.metainfo.description}}">
+    <meta ng-if="app.metainfo.url" property="og:url" content="{{app.metainfo.url}}">
+    <meta ng-if="app.metainfo.site_name" property="og:site_name" content="{{app.metainfo.site_name}}">
+</head>
+
+<body ng-class="app.topicsSettings || app.showSearchFiltersMobile || app.showSearchResults ? 'body_fixed' : 'body_not_fixed'" cos-resize>
+    <!-- INFO BAR - base.scss -->
+    <div class="info_bar_wrap">
+        <!-- ORANGE MESSAGE for TESTING ENV NOTIFICATION -->
+        <div class="info_bar bar_orange" ng-class="{'info_bar_show': app.showTestingEnvNotification}">
+            <div class="info_icon">
+                <div class="sprite sprite-icon-notification-error2x"></div>
+            </div>
+
+            <div class="info_bar_text">
+                PLEASE NOTE! This Citizen OS is a testing environment and is for TESTING ONLY, all data here MAY be deleted at any time! Please visit <a href="https://app.citizenos.com">https://app.citizenos.com</a> for LIVE application.
+            </div>
+
+            <div class="info_icon" ng-click="app.showTestingEnvNotification = false">
+                <div class="sprite sprite-icon-closemenu2x"></div>
+            </div>
+        </div>
+
+        <!-- RED MESSAGE -->
+        <div class="info_bar bar_red" ng-class="{'info_bar_show': app.notifications.messages[app.notifications.levels.ERROR].length}" >
+            <div class="info_icon">
+                <div class="sprite sprite-icon-notification-error2x"></div>
+            </div>
+
+            <div class="info_bar_text">
+                <div class="info_row" ng-repeat="key in app.notifications.messages[app.notifications.levels.ERROR] track by $index">
+                    <span translate="{{key}}"></span>
+                </div>
+            </div>
+
+            <div class="info_icon" ng-click="app.notifications.removeAll(app.notifications.levels.ERROR)">
+                <div class="sprite sprite-icon-closemenu2x"></div>
+            </div>
+        </div>
+
+        <!-- BLUE MESSAGE -->
+        <div class="info_bar bar_blue"  ng-class="{'info_bar_show': app.notifications.messages[app.notifications.levels.INFO].length}">
+            <div class="info_icon">
+                <div class="sprite sprite-icon-notification-info2x"></div>
+            </div>
+
+            <div class="info_bar_text">
+                <div class="info_row" ng-repeat="key in app.notifications.messages[app.notifications.levels.INFO] track by $index">
+                    <span translate="{{key}}"></span>
+                </div>
+            </div>
+
+            <div class="info_icon" ng-click="app.notifications.removeAll(app.notifications.levels.INFO)">
+                <div class="sprite sprite-icon-closemenu2x"></div>
+            </div>
+        </div>
+
+        <!-- GREEN MESSAGE -->
+        <div class="info_bar bar_green" ng-class="{'info_bar_show': app.notifications.messages[app.notifications.levels.SUCCESS].length}">
+            <div class="info_icon">
+                <div class="sprite sprite-icon-notification-check2x"></div>
+            </div>
+
+            <div class="info_bar_text">
+                <div class="info_row" ng-repeat="key in app.notifications.messages[app.notifications.levels.SUCCESS] track by $index">
+                    <span translate="{{key}}"></span>
+                </div>
+            </div>
+
+            <div class="info_icon" ng-click="app.notifications.removeAll(app.notifications.levels.SUCCESS)">
+                <div class="sprite sprite-btn-popup-close-2x-green"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <!-- Cant have ui-view without a wrapper element. Search results depend on the outer element height, thus the style -->
+    <div ui-view class="full_height"></div>
+    <!--<help></help>-->
+    <script src="js/home.js"></script>
+    <script src="js/libs/hwcrypto-js.js"></script>
+    <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+    <script type="text/javascript" src="https://js.live.net/v7.2/OneDrive.js"></script>
+    <script src="js/citizenos-fe.bundle.js"></script>
+</body>
+</html>

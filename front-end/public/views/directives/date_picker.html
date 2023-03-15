@@ -1,0 +1,28 @@
+<div class="bubble_section">
+    <div class="month_chooser">
+        <div class="arrow" ng-click="prev()">
+            <div class="sprite sprite-arrow-calendar-left2x"></div>
+        </div>
+        <div class="month_text" ng-click="setView('month')">{{date|mFormat:'MMMM YYYY':tz}}</div>
+        <div class="arrow" ng-click="next()">
+            <div class="sprite sprite-arrow-calendar-right2x"></div>
+        </div>
+    </div>
+</div>
+
+<div class="bubble_section_table">
+    <table>
+        <tr>
+            <th ng-repeat="day in weekdays">{{day | amDateFormat: 'dd'}}</th>
+        </tr>
+        <tr ng-repeat="week in weeks" ng-init="$index2 = $index">
+            <td ng-repeat="day in week" ng-click="selectDate(day)">
+                <div class="date_circle" ng-class="classes[$index2][$index]">
+                    <div class="table_cell">
+                        {{day|mFormat:'DD':tz}}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

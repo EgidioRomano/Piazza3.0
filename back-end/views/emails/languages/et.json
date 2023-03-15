@@ -1,0 +1,207 @@
+{
+  "LAYOUT": {
+    "LINK_TO_PLATFORM": "Ava platvorm",
+    "LINK_PRIVACY_POLICY": "Privaatsuspoliitika",
+    "EMPOWERED_BY": "Head arutelu hoiab"
+  },
+  "ACCOUNT_VERIFICATION": {
+    "SUBJECT": "Aktiveeri oma Citizen OS konto"
+  },
+  "INVITE_GROUP": {
+    "SUBJECT": "{{fromUser.name}} kutsub Sind liituma meie grupiga “{{group.name}}” Citizen OS rakenduses"
+  },
+  "INVITE_TOPIC": {
+    "SUBJECT": "{{fromUser.name}} kutsub Sind tegema ühiseid otsuseid",
+    "SUBJECT_rahvaalgatus_ee": "Rahvaalgatus.ee kasutaja {{fromUser.name}} kutsub Sind kooslooma arutelu/algatust",
+    "SUBJECT_uuseakus_rahvaalgatus_ee": "Uue eakuse rahvakogus osaleja {{fromUser.name}} kutsub Sind kooslooma algatust",
+    "SUBJECT_rahvaalgatus_test": "Rahvaalgatus.ee kasutaja {{fromUser.name}} kutsub Sind kooslooma arutelu/algatust"
+  },
+  "PASSWORD_RESET": {
+    "SUBJECT": "Taasta oma Citizen OS konto parool"
+  },
+  "REPORT_TOPIC_REPORT_REPORTER": {
+    "SUBJECT": "Aitäh! Saime Su raporti (#{{report.id}}) kätte"
+  },
+  "REPORT_TOPIC_REPORT_MEMBER": {
+    "SUBJECT": "Raport #{{report.id}}: teema, mille Citizen OS kogukonnas algatasid, võib olla vastuolus kogukonnareeglitega"
+  },
+  "REPORT_TOPIC_REPORT_MODERATOR": {
+    "SUBJECT": "Ühe Citizen OS-i teema kohta saadeti raport (#{{report.id}}), palun modereeri"
+  },
+  "REPORT_TOPIC_MODERATE_REPORTER": {
+    "SUBJECT": "Sinu Citizen OS-i raport #{{report.id}} vaadati üle"
+  },
+  "REPORT_TOPIC_MODERATE_MEMBER": {
+    "SUBJECT": "Raport #{{report.id}}: moderaator vaatas Sinu Citizen OS-i teema üle"
+  },
+  "REPORT_TOPIC_REPORT_REVIEW_MODERATOR": {
+    "SUBJECT": "Raporteeritud (#{{report.id}}) Citizen OS-i teemat parandati, palun vaata see üle"
+  },
+  "REPORT_TOPIC_REPORT_RESOLVE_MEMBER": {
+    "SUBJECT": "Raport #{{report.id}}: juurdepääs Sinu Citizen OS-i teemale on taastatud."
+  },
+  "REPORT_TOPIC_REPORT_RESOLVE_REPORTER": {
+    "SUBJECT": "Sinu Citizen OS-is esitatud raport (#{{report.id}}) on lahendatud"
+  },
+  "REPORT": {
+    "REPORT_TYPE": {
+      "ABUSE": "On solvav",
+      "OBSCENE": "Sisaldab sündsusetuid väljendeid",
+      "SPAM": "Sisaldab reklaami või pole teemaga seotud",
+      "HATE": "Õhutab vaenu",
+      "NETIQUETTE": "Ei vasta headele tavadele",
+      "DUPLICATE": "Duplikaat"
+    }
+  },
+  "REPORT_COMMENT": {
+    "REPORT_TYPE": {
+      "ABUSE": "Mõjub mulle / kellelegi solvavalt",
+      "OBSCENE": "Sisaldab ebatsensuurseid väljendeid",
+      "SPAM": "Sisaldab reklaami või pole seotud teemaga",
+      "HATE": "Õhutab vaenu",
+      "NETIQUETTE": "Ei vasta headele tavadele",
+      "DUPLICATE": "Duplikaat"
+    }
+  },
+  "REPORT_COMMENT_CREATOR": {
+    "SUBJECT": "Sinu argument on märgitud ebasobivaks kogukonna kasutaja poolt"
+  },
+  "REPORT_COMMENT_MODERATOR": {
+    "SUBJECT": "Argument on märgitud ebasobivaks kogukonna kasutaja poolt"
+  },
+  "TO_PARLIAMENT": {
+    "SUBJECT": "Rahvaalgatus.ee edastab kollektiivse pöördumise \"{{topic.title}}\""
+  },
+  "NOTIFICATIONS": {
+    "SUBJECT": "Citizen OS'i teema {{topicTitle}} teavitus",
+    "NOTIFICATION_USER_CREATE_TOPIC": "Kasutaja <em>{{userName}}</em> on loonud teema <em>{{topicTitle}}</em>",
+    "NOTIFICATION_USER_UPDATE_TOPIC": "Kasutaja <em>{{userName}}</em> uuendas teemas <em>{{topicTitle}}</em> välja <em>{{fieldName}}</em>",
+    "NOTIFICATION_USER_UPDATE_TOPIC_USERACTIVITYGROUP": "Kasutaja <em>{{userName}}</em> on teinud teemas \"<em>{{topicTitle}}</em>\" <em>{{groupCount}}</em> uuendust",
+    "NOTIFICATION_PREVIOUS_VERSION": "Eelmine versioon: {{previousValue}}",
+    "NOTIFICATION_NEW_VERSION": "Uus versioon: {{newValue}}",
+    "NOTIFICATION_SYSTEM_UPDATE_TOPIC": "Süsteem uuendas teemas \"<em>{{topicTitle}}</em>\" välja <em>{{fieldName}}</em>",
+    "NOTIFICATION_USER_DELETE_TOPIC": "Kasutaja <em>{{userName}}</em> on kustutanud teema <em>{{topicTitle}}</em>",
+    "NOTIFICATION_USER_ADD_USER_TOPIC": "Kasutaja <em>{{userName}}</em> kutsus kasutaja <em>{{userName2}}</em> arutlema teemal \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_USER_INVITE_TOPIC_USER": "@:NOTIFICATIONS.NOTIFICATION_USER_ADD_USER_TOPIC",
+    "NOTIFICATION_USER_ACCEPT_INVITE_TOPIC": "Kasutaja <em>{{userName}}</em> võttis vastu kutse arutleda teemal \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_USER_UPDATE_TOPICMEMBERUSER": "Kasutaja <em>{{userName}}</em> muutis kasutaja <em>{{userName2}}</em> õiguseid teemas \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_USER_UPDATE_TOPICMEMBERUSER_NONE": "Kasutaja <em>{{userName}}</em> keelas kasutajal <em>{{userName2}}</em> juurdepääsu teemale \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_USER_UPDATE_TOPICINVITEUSER": "@:NOTIFICATIONS.NOTIFICATION_USER_UPDATE_TOPICMEMBERUSER",
+    "NOTIFICATION_USER_UPDATE_TOPICINVITEUSER_NONE": "@:NOTIFICATIONS.NOTIFICATION_USER_UPDATE_TOPICMEMBERUSER_NONE",
+    "NOTIFICATION_USER_UPDATE_TOPICJOIN": "Teema <em>{{topicTitle}}</em>: kasutaja <em>{{userName}}</em> uuendas mõnda lingiatribuuti:",
+    "NOTIFICATION_USER_UPDATE_GROUPJOIN": "Grupp <em>{{groupName}}</em>: kasutaja <em>{{userName}}</em> uuendas mõnda lingiatribuuti:",
+    "NOTIFICATION_USER_DELETE_USER_TOPIC": "@:NOTIFICATIONS.NOTIFICATION_USER_UPDATE_TOPICMEMBERUSER_NONE",
+    "NOTIFICATION_USER_JOIN_TOPIC": "Kasutaja <em>{{userName}}</em> liitus teemaga \"<em>{{topicTitle}}</em>\" järgmiste õigustega: {{accessLevel}}",
+    "NOTIFICATION_USER_JOIN_GROUP": "Kasutaja <em>{{userName}}</em> liitus grupiga \"<em>{{groupName}}</em>\" järgmiste õigustega: {{accessLevel}}",
+    "NOTIFICATION_USER_LEAVE_TOPIC": "Kasutaja <em>{{userName}}</em> lahkus teema \"<em>{{topicTitle}}</em>\" arutelust",
+    "NOTIFICATION_USER_DELETE_TOPICPIN_TOPIC": "Kasutaja <em>{{userName}}</em> eemaldas märke teemalt <em>{{topicTitle}}</em>",
+    "NOTIFICATION_USER_ADD_TOPIC_TOPICPIN": "Kasutaja <em>{{userName}}</em> lisas märke teemale <em>{{topicTitle}}</em>",
+    "NOTIFICATION_USER_CREATE_VOTE_TOPIC": "Kasutaja <em>{{userName}}</em> pani teema \"<em>{{topicTitle}}</em>\" hääletusele",
+    "NOTIFICATION_USER_UPDATE_VOTE_TOPIC": "Kasutaja <em>{{userName}}</em> muutis teema \"<em>{{topicTitle}}</em>\" hääletustähtaega",
+    "NOTIFICATION_USER_CREATE_VOTELIST_TOPIC": "Kasutaja hääletas teemat <em>{{topicTitle}}</em>.",
+    "NOTIFICATION_USER_CREATE_VOTEDELEGATION_VOTE": "Kasutaja <em>{{userName}}</em> volitas teemal \"<em>{{topicTitle}}</em>\" teise kasutaja enda eest hääletama",
+    "NOTIFICATION_USER_DELETE_VOTEDELEGATION_VOTE": "Kasutaja <em>{{userName}}</em> tühistas oma volituse teema \"<em>{{topicTitle}}</em>\" hääletamisel",
+    "NOTIFICATION_USER_VIEW_VOTEUSERCONTAINER": "Kasutaja <em>{{userName}}</em> laadis alla teema \"<em>{{topicTitle}}</em>\" hääletustulemused",
+    "NOTIFICATION_USER_VIEW_VOTEFINALCONTAINER": "Kasutaja <em>{{userName}}</em> laadis alla teema \"<em>{{topicTitle}}</em>\" hääletustulemused",
+    "NOTIFICATION_USER_CREATE_COMMENT_TOPIC": "Kasutaja <em>{{userName}}</em> lisas teemal \"<em>{{topicTitle}}</em>\" uue argumendi",
+    "NOTIFICATION_USER_UPDATE_COMMENT_TOPIC": "Kasutaja <em>{{userName}}</em> muutis oma argumenti teemal \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_MODERATOR_UPDATE_COMMENT_TOPIC": "Kasutaja <em>{{userName}}</em> (moderaator) uuendas teemas \"<em>{{topicTitle}}</em>\" argumendivälja <em>{{fieldName}}</em>",
+    "NOTIFICATION_USER_DELETE_COMMENT_TOPIC": "Kasutaja <em>{{userName}}</em> kustutas oma argumendi teemal \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_MODERATOR_DELETE_COMMENT_TOPIC": "Kasutaja <em>{{userName}}</em> (moderaator) eemaldas argumendi teemast \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_USER_ADD_REPORT_COMMENT": "Kasutaja <em>{{userName}}</em> teavitas sobimatust argumendist teemas {{topicTitle}} ",
+    "NOTIFICATION_USER_CREATE_COMMENTVOTE_COMMENT_UP": "Kasutaja <em>{{userName}}</em> on jätnud teemas {{topicTitle}} postitatud argumendile <em>{{reaction}}</em> tagasiside",
+    "NOTIFICATION_USER_UPDATE_COMMENTVOTE_COMMENT_UP": "Kasutaja <em>{{userName}}</em> muutis oma tagasiside argumendile teemas {{topicTitle}}",
+    "NOTIFICATION_USER_CREATE_COMMENTVOTE_COMMENT_DOWN": "@:NOTIFICATIONS.NOTIFICATION_USER_CREATE_COMMENTVOTE_COMMENT_UP",
+    "NOTIFICATION_USER_UPDATE_COMMENTVOTE_COMMENT_DOWN": "@:NOTIFICATIONS.NOTIFICATION_USER_UPDATE_COMMENTVOTE_COMMENT_UP",
+    "NOTIFICATION_USER_UPDATE_COMMENTVOTE_COMMENT_REMOVE": "Kasutaja <em>{{userName}}</em> eemaldas oma argumendi tagasiside teemas {{topicTitle}} ",
+    "NOTIFICATION_COMMENTVOTE_FIELD_VALUE_UP": "toetan",
+    "NOTIFICATION_COMMENTVOTE_FIELD_VALUE_DOWN": "ei toeta",
+    "NOTIFICATION_COMMENTVOTE_FIELD_VALUE_REMOVE": "eemalda",
+    "NOTIFICATION_USER_CREATE_COMMENT_TOPIC_IN_REPLY_TO_COMMENT": "Kasutaja <em>{{userName}}</em> vastas argumendile teemal \"<em>{{topicTitle}}</em>\": ",
+    "NOTIFICATION_USER_ADD_TOPIC_GROUP": "Kasutaja <em>{{userName}}</em> lisas gruppi <em>{{groupName}}</em> teema \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_USER_DELETE_GROUP_TOPIC": "Kasutaja <em>{{userName}}</em> eemaldas grupist <em>{{groupName}}</em> teema \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_USER_UPDATE_TOPICMEMBERGROUP": "Kasutaja <em>{{userName}}</em> muutis grupi <em>{{groupName}}</em> õiguseid teemas \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_USER_UPDATE_TOPICMEMBERGROUP_NONE": "Kasutaja <em>{{userName}}</em> keelas grupil <em>{{groupName}}</em> juurdepääsu teemale \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_USER_CREATE_TOPICEVENT_TOPIC": "Kasutaja <em>{{userName}}</em> lõi teemaga \"<em>{{topicTitle}}</em>\" seotud teadaande:",
+    "NOTIFICATION_USER_DELETE_TOPICEVENT_TOPIC": "Kasutaja <em>{{userName}}</em> kustutas teadaande teemast \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_USER_ADD_ATTACHMENT_TOPIC": "Kasutaja <em>{{userName}}</em> lisas teemasse <em>{{topicTitle}}</em> manuse <em>{{attachmentName}}</em>",
+    "NOTIFICATION_USER_DELETE_ATTACHMENT_TOPIC": "Kasutaja <em>{{userName}}</em> kustutas teemast <em>{{topicTitle}}</em> manuse <em>{{attachmentName}}</em>",
+    "NOTIFICATION_USER_UPDATE_ATTACHMENT_TOPIC": "Kasutaja <em>{{userName}}</em> muutis manust teemas \"<em>{{topicTitle}}</em>\"",
+    "NOTIFICATION_TOPIC_FIELD_DESCRIPTION": "kirjeldus",
+    "NOTIFICATION_TOPIC_FIELD_STATUS": "olek",
+    "NOTIFICATION_TOPIC_FIELD_STATUS_INPROGRESS": "ühisloomes",
+    "NOTIFICATION_TOPIC_FIELD_STATUS_VOTING": "hääletamisel",
+    "NOTIFICATION_TOPIC_FIELD_STATUS_FOLLOWUP": "elluviimisel",
+    "NOTIFICATION_TOPIC_FIELD_STATUS_CLOSED": "suletud",
+    "NOTIFICATION_TOPIC_FIELD_HASHTAG": "teemaviide",
+    "NOTIFICATION_TOPIC_FIELD_TITLE": "pealkiri",
+    "NOTIFICATION_TOPIC_FIELD_CATEGORIES": "kategooriad",
+    "NOTIFICATION_TOPIC_FIELD_TOKENJOIN": "liitumislink",
+    "NOTIFICATION_TOPIC_FIELD_VISIBILITY": "nähtavus",
+    "NOTIFICATION_TOPIC_FIELD_VISIBILITY_PRIVATE": "privaatne",
+    "NOTIFICATION_TOPIC_FIELD_VISIBILITY_PUBLIC": "avalik",
+    "NOTIFICATION_GROUP_FIELD_NAME": "nimetus",
+    "NOTIFICATION_COMMENT_FIELD_SUBJECT": "Väide",
+    "NOTIFICATION_COMMENT_FIELD_TEXT": "Väite selgitus",
+    "NOTIFICATION_COMMENT_FIELD_TYPE": "Väite tüüp",
+    "NOTIFICATION_COMMENT_FIELD_VALUE_PRO": "Poolt",
+    "NOTIFICATION_COMMENT_FIELD_VALUE_CON": "Vastu",
+    "NOTIFICATION_TOPIC_LEVELS_ADMIN": "haldamine",
+    "NOTIFICATION_TOPIC_LEVELS_EDIT": "muutmine",
+    "NOTIFICATION_TOPIC_LEVELS_READ": "lugemine",
+    "NOTIFICATION_TOPIC_LEVELS_NONE": "puudub",
+    "NOTIFICATION_USER_CREATE_GROUP": "Kasutaja <em>{{userName}}</em> on loonud grupi <em>{{groupName}}</em>",
+    "NOTIFICATION_USER_UPDATE_GROUP": "Kasutaja <em>{{userName}}</em> on uuendanud grupi <em>{{groupName}}</em> välja <em>{{fieldName}}</em>",
+    "NOTIFICATION_USER_DELETE_GROUP": "Kasutaja <em>{{userName}}</em> kustutas grupi <em>{{groupName}}</em>",
+    "NOTIFICATION_USER_ADD_USER_GROUP": "Kasutaja <em>{{userName}}</em> kutsus kasutaja <em>{{userName2}}</em> gruppi <em>{{groupName}}</em>",
+    "NOTIFICATION_USER_INVITE_GROUP_USER": "@:NOTIFICATIONS.NOTIFICATION_USER_ADD_USER_GROUP",
+    "NOTIFICATION_USER_ACCEPT_INVITE_GROUP": "Kasutaja <em>{{userName}}</em> võttis vastu kutse grupiga \"<em>{{groupName}}</em>\" liitumiseks",
+    "NOTIFICATION_USER_DELETE_USER_GROUP": "Kasutaja <em>{{userName}}</em> eemaldas kasutaja <em>{{userName2}}</em> grupist <em>{{groupName}}</em>",
+    "NOTIFICATION_USER_UPDATE_GROUPMEMBERUSER": "Kasutaja <em>{{userName}}</em> muutis kasutaja <em>{{userName2}}</em> õiguseid grupis <em>{{groupName}}</em>",
+    "NOTIFICATION_USER_UPDATE_GROUPMEMBERUSER_NONE": "Kasutaja <em>{{userName}}</em> keelas kasutajal <em>{{userName2}}</em> juurdepääsu grupile \"<em>{{groupName}}</em>\"",
+    "USER_DELETE_USER_GROUP": "Kasutaja <em>{{userName}}</em> eemaldas kasutaja <em>{{userName2}}</em> grupist <em>{{groupName}}</em>",
+    "NOTIFICATION_USER_ADD_USERCONNECTION_USER": "Kasutaja <em>{{userName}}</em> lisas uue sisselogimisviisi: <em>{{connectionName}}</em>",
+    "NOTIFICATION_USER_CREATE_USER": "Loodi kasutaja <em>{{userName}}</em>",
+    "NOTIFICATION_SYSTEM_CREATE_USER": "Teise kasutaja kutsel loodi süsteemi uus kasutaja.",
+    "NOTIFICATION_USER_CREATE_USERCONSENT": "",
+    "NOTIFICATION_USER_DELETE_CONSENT": "",
+    "NOTIFICATION_USERCONNECTION_CONNECTION_NAME_GOOGLE": "Google",
+    "NOTIFICATION_USERCONNECTION_CONNECTION_NAME_FACEBOOK": "Facebook",
+    "NOTIFICATION_USERCONNECTION_CONNECTION_NAME_SMARTID": "Smart-ID",
+    "NOTIFICATION_USERCONNECTION_CONNECTION_NAME_ESTEID": "Eesti ID-kaart / Mobiil-ID",
+    "NOTIFICATION_USERCONNECTION_CONNECTION_NAME_CITIZENOS": "Citizen OS",
+    "FILTER_ALL": "Kõik tegevused",
+    "FILTER_USERTOPICS": "Minu teemadega seotud tegevused",
+    "FILTER_USERGROUPS": "Minu gruppidega seotud tegevused",
+    "FILTER_USER": "Kasutajaga seotud tegevused",
+    "FILTER_SELF": "Minu tegevused"
+  },
+  "TXT_TOPIC_CATEGORY_ALL": "iga kategooria",
+  "TXT_TOPIC_CATEGORY_CITIZENOS": "Citizen OS",
+  "TXT_TOPIC_CATEGORY_BIOTOOPIA": "Biotoopia",
+  "TXT_TOPIC_CATEGORY_OPINIONFESTIVAL": "Arvamusfestival",
+  "TXT_TOPIC_CATEGORY_THETWELVEMOVIE": "Film \"Kaksteist\"",
+  "TXT_TOPIC_CATEGORY_KEEPITCLEANPLAN": "Keep It Clean Plan",
+  "TXT_TOPIC_CATEGORY_HACKTIVISTCOMMUNITY": "Häktivistide kogukond",
+  "TXT_TOPIC_CATEGORY_THIRTYFOURISLANDPROJECT": "34 saare projekt",
+  "TXT_TOPIC_CATEGORY_EESTIJAZZIARENGUSUUNAD": "Eesti Jazzi Arengusuunad",
+  "TXT_TOPIC_CATEGORY_PYLN": "Osalevate noortejuhtide võrgustik",
+  "TXT_TOPIC_CATEGORY_BUSINESS": "Äri ja tööstus",
+  "TXT_TOPIC_CATEGORY_TRANSPORT": "Ühistransport ja liiklusohutus",
+  "TXT_TOPIC_CATEGORY_TAXES": "Maksud ja riigieelarve",
+  "TXT_TOPIC_CATEGORY_AGRICULTURE": "Põllumajandus",
+  "TXT_TOPIC_CATEGORY_ENVIRONMENT": "Keskkond, loomakaitse",
+  "TXT_TOPIC_CATEGORY_CULTURE": "Kultuur, meedia, sport",
+  "TXT_TOPIC_CATEGORY_HEALTH": "Tervishoid ja sotsiaalhoolekanne",
+  "TXT_TOPIC_CATEGORY_WORK": "Töö ja tööhõive",
+  "TXT_TOPIC_CATEGORY_EDUCATION": "Haridus",
+  "TXT_TOPIC_CATEGORY_POLITICS": "Poliitika ja avalik haldus",
+  "TXT_TOPIC_CATEGORY_COMMUNITIES": "Kogukonnad ja linnaplaneerimine",
+  "TXT_TOPIC_CATEGORY_DEFENSE": "Riigikaitse ja julgeolek",
+  "TXT_TOPIC_CATEGORY_INTEGRATION": "Integratsioon ja inimõigused",
+  "TXT_TOPIC_CATEGORY_VARIA": "Muu",
+  "TXT_TOPIC_CATEGORY_YOUTH": "Noored",
+  "TXT_TOPIC_CATEGORY_SCIENCE": "Teadus ja tehnoloogia",
+  "TXT_TOPIC_CATEGORY_SOCIETY": "Demokraatia ja kodanikuühiskond",
+  "TXT_TOPIC_CATEGORY_EUROCHANGEMAKERS": "EuroChangeMakers"
+}

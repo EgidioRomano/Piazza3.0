@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    {{#topic}}
+    <meta name="citizenos-topic-id" content="{{topic.id}}"/>
+    {{/topic}}
+    <style type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 16px;
+            line-height: 24px;
+            color: #2A2A2A;
+            background-color: #FBFBFB;
+            margin: 0;
+            padding: 0;
+            min-width: 100%;
+        }
+
+        h1 {
+            font-size: 18px;
+            margin-top: 50px;
+        }
+
+        p {
+            margin: 20px 0;
+        }
+
+        p.important {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #D5EAFF;
+            border: 1px solid #BADCFF;
+        }
+
+        ul, ol {
+            margin: 0;
+            padding: 0 0 0 20px;
+        }
+
+        li {
+            margin: 20px 0;
+        }
+
+        /*Many email clients don't support "ol>li" - https://www.campaignmonitor.com/css/selectors/child/*/
+        ol .li {
+            padding: 0 0 0 16px;
+        }
+
+        table, tr, td {
+            border-style: none;
+            border-spacing: 0;
+            padding: 0;
+        }
+
+        a {
+            color: #0680FC;
+            text-decoration: none;
+        }
+
+        img {
+            display: block;
+            border-style: none;
+        }
+
+        hr {
+            display: block;
+            height: 0px;
+            border-top: 1px;
+            border-style: solid;
+            border-color: #DEDEDE; /** Chrome & Safari **/
+            background-color: #DEDEDE; /** FF & Opera **/
+            color: #DEDEDE; /** IE7+ `**/
+            padding: 0;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        .blue {
+            color: #0680FC;
+        }
+
+        #background {
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            height: 100% !important;
+            line-height: 100% !important;
+            background-color: #F6F6F6;
+        }
+
+        #templateBody {
+            background-color: #FFFFFF;
+            margin: 0;
+            padding: 20px 30px;
+            width: 600px;
+            border: none;
+        }
+
+        #bodyContent {
+            background-color: #FFFFFF;
+            padding: 0 20px;
+        }
+
+        #header, #footer {
+            padding: 20px 30px;
+        }
+
+        #header {
+            height: 70px;
+        }
+
+        #footer {
+            background-color: #EAEAEA;
+            height: 60px;
+            width: 600px;
+        }
+
+        #footer table {
+            font-size: 13px;
+        }
+
+        #footer a {
+            text-decoration: underline;
+        }
+
+        #trapped {
+            border: 3px solid red;
+            background-color: #ffd2d2;
+        }
+
+        #trapped td {
+            padding: 20px;
+        }
+
+        #templateBody {
+            width: 100%;
+        }
+
+        #footer-mobile tr {
+            width: 100%;
+        }
+
+        #footer-mobile td {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        #footer-mobile img {
+            margin-right: auto;
+            margin-left: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <table id="background">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <!--p style="font-family: arial, helvetica, sans-serif;font-size:12px;background-color: #f6f6f6; color:#828282;">Can't see this mail? <a href="#" target="_blank" style=" color:#828282; text-decoration:underline;font-family: arial, helvetica, sans-serif;font-size:12px;">Click here to view it in your browser</a></p-->
+                </td>
+            </tr>
+
+            <tr>
+                <td align="center" valign="top">
+                    <table id="templateContainer">
+                        <tbody>
+                            <tr>
+                                <td id="header" style="background-color: {{styles.headerBackgroundColor}}">
+                                    <img width="{{styles.logoWidth}}" height="{{styles.logoHeight}}" src="cid:logo.png" alt="logo"/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <table id="templateBody">
+                                        <tbody>
+                                            <tr>
+                                                <td class="bodyContent">
+                                                    {{{body}}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <table id="footer-mobile" style="width: 600px;text-align: center;">
+                        <tbody>
+                            <tr style="width: 600px;">
+                                <td style="width: 49%; display: inline-block;"><a href="{{linkedData.footerLinks.linkToPlatform}}" target="_blank">{{{linkedData.translations.LAYOUT.LINK_TO_PLATFORM}}}</a></td>
+                                <td style="width: 49%; display: inline-block;"><a href="{{linkedData.footerLinks.linkToPrivacyPolicy}}" target="_blank">{{{linkedData.translations.LAYOUT.LINK_PRIVACY_POLICY}}}</a></td>
+                            </tr>
+                            <tr style="width: 600px;">
+                                <td style="width: 100%;"><a href="https://citizenos.com" target="_blank" style="color: black; text-decoration: none;">Empowered by</a></td>
+                            </tr>
+                            <tr style="width: 600px;">
+                                <td style="width: 100%;"><a href="https://citizenos.com" target="_blank" ><img width="97" height="18" src="cid:logo_footer.png" alt="logo"/></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            {{#trapped}}
+            <tr id="trapped">
+                <td>
+                    <p>
+                        <b>Recipients</b>
+                    </p>
+                    <pre>
+                        {{trapped}}
+                    </pre>
+                </td>
+            </tr>
+            {{/trapped}}
+        </tbody>
+    </table>
+</body>
+</html>
