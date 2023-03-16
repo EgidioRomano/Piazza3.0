@@ -21,6 +21,7 @@ front-end/public/config/imgs/*.png
 front-end/config/local.json
 front-end/public/config/local.json
 front-end/public/js/citizenos-fe.bundle.js
+front-end/public/styles/citizenos-fe.bundle.css
 back-end/.git
 back-end/node_modules
 back-end/*.swp
