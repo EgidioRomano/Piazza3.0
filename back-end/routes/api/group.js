@@ -2074,7 +2074,7 @@ module.exports = function (app) {
     /**
      * Group list
      */
-    app.get('/api/groups', /*isSuperAdmin(),*/ asyncMiddleware(async (req, res) => {
+    app.get('/api/groups', isSuperAdmin(), asyncMiddleware(async (req, res) => {
         const limitMax = 100;
         const limitDefault = 26;
         const userId = req.user?.userId;
