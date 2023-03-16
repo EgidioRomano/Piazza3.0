@@ -12,7 +12,7 @@ export class PublicGroupService {
     public limit = 8;
 
     constructor(private PublicGroup) {
-        this.loadGroups();
+        //this.loadGroups();
     }
     getGroup (id) {
         for (var i = 0; i < this.groups.length; i++) {

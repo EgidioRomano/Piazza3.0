@@ -9,10 +9,10 @@ let home = {
     controller: ['$state', '$stateParams', 'ngDialog', 'PublicTopicService', 'GroupMemberUser', 'PublicGroupService', 'sAuth', 'Topic', 'AppService', class HomeController {
         constructor (private $state, private $stateParams, private ngDialog, public PublicTopicService, private GroupMemberUser, public PublicGroupService, private sAuth, private Topic, public app) {
             PublicTopicService.limit = 8;
-            PublicGroupService.limit = 8;
+            //PublicGroupService.limit = 8;
             console.log(PublicTopicService)
             PublicTopicService.reload();
-            PublicGroupService.reload();
+            //PublicGroupService.reload();
         }
 
         goToGroupView (group) {
