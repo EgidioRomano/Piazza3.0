@@ -21,7 +21,7 @@
     <script src="page.js" data-name="TokenSigning"></script>
 
     <meta name="theme-color" content="#1a1a1a">
-    <title>Piazza 3.0</title>
+    <title ng-if="app.metainfo.title">{{app.metainfo.title}}</title>
     <link ng-if="app.metainfo.icon" rel="shortcut icon" ng-href="{{app.metainfo.icon}}" type="image/x-icon"/>
     <link ng-if="app.metainfo.iconHires" rel="icon" ng-href="{{app.metainfo.iconHires}}" sizes="192x192" type="image/png">
     <meta ng-if="app.metainfo.description" content="{{app.metainfo.description}}" name="description">
