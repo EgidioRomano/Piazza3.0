@@ -61,10 +61,6 @@ let my = {
                         name: 'VIEWS.MY.FILTERS.TOPICS_MODERATED'
                     }
                 ]
-            },
-            {
-                id: 'grouped',
-                name: 'VIEWS.MY.FILTERS.TOPICS_ORDERED_BY_GROUPS'
             }
         ];
 
