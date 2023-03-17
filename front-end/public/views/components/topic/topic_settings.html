@@ -72,49 +72,6 @@
 
                     <div class="line lightest_line" ng-if="$ctrl.canChangeVisibility()"></div>
 
-                    <div class="settings_section" ng-if="$ctrl.Topic.canEdit($ctrl.topic)">
-                        <div class="settings_cell">
-                            <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_HASHTAG">Hashtag</div>
-                            <div class="setting_description" translate="MODALS.TOPIC_SETTINGS_LBL_HASHTAG_EXT">USE THIS
-                                HASHTAG IN SOCIAL MEDIA AND THE MENTIONS WILL BE SHOWN BELOW YOUR TOPIC</div>
-                        </div>
-                        <div class="settings_cell hashtag_cell">
-                            <div class="recycle_bin_wrap">
-                                <div ng-click="$ctrl.doDeleteHashtag()" class="btn_wrap recycle_bin">
-                                    <div class="btn">
-                                        <div class="table_cell disabled_area">
-                                            <div class="sprite desktop_fix sprite-mytopics-icon-deletetopic2x"></div>
-                                            <div class="sprite mobile_fix sprite-mytopics-icon-deletetopic2x"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input id="hashtag" value="#cos_hipsters" ng-model="$ctrl.form.topic.hashtag"
-                                ng-change="$ctrl.checkHashtag()"
-                                placeholder="{{'MODALS.TOPIC_SETTINGS_PLACEHOLDER_HASHTAG' | translate}}"
-                                ng-class="{'error_input': $ctrl.errors.hashtag}">
-                            <div class="recycle_bin_wrap wrap_mobile">
-                                <div ng-click="$ctrl.doDeleteHashtag()" class="btn_wrap recycle_bin">
-                                    <div class="btn">
-                                        <div class="table_cell disabled_area">
-                                            <div class="sprite desktop_fix sprite-mytopics-icon-deletetopic2x"></div>
-                                            <div class="sprite mobile_fix sprite-mytopics-icon-deletetopic2x"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <label for="hashtag" class="error_label" ng-if="$ctrl.errors.hashtag">
-                                <div class="table_cell">
-                                    <div class="sprite sprite-icon-inputfield-error2x"></div>
-                                    <span translate="{{$ctrl.errors.hashtag}}"></span>
-                                </div>
-                            </label>
-                        </div>
-
-                    </div>
-                    <div class="line lightest_line"
-                        ng-if="$ctrl.Topic.canSendToFollowUp($ctrl.topic) && $ctrl.Topic.canEdit($ctrl.topic)"></div>
-
                     <div class="settings_section"
                         ng-if="$ctrl.Topic.canSendToFollowUp($ctrl.topic) && $ctrl.Topic.canEdit($ctrl.topic)">
                         <div class="settings_cell">

@@ -156,7 +156,7 @@ export class Topic {
     }
 
     update(data: any) {
-        const updateFields = ['visibility', 'status', 'categories', 'endsAt', 'hashtag'];
+        const updateFields = ['visibility', 'status', 'categories', 'endsAt'];
         const sendData = {};
 
         updateFields.forEach(function (field) {
@@ -176,7 +176,7 @@ export class Topic {
     }
 
     patch (data: any) {
-        const updateFields = ['visibility', 'status', 'categories', 'endsAt', 'hashtag'];
+        const updateFields = ['visibility', 'status', 'categories', 'endsAt'];
         const sendData = {};
 
         updateFields.forEach(function (field) {

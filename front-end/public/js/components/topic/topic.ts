@@ -14,12 +14,6 @@ let topic = {
         public ATTACHMENT_SOURCES = [];
 
         public inlinecomments = [];
-
-        public hashtagForm = {
-            hashtag: null,
-            errors: null,
-            bytesLeft: 59
-        };
         public showInfoEdit = false;
 
         public STATUSES = [];

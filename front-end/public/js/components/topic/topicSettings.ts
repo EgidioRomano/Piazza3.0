@@ -93,32 +93,6 @@ let topicSettings = {
 
         };
 
-        checkHashtag() {
-            let length = 0;
-            const str = this.form.topic.hashtag;
-            const hashtagMaxLength = 59;
-
-            if (str) {
-                length = str.length;
-                for (let i = 0; i < str.length; i++) {
-                    const code = str.charCodeAt(i);
-                    if (code > 0x7f && code <= 0x7ff) length++;
-                    else if (code > 0x7ff && code <= 0xffff) length += 2;
-                    if (code >= 0xDC00 && code <= 0xDFFF) i++; //trail surrogate
-                }
-            }
-
-            if ((hashtagMaxLength - length) < 0) {
-                this.errors = { hashtag: 'MSG_ERROR_40000_TOPIC_HASHTAG' };
-            } else if (this.errors && this.errors.hashtag) {
-                this.errors.hashtag = null;
-            }
-        };
-
-        doDeleteHashtag() {
-            this.form.topic.hashtag = null;
-        };
-
         doEditVoteDeadline() {
             this.form.topic.vote.topicId = this.topic.id;
             if (!this.form.topic.vote.reminder && !this.form.topic.vote.reminderSent) {

@@ -22,7 +22,6 @@ import './topicReportResolve';
 import './topicReportReview';
 import './topicSettings';
 import './topicSidepanel';
-import './topicSocialMentions';
 import './topicTabs';
 import './topicTimeline';
 import './topicVote';
