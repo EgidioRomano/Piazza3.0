@@ -252,7 +252,7 @@ module.exports = function (app) {
         const user = await User.findOne({where: db.where(db.fn('lower', db.col('email')), db.fn('lower', email))});
 
         if (!user) {
-            return res.ok('Controlla la tua casella di posta elettronica per completare il recupero della password.');
+            return res.ok('Controlla la tua casella di posta elettronica per completare il reset della password.');
         }
 
         user.passwordResetCode = true; // Model will generate new code
@@ -261,7 +261,7 @@ module.exports = function (app) {
 
         await emailLib.sendPasswordReset(user.email, user.passwordResetCode);
 
-        return res.ok('Controlla la tua casella di posta elettronica per completare il recupero della password.');
+        return res.ok('Controlla la tua casella di posta elettronica per completare il reset della password.');
     }));
 
 

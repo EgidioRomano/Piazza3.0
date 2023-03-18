@@ -1332,7 +1332,7 @@
   "MSG_INFO_CHECK_EMAIL_TO_VERIFY_YOUR_ACCOUNT": "Controlla la tua casella di posta elettronica per verificare l'account.",
   "MSG_INFO_CHECK_EMAIL_TO_VERIFY_YOUR_NEW_EMAIL_ADDRESS": "Il tuo indirizzo e-mail è stato aggiornato. Check your email to verify your new email address. From now on, you use this address to log in.",
   "MSG_ERROR_POST_API_AUTH_PASSWORD_RESET_SEND_40002_EMAIL": "Un account con questo indirizzo e-mail non esiste.",
-  "MSG_INFO_PASSWORD_RECOVERY_EMAIL_SENT": "Controlla la tua casella di posta elettronica per completare il recupero della password.",
+  "MSG_INFO_PASSWORD_RECOVERY_EMAIL_SENT": "Controlla la tua casella di posta elettronica per completare il reset della password.",
   "MSG_INFO_PASSWORD_RESET_SUCCESS": "La tua password è stata resettata. Accedi con la tua nuova password.",
   "MSG_ERROR_PUT_API_USERS_SELF_40000_PASSWORD": "@:MSG_ERROR_POST_API_AUTH_SIGNUP_40000_PASSWORD",
   "MSG_ERROR_PUT_API_USERS_SELF_40000_EMAIL": "@:MSG_ERROR_POST_API_AUTH_SIGNUP_40001_EMAIL",
