@@ -1369,10 +1369,9 @@ module.exports = function (app) {
         try {
             // I wish Sequelize Model.build supported "fields". This solution requires you to add a field here once new are defined in model.
             let topic = Topic.build({
-                visibility: req.body.visibility || Topic.VISIBILITY.private,
+                visibility: Topic.VISIBILITY.private,
                 creatorId: req.user.userId,
                 categories: req.body.categories,
-                hashtag: req.body.hashtag,
                 endsAt: req.body.endsAt,
                 sourcePartnerObjectId: req.body.sourcePartnerObjectId,
                 authorIds: [req.user.userId]
@@ -1680,6 +1679,7 @@ module.exports = function (app) {
         try {
             const topicId = req.params.topicId;
             const statusNew = req.body.status;
+            const visibility = req.body.visibility;
 
             let isBackToVoting = false;
 
@@ -1691,6 +1691,13 @@ module.exports = function (app) {
 
             if (!topic) {
                 return res.badRequest();
+            }
+
+            if (topic.visibility === 'public' && visibility !== 'public') {
+                return res.badRequest('Un topic pubblico non può più tornare ad essere invisibile.');
+            }
+            else if (topic.visibility === 'private' && visibility !== 'private' && visibility !== 'public') {
+                return res.badRequest('Il campo "visibilità" è malformato.');
             }
 
             const statuses = _.values(Topic.STATUSES);
