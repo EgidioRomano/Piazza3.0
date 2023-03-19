@@ -34,7 +34,7 @@ module.exports = function (app) {
         const password = req.body.password || ''; // HACK: Sequelize validate() is not run if value is "null". Also cannot use allowNull: false as I don' want constraint in DB. https://github.com/sequelize/sequelize/issues/2643
         const name = req.body.name || util.emailToDisplayName(req.body.email);
         const company = req.body.company;
-        const language = req.body.language;
+        const language = 'it';
         const redirectSuccess = req.body.redirectSuccess || urlLib.getFe();
         const preferences = req.body.preferences;
         const termsVersion = req.body.termsVersion;
@@ -54,7 +54,7 @@ module.exports = function (app) {
                 user.password = password;
                 user.name = name || user.name;
                 user.company = company || user.company;
-                user.language = language || user.language;
+                user.language = 'it';
                 await user.save({fields: ['password', 'name', 'company', 'language']});
             } else {
                 // Email address is already in use.

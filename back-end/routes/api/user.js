@@ -194,7 +194,7 @@ module.exports = function (app) {
             .transaction(async function (t) {
                 await User.update(
                     {
-                        name: 'Anonymous',
+                        name: user.name + ' (rimosso)',
                         email: null,
                         company: null,
                         imageUrl: null,
