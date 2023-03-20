@@ -2897,7 +2897,7 @@ module.exports = function (app) {
     /**
      * Get all member Groups of the Topic
      */
-    app.get('/api/users/:userId/topics/:topicId/members/groups', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read), async function (req, res, next) {
+    app.get('/api/users/:userId/topics/:topicId/members/groups', isSuperAdmin(), async function (req, res, next) {
         const limitDefault = 10;
         const offset = parseInt(req.query.offset, 10) ? parseInt(req.query.offset, 10) : 0;
         let limit = parseInt(req.query.limit, 10) ? parseInt(req.query.limit, 10) : limitDefault;
@@ -3077,7 +3077,7 @@ module.exports = function (app) {
     /**
      * Create new member Groups to a Topic
      */
-    app.post('/api/users/:userId/topics/:topicId/members/groups', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
+    app.post('/api/users/:userId/topics/:topicId/members/groups', isSuperAdmin(), /*loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]),*/ async function (req, res, next) {
         let members = req.body;
         const topicId = req.params.topicId;
 
@@ -3250,7 +3250,7 @@ module.exports = function (app) {
     /**
      * Update Group membership information
      */
-    app.put('/api/users/:userId/topics/:topicId/members/groups/:memberId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
+    app.put('/api/users/:userId/topics/:topicId/members/groups/:memberId', isSuperAdmin(), /*loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]),*/ async function (req, res, next) {
         const newLevel = req.body.level;
         const memberId = req.params.memberId;
         const topicId = req.params.topicId;
@@ -3437,7 +3437,7 @@ module.exports = function (app) {
     /**
      * Delete Group membership information
      */
-    app.delete('/api/users/:userId/topics/:topicId/members/groups/:memberId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin), async function (req, res, next) {
+    app.delete('/api/users/:userId/topics/:topicId/members/groups/:memberId', isSuperAdmin(), async function (req, res, next) {
         const topicId = req.params.topicId;
         const memberId = req.params.memberId;
 
