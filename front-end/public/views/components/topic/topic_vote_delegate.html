@@ -49,7 +49,7 @@
                                     <div class="search_dropdown_area" ng-class="{hidden: !$ctrl.searchResults.users.length}">
                                         <div class="search_dropdown_item" typeahead-item="user" ng-repeat="user in $ctrl.searchResults.users">
                                             <div class="table_cell search_item_text">
-                                                <b>{{user.name}}</b> {{user.company}}
+                                                <b>{{user.name}}</b> {{user.birthday}}
                                             </div>
                                             <div class="table_cell blue_link">
                                                 <span class="submit_link" ng-click="$ctrl.addUser(user)" translate="MODALS.TOPIC_VOTE_DELEGATE_TXT_PRESS_ENTER_OR_CLICK_TO_ADD">Press enter or click to add</span>
@@ -92,7 +92,7 @@
                                     <div class="name_wrap">
                                         <div class="table_cell">
                                             <div class="blue_link" ng-click="$ctrl.doRemoveDelegateUser(delegateUser)">{{$ctrl.delegateUser.name}}</div>
-                                            <div class="via">{{$ctrl.delegateUser.company}}</div>
+                                            <div class="via">{{$ctrl.delegateUser.birthday}}</div>
                                         </div>
                                     </div>
                                 </td>

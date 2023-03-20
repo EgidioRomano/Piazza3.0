@@ -21,7 +21,7 @@ Data used when generating the cert:
 * Country Name (2 letter code) [AU]:EE
 * State or Province Name (full name) [Some-State]:Harjumaa
 * Locality Name (eg, city) []:Tallinn
-* Organization Name (eg, company) [Internet Widgits Pty Ltd]:CitizenOS 
+* Organization Name (eg, birthday) [Internet Widgits Pty Ltd]:CitizenOS 
 * Organizational Unit Name (eg, section) []:IT
 * Common Name (e.g. server FQDN or YOUR name) []:Toomas Test
 * Email Address []:info@citizenos.com

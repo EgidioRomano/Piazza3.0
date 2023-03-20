@@ -25,7 +25,7 @@ module.exports = function (app) {
                               tm."level",
                               t.id as "topicId",
                               u.name,
-                              u.company,
+                              u.birthday,
                               u."imageUrl",
                               u.email
                           FROM "Topics" t
@@ -62,7 +62,7 @@ module.exports = function (app) {
                           AND tmg."deletedAt" IS NULL
                       ) tmg ON tmg."topicId" = :topicId AND (tmg."userId" = tm.id)
                       JOIN "Users" u ON u.id = tm.id
-                      GROUP BY tm.id, u.id, tm.level, tmu.level, tm.name, tm.company, tm."imageUrl", tm.email, tm."topicId"
+                      GROUP BY tm.id, u.id, tm.level, tmu.level, tm.name, tm.birthday, tm."imageUrl", tm.email, tm."topicId"
                    ;`,
                     {
                         replacements: {

@@ -171,7 +171,7 @@ let topicInvite = {
                 this.$log.debug('go to addTopicMemberUser');
                 return this.addTopicMemberUser();
             }
-            if (member.hasOwnProperty('company')) {
+            if (member.hasOwnProperty('birthday')) {
                 return this.addTopicMemberUser(member);
             } else {
                 return this.addTopicMemberGroup(member);

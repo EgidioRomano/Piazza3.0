@@ -207,14 +207,14 @@ module.exports = function (app) {
                 const actor = _.find(activity.users, function (o) {
                     return o.id === activity.data.actor.id;
                 });
-                activity.actor.company = actor.company;
+                activity.actor.birthday = actor.birthday;
                 activity.actor.name = actor.name;
             }
             if (activity.data.object[0] && activity.data.object[0]['@type'] === 'VoteList') {
                 returnActivity.data.actor = {
                     name: 'User',
                     type: 'User',
-                    company: null
+                    birthday: null
                 };
             } else {
                 if (activity.data.actor && activity.data.actor.level) {

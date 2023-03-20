@@ -12,7 +12,7 @@ let myAccount = {
             email: null,
             password: null,
             newPassword: null,
-            company: null,
+            birthday: null,
             imageUrl: null,
             passwordConfirm: null,
             preferences: {
@@ -103,7 +103,7 @@ let myAccount = {
 
             } else {
                 this.sUser
-                    .update(this.form.name, this.form.email, this.form.password, this.form.company, this.form.imageUrl, this.form.preferences, null, this.sAuth.user.termsVersion, this.form.newPassword)
+                    .update(this.form.name, this.form.email, this.form.password, this.form.birthday, this.form.imageUrl, this.form.preferences, null, this.sAuth.user.termsVersion, this.form.newPassword)
                     .then(success, error);
             }
         };
@@ -127,7 +127,7 @@ let myAccount = {
         deleteProfileImage () {
             const myAccount = this;
             this.sUser
-                .update(this.form.name, this.form.email, this.form.password, this.form.company, '')
+                .update(this.form.name, this.form.email, this.form.password, this.form.birthday, '')
                 .then((res) => {
                         angular.extend(this.sAuth.user, res.data.data);
                         myAccount.form.imageUrl = '';

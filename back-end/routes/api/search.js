@@ -369,7 +369,7 @@ module.exports = function (app) {
                                 }
                             ]
                         },
-                        attributes: ['id', 'name', 'company', 'imageUrl'],
+                        attributes: ['id', 'name', 'birthday', 'imageUrl'],
                         limit: 5
                     });
             }

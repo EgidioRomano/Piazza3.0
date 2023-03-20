@@ -33,7 +33,7 @@ module.exports = function (app) {
         const email = req.body.email || ''; // HACK: Sequelize validate() is not run if value is "null". Also cannot use allowNull: false as I don' want constraint in DB. https://github.com/sequelize/sequelize/issues/2643
         const password = req.body.password || ''; // HACK: Sequelize validate() is not run if value is "null". Also cannot use allowNull: false as I don' want constraint in DB. https://github.com/sequelize/sequelize/issues/2643
         const name = req.body.name || util.emailToDisplayName(req.body.email);
-        const company = req.body.company;
+        const birthday = req.body.birthday;
         const language = 'it';
         const redirectSuccess = req.body.redirectSuccess || urlLib.getFe();
         const preferences = req.body.preferences;
@@ -53,9 +53,9 @@ module.exports = function (app) {
             if (!user.password && user.source === User.SOURCES.citizenos && !user.UserConnections.length) {
                 user.password = password;
                 user.name = name || user.name;
-                user.company = company || user.company;
+                user.birthday = birthday || user.birthday;
                 user.language = 'it';
-                await user.save({fields: ['password', 'name', 'company', 'language']});
+                await user.save({fields: ['password', 'name', 'birthday', 'language']});
             } else {
                 // Email address is already in use.
                 return res.ok(`Check your email ${email} to verify your account.`);
@@ -69,7 +69,7 @@ module.exports = function (app) {
                             name,
                             email,
                             password,
-                            company,
+                            birthday,
                             source: User.SOURCES.citizenos,
                             language,
                             termsVersion,

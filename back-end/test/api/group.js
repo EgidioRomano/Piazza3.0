@@ -1108,7 +1108,7 @@ suite('Users', function () {
                         };
 
                         expectedInvite.creator = {
-                            company: null,
+                            birthday: null,
                             id: userCreator.id,
                             imageUrl: null,
                             name: userCreator.name
@@ -1150,7 +1150,7 @@ suite('Users', function () {
                         };
 
                         expectedInvite.creator = {
-                            company: null,
+                            birthday: null,
                             id: userCreator.id,
                             imageUrl: null,
                             name: userCreator.name
@@ -1200,7 +1200,7 @@ suite('Users', function () {
                         };
 
                         expectedInvite.creator = {
-                            company: null,
+                            birthday: null,
                             id: userCreator.id,
                             imageUrl: null,
                             name: userCreator.name
@@ -1246,7 +1246,7 @@ suite('Users', function () {
                         };
 
                         expectedInvite.creator = {
-                            company: null,
+                            birthday: null,
                             id: userCreator.id,
                             imageUrl: null,
                             name: userCreator.name
@@ -1759,7 +1759,7 @@ suite('Users', function () {
                         const userCreatorMemberExpected = {
                             id: userCreator.id,
                             name: userCreator.name,
-                            company: userCreator.company,
+                            birthday: userCreator.birthday,
                             imageUrl: userCreator.imageUrl,
                             level: GroupMemberUser.LEVELS.admin,
                             email: userCreator.email,
@@ -1775,7 +1775,7 @@ suite('Users', function () {
                         const userMemberMemberExpected = {
                             id: userMember.id,
                             name: userMember.name,
-                            company: userMember.company,
+                            birthday: userMember.birthday,
                             imageUrl: userMember.imageUrl,
                             level: GroupMemberUser.LEVELS.read,
                             email: userMember.email,
@@ -1799,7 +1799,7 @@ suite('Users', function () {
                         const userCreatorMemberExpected = {
                             id: userCreator.id,
                             name: userCreator.name,
-                            company: userCreator.company,
+                            birthday: userCreator.birthday,
                             imageUrl: userCreator.imageUrl,
                             level: GroupMemberUser.LEVELS.admin
                         };
@@ -1813,7 +1813,7 @@ suite('Users', function () {
                         const userMemberMemberExpected = {
                             id: userMember.id,
                             name: userMember.name,
-                            company: userMember.company,
+                            birthday: userMember.birthday,
                             imageUrl: userMember.imageUrl,
                             level: GroupMemberUser.LEVELS.read
                         };
@@ -2187,7 +2187,7 @@ suite('Users', function () {
                         id: user.id,
                         type: 'User',
                         level: GroupJoin.LEVELS.read,
-                        company: user.company,
+                        birthday: user.birthday,
                         name: user.name
                     },
                     object: {
@@ -2266,7 +2266,7 @@ suite('Users', function () {
                                 "type": "User",
                                 "id": creator.id,
                                 "name": creator.name,
-                                "company": creator.company
+                                "birthday": creator.birthday
                             },
                             "object": {
                                 "@type": "GroupJoin",
@@ -2348,7 +2348,7 @@ suite('Users', function () {
                                     "type": "User",
                                     "id": creator.id,
                                     "name": creator.name,
-                                    "company": creator.company
+                                    "birthday": creator.birthday
                                 },
                                 "object": {
                                     "@type": "GroupJoin",

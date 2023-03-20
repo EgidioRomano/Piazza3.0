@@ -69,7 +69,7 @@ module.exports = function (app) {
      * Update User info
      */
     app.put('/api/users/:userId', loginCheck(), asyncMiddleware(async function (req, res) {
-        const fields = ['name', 'company', 'email', 'language', 'imageUrl', 'termsVersion', 'preferences'];
+        const fields = ['name', 'birthday', 'email', 'language', 'imageUrl', 'termsVersion', 'preferences'];
         const data = req.body;
         if (data.password && data.newPassword) {
             fields.push('password');
@@ -194,7 +194,7 @@ module.exports = function (app) {
                     {
                         name: user.name + ' (rimosso)',
                         email: null,
-                        company: null,
+                        birthday: null,
                         imageUrl: null,
                         sourceId: null
 

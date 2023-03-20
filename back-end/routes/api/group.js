@@ -706,7 +706,7 @@ module.exports = function (app) {
                 `SELECT
                         u.id,
                         u.name,
-                        u.company,
+                        u.birthday,
                         u."imageUrl",
                         gm.level,
                         MAX(a."updatedAt") AS "latestActivity",
@@ -801,7 +801,7 @@ module.exports = function (app) {
                 `SELECT
                         u.id,
                         u.name,
-                        u.company,
+                        u.birthday,
                         u."imageUrl",
                         ${dataForAdmin}
                         gm.level,
@@ -1502,7 +1502,7 @@ module.exports = function (app) {
                         },
                         {
                             model: User,
-                            attributes: ['id', 'name', 'company', 'imageUrl'],
+                            attributes: ['id', 'name', 'birthday', 'imageUrl'],
                             as: 'creator',
                             required: true
                         },
@@ -1556,7 +1556,7 @@ module.exports = function (app) {
                         },
                         {
                             model: User,
-                            attributes: ['id', 'name', 'company', 'imageUrl'],
+                            attributes: ['id', 'name', 'birthday', 'imageUrl'],
                             as: 'creator',
                             required: true
                         },
@@ -1704,7 +1704,7 @@ module.exports = function (app) {
                         },
                         {
                             model: User,
-                            attributes: ['id', 'name', 'company', 'imageUrl'],
+                            attributes: ['id', 'name', 'birthday', 'imageUrl'],
                             as: 'creator',
                             required: true
                         },
@@ -1972,7 +1972,7 @@ module.exports = function (app) {
                         COALESCE(MAX(a."updatedAt"), t."updatedAt") as "lastActivity",
                         u.id as "creator.id",
                         u.name as "creator.name",
-                        u.company as "creator.company",
+                        u.birthday as "creator.birthday",
                         u."imageUrl" as "creator.imageUrl",
                         muc.count as "members.users.count",
                         COALESCE(mgc.count, 0) as "members.groups.count",
@@ -2123,7 +2123,7 @@ module.exports = function (app) {
                     ${memberLevel}
                     c.id as "creator.id",
                     c.name as "creator.name",
-                    c.company as "creator.company",
+                    c.birthday as "creator.birthday",
                     count(*) OVER()::integer AS "countTotal"
                 FROM "Groups" g
                 JOIN "Users" c ON c.id = g."creatorId"

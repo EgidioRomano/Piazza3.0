@@ -365,7 +365,7 @@ module.exports = function (app) {
                         tm."level",
                         t.id as "topicId",
                         u.name,
-                        u.company,
+                        u.birthday,
                         u."imageUrl",
                         u.email
                     FROM "Topics" t
@@ -401,7 +401,7 @@ module.exports = function (app) {
                     WHERE gm."deletedAt" IS NULL
                     AND tmg."deletedAt" IS NULL
                 ) tmg ON tmg."topicId" IN (:topicIds) AND (tmg."userId" = tm.id)
-                GROUP BY tm.id, tm.level, tmu.level, tm.name, tm.company, tm."imageUrl", tm.email, tm."topicId"
+                GROUP BY tm.id, tm.level, tmu.level, tm.name, tm.birthday, tm."imageUrl", tm.email, tm."topicId"
                 ) tmu
                 JOIN "UserNotificationSettings" usn ON usn."userId" = tmu.id AND usn."deletedAt" IS NULL AND usn."topicId" = tmu."topicId" AND usn.preferences->> :activityType = 'true' AND usn."allowNotifications" = true
              ;`,
