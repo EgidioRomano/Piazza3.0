@@ -1680,7 +1680,7 @@ module.exports = function (app) {
         try {
             const topicId = req.params.topicId;
             const statusNew = req.body.status;
-            const visibility = req.body.visibility;
+            const visibility = req.body.visibility || false;
 
             let isBackToVoting = false;
 
@@ -1694,11 +1694,13 @@ module.exports = function (app) {
                 return res.badRequest();
             }
 
-            if (topic.visibility === 'public' && visibility !== 'public') {
-                return res.badRequest('Un topic pubblico non può più tornare ad essere invisibile.');
-            }
-            else if (topic.visibility === 'private' && visibility !== 'private' && visibility !== 'public') {
-                return res.badRequest('Il campo "visibilità" è malformato.');
+            if (visibility) {
+                if (topic.visibility === 'public' && visibility !== 'public') {
+                    return res.badRequest('Un topic pubblico non può più tornare ad essere invisibile.');
+                }
+                else if (topic.visibility === 'private' && visibility !== 'private' && visibility !== 'public') {
+                    return res.badRequest('Il campo "visibilità" è malformato.');
+                }
             }
 
             const statuses = _.values(Topic.STATUSES);
