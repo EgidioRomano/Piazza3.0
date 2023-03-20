@@ -245,12 +245,7 @@ if (typeof config.email === 'string') {
 config.email.layout = config.email.layout || path.join(EMAIL_TEMPLATE_ROOT, 'layouts/default.html');
 app.set('emailClient', require('./libs/campaign/emailClient')(config.email));
 app.set('email', require('./libs/email')(app));
-
 app.set('cryptoLib', require('./libs/crypto'));
-// Authentication with Passport - http://passportjs.org/guide/
-const passport = require('passport');
-app.set('passport', passport);
-require('./libs/passport/index')(app).init();
 
 // Configure middleware
 app.use(cookieParser());
@@ -309,7 +304,6 @@ app.use(/^\/api\/.*/, function (req, res, next) {
 
 // Enable sessions for API path
 app.use(/^\/api\/.*/, require('./libs/middleware/authTokenParser'));
-app.use(/^\/api\/auth\/.*/, passport.initialize());
 app.set('middleware.loginCheck', require('./libs/middleware/loginCheck'));
 app.set('middleware.isSuperAdmin', require('./libs/middleware/isSuperAdmin'));
 app.set('middleware.expressRateLimitInput', require('./libs/middleware/expressRateLimitInput')(app));

@@ -29,10 +29,6 @@
     "__format": "json"
   },
   "logging": "CITIZENOS_LOGGING",
-  "passport": {
-    "__name": "CITIZENOS_PASSPORT",
-    "__format": "json"
-  },
   "attachments": {
     "limit": "ATTACHMENTS_LIMIT"
   },

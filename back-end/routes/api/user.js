@@ -18,7 +18,6 @@ module.exports = function (app) {
     const cryptoLib = app.get('cryptoLib');
     const cosUpload = app.get('cosUpload');
     const authUser = require('./auth')(app);
-    const passport = app.get('passport');
 
     const fs = require('fs');
     const path = require('path');
@@ -416,21 +415,6 @@ module.exports = function (app) {
             rows: userConnections
         });
     }));
-
-    app.get('/api/users/:userId/userconnections/:connection', function (req, res, next) {
-        const connection = req.params.connection;
-
-        if (connection === UserConnection.CONNECTION_IDS.google) {
-            return passport.authenticate('google', {
-                scope: ['https://www.googleapis.com/auth/userinfo.email']
-            })(req, res, next);
-        } else if (connection === UserConnection.CONNECTION_IDS.facebook) {
-            passport.authenticate('facebook', {
-                scope: ['email'],
-                display: req.query.display ? 'popup' : null
-            })(req, res, next);
-        }
-    });
 
     app.post('/api/users/:userId/userconnections/:connection', asyncMiddleware(async function (req, res) {
         const connection = req.params.connection;

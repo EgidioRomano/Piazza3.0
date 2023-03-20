@@ -77,20 +77,6 @@
     },
     "key": ""
   },
-  "passport": {
-    "google": {
-      "clientId": "11623449066-fua92rmgai358bqb63hqcc4sm1j17lev.apps.googleusercontent.com",
-      "clientSecret": "7b5hFOkbU9I948EoiixQ9ezW",
-      "url": "/api/auth/google",
-      "callbackUrl": "/api/auth/google/callback"
-    },
-    "facebook": {
-      "clientId": "1673474289579933",
-      "clientSecret": "9ad10ff099bf11ad932163b9be81c595",
-      "url": "/api/auth/facebook",
-      "callbackUrl": "/api/auth/facebook/callback"
-    }
-  },
   "email": {
     "provider": {
       "name": "mailgun",

@@ -58,12 +58,6 @@
     },
     "key": "superSecretAPIkeySentInXApiKeyHeader"
   },
-  "passport": {
-    "facebook": {
-      "clientId": "1544548859139144",
-      "clientSecret": "49bfb08036492833c126ab89c82eb02a"
-    }
-  },
   "email": {
     "provider": {
       "name": "noop"
