@@ -8,8 +8,6 @@ let partnerLogin =  {
     controller: ['$log', '$state', '$stateParams', '$window', '$document', '$interval', 'cosConfig', 'ngDialog', 'sAuth', 'sLocation', 'sUser', 'sNotification', 'AppService', class PartnerLoginFormController {
         public partner;
         public LOGIN_PARTNERS = {
-            facebook: 'facebook',
-            google: 'google'
         };
         private email;
         public authMethodsAvailable;

@@ -9,8 +9,6 @@ let loginFormComponent = {
     },
     controller: ['$log', '$state', '$stateParams', '$window', '$document', '$interval', 'cosConfig', 'ngDialog', 'sAuth', 'sLocation', 'sUser', 'sNotification', 'AppService', class LoginFormController {
         public LOGIN_PARTNERS = {
-            facebook: 'facebook',
-            google: 'google'
         };
         private email;
         public authMethodsAvailable;

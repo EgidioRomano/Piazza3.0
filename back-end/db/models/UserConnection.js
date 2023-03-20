@@ -17,10 +17,6 @@ var _ = require('lodash');
 module.exports = function (sequelize, DataTypes) {
 
     const CONNECTION_IDS = {
-        esteid: 'esteid', // Estonian ID card infra
-        smartid: 'smartid', // Smart ID
-        google: 'google',
-        facebook: 'facebook',
         citizenos: 'citizenos'
     };
 

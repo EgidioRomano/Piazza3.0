@@ -52,14 +52,6 @@
   },
   "features": {
     "authentication": {
-      "facebook": true,
-      "google": true,
-      "smartId": true,
-      "mobiilId": true,
-      "esteid": true,
-      "idCard": {
-        "url": "https://id.citizenos.com/authorize"
-      },
       "citizenos": true
     },
     "analytics": false

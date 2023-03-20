@@ -19,9 +19,7 @@ module.exports = function (sequelize, DataTypes) {
 
     const SOURCES = {
         citizenos: 'citizenos',
-        citizenosSystem: 'citizenosSystem', // Created by CitizenOS systems - migrations, data import etc.
-        google: 'google',
-        facebook: 'facebook'
+        citizenosSystem: 'citizenosSystem' // Created by CitizenOS systems - migrations, data import etc.
     };
 
     const User = sequelize.define(

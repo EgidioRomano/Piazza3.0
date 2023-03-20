@@ -3,10 +3,6 @@ import * as angular from 'angular';
 export class User {
     // Map UserConnections.connectionId to authentication method
     private USER_CONNECTION_IDS_TO_AUTH_METHOD_MAP = {
-        esteid: ['mobiilId', 'idCard', 'smartId'], // TODO: We should fix it properly on API/FE side - mapping of PID to auth methods
-        smartid: ['mobiilId', 'idCard', 'smartId'], // TODO: We should fix it properly on API/FE side - mapping of PID to auth methods
-        google: 'google',
-        facebook: 'facebook',
         citizenos: 'citizenos'
     };
     private defaultSuccess = (response) => {
