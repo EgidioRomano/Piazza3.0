@@ -366,22 +366,10 @@ module.exports = function (app) {
                                     name: {
                                         [Op.iLike]: '%' + str + '%'
                                     }
-                                }/*,
-                                {
-                                    email: {
-                                        [Op.iLike]: str + '%'
-                                    }
-                                }*/
-                            ]/*,
-                            [Op.and]: [
-                                {
-                                    preferences: {
-                                        showInSearch: true
-                                    }
                                 }
-                            ]*/
+                            ]
                         },
-                        attributes: ['id', 'name', /*'email',*/ 'company', 'imageUrl'],
+                        attributes: ['id', 'name', 'company', 'imageUrl'],
                         limit: 5
                     });
             }
