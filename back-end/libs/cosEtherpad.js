@@ -95,14 +95,13 @@ module.exports = function (app) {
      * @param {string} userId User id
      * @param {string} name Users name displayed in Etherpad
      * @param {string} language ISO 2 letter language code
-     * @param {object} [partner] Partner Sequelize instance
      *
      * @returns {string} JWT token
      *
      * @private
      */
 
-    const _getUserAccessUrl = function (topic, userId, name, language, partner) {
+    const _getUserAccessUrl = function (topic, userId, name, language) {
 
         /**
          * Using JWT to send data to ep_auth_citizenos because:
@@ -115,10 +114,6 @@ module.exports = function (app) {
 
         const token = _createToken(userId, name);
         let url = topic.padUrl + '?jwt=' + token + '&lang=' + language;
-
-        if (partner) {
-            url += '&theme=' + partner.id;
-        }
 
         return url;
     };
@@ -239,7 +234,7 @@ module.exports = function (app) {
                     topic,
                     null,
                     actor,
-                    ['id', 'title', 'status', 'visibility', 'sourcePartnerId'],
+                    ['id', 'title', 'status', 'visibility'],
                     context,
                     t
                 );

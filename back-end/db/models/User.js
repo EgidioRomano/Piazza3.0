@@ -178,10 +178,6 @@ module.exports = function (sequelize, DataTypes) {
             foreignKey: 'userId'
         });
 
-        User.hasMany(models.UserConsent, {
-            foreignKey: 'userId'
-        });
-
         User.belongsToMany(models.Group, {
             through: models.GroupMemberUser,
             foreignKey: 'userId',

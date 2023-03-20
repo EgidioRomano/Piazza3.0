@@ -52,7 +52,7 @@ module.exports = function (app) {
             AND gm."userId" = :userId
             AND gm."deletedAt" IS NULL)
         LEFT JOIN "Moderators" m
-            ON (m."partnerId" IS NULL AND m."deletedAt" IS NULL)
+            ON (m."deletedAt" IS NULL)
             AND m."userId" = gm."userId"
         WHERE g.id = :groupId
             AND g."deletedAt" IS NULL
@@ -341,7 +341,7 @@ module.exports = function (app) {
     /**
      * Update Group info
      */
-    app.put('/api/users/:userId/groups/:groupId', isSuperAdmin(), /*loginCheck(['partner']), hasPermission(GroupMemberUser.LEVELS.admin, null, null),*/ asyncMiddleware(async function (req, res) {
+    app.put('/api/users/:userId/groups/:groupId', isSuperAdmin(), asyncMiddleware(async function (req, res) {
         const groupId = req.params.groupId;
         const groupName = req.body.name;
         const description = req.body.description || null;
@@ -450,7 +450,7 @@ module.exports = function (app) {
     /**
      * Get all Groups User belongs to
      */
-    app.get('/api/users/:userId/groups', loginCheck(['partner']), asyncMiddleware(async function (req, res) {
+    app.get('/api/users/:userId/groups', loginCheck(), asyncMiddleware(async function (req, res) {
         let include = req.query.include;
         // Sequelize and associations are giving too eager results + not being the most effective. https://github.com/sequelize/sequelize/issues/2458
         // Falling back to raw SQL
@@ -2103,10 +2103,6 @@ module.exports = function (app) {
             where += ` AND g.name ILIKE %:name% `;
         }
 
-        const sourcePartnerId = req.query.sourcePartnerId;
-        if (sourcePartnerId) {
-            where += ` AND g."sourcePartnerId" = :sourcePartnerId `
-        }
         let memberJoin = '';
         let memberLevel = '';
         if (userId) {
@@ -2142,7 +2138,6 @@ module.exports = function (app) {
                     replacements: {
                         userId,
                         limit,
-                        sourcePartnerId,
                         orderBy,
                         order,
                         offset

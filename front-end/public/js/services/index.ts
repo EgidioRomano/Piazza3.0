@@ -3,7 +3,6 @@ import './sAuth';
 import './sHotkeys';
 import './sLocation';
 import './sNotification';
-import './sPartner';
 import './sSearch';
 import './sTranslate';
 import './sUpload';

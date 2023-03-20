@@ -118,22 +118,6 @@ module.exports = function (sequelize, DataTypes) {
                 },
                 allowNull: true
             },
-            sourcePartnerId: {
-                type: DataTypes.UUID,
-                allowNull: true,
-                comment: 'The Partner id of the site from which the Topic was created',
-                references: {
-                    model: 'Partners',
-                    key: 'id'
-                },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE'
-            },
-            sourcePartnerObjectId: {
-                type: DataTypes.STRING,
-                allowNull: true,
-                comment: 'The Partner object/entity id for mapping'
-            },
             creatorId: {
                 type: DataTypes.UUID,
                 comment: 'User ID of the creator of the Topic.',
@@ -198,10 +182,6 @@ module.exports = function (sequelize, DataTypes) {
                             [Op.eq]: null
                         }
                     }
-                },
-                {
-                    unique: true,
-                    fields: ['sourcePartnerId', 'sourcePartnerObjectId']
                 }
             ]
         }
@@ -283,8 +263,6 @@ module.exports = function (sequelize, DataTypes) {
             visibility: this.dataValues.visibility,
             categories: this.dataValues.categories,
             padUrl: this.dataValues.padUrl,
-            sourcePartnerId: this.dataValues.sourcePartnerId,
-            sourcePartnerObjectId: this.dataValues.sourcePartnerObjectId,
             endsAt: this.dataValues.endsAt,
             hashtag: this.dataValues.hashtag,
             createdAt: this.dataValues.createdAt,

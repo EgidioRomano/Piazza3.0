@@ -22,12 +22,11 @@ module.exports = function (app) {
     const fs = require('fs');
     const path = require('path');
     const User = models.User;
-    const UserConsent = models.UserConsent;
     const UserConnection = models.UserConnection;
     const UserNotificationSettings = models.UserNotificationSettings;
     const Op = db.Sequelize.Op;
 
-    app.post('/api/users/:userId/upload', loginCheck(['partner']), asyncMiddleware(async function (req, res) {
+    app.post('/api/users/:userId/upload', loginCheck(), asyncMiddleware(async function (req, res) {
         let user = await User.findOne({
             where: {
                 id: req.user.id
@@ -69,10 +68,10 @@ module.exports = function (app) {
     /**
      * Update User info
      */
-    app.put('/api/users/:userId', loginCheck(['partner']), asyncMiddleware(async function (req, res) {
+    app.put('/api/users/:userId', loginCheck(), asyncMiddleware(async function (req, res) {
         const fields = ['name', 'company', 'email', 'language', 'imageUrl', 'termsVersion', 'preferences'];
         const data = req.body;
-        if (!req.user.partnerId && data.password && data.newPassword) { // Allow only our own app change the password
+        if (data.password && data.newPassword) {
             fields.push('password');
         }
         let updateEmail = false;
@@ -97,7 +96,7 @@ module.exports = function (app) {
 
         if ((user.email && updateEmail) || data.newPassword) {
             if (!data.password || user.password !== cryptoLib.getHash(data.password, 'sha256')) {
-                return res.badRequest('Invalid password')
+                return res.badRequest('La password fornita non è corretta.')
             }
             if (data.newPassword) {
                 data.password = data.newPassword;
@@ -160,7 +159,7 @@ module.exports = function (app) {
      *
      * Right now only supports getting info for logged in User
      */
-    app.get('/api/users/:userId', loginCheck(['partner']), asyncMiddleware(async function (req, res) {
+    app.get('/api/users/:userId', loginCheck(), asyncMiddleware(async function (req, res) {
         const user = await User.findOne({
             where: {
                 id: req.user.userId
@@ -230,129 +229,6 @@ module.exports = function (app) {
                 });
             });
     }));
-    /**
-     * Create UserConsent
-     */
-    app.post('/api/users/:userId/consents', loginCheck(), asyncMiddleware(async function (req, res) {
-        const userId = req.user.userId;
-        const partnerId = req.body.partnerId;
-
-        await db
-            .transaction(async function (t) {
-                const created = await UserConsent.upsert(
-                    {
-                        userId: userId,
-                        partnerId: partnerId
-                    },
-                    {
-                        transaction: t
-                    }
-                );
-
-                if (created) {
-                    const userConsent = UserConsent.build({
-                        userId: userId,
-                        partnerId: partnerId
-                    });
-
-                    await cosActivities
-                        .createActivity(
-                            userConsent,
-                            null,
-                            {
-                                type: 'User',
-                                id: userId,
-                                ip: req.ip
-                            },
-                            req.method + ' ' + req.path,
-                            t
-                        );
-                }
-
-                t.afterCommit(() => {
-                    return res.ok();
-                });
-            });
-    }));
-
-    /**
-     * Read User consents
-     */
-    app.get('/api/users/:userId/consents', loginCheck(), asyncMiddleware(async function (req, res) {
-        const userId = req.user.userId;
-
-        const results = await db.query(
-            `
-                SELECT
-                    p.id,
-                    p.website,
-                    p."createdAt",
-                    p."updatedAt"
-                FROM "UserConsents" uc
-                LEFT JOIN "Partners" p ON (p.id = uc."partnerId")
-                WHERE uc."userId" = :userId
-                    AND uc."deletedAt" IS NULL
-                ;`,
-            {
-                replacements: {
-                    userId: userId
-                },
-                type: db.QueryTypes.SELECT,
-                raw: true,
-                nest: true
-            }
-        );
-
-        return res.ok({
-            count: results.length,
-            rows: results
-        });
-    }));
-
-    /**
-     * Delete User consent
-     */
-    app.delete('/api/users/:userId/consents/:partnerId', loginCheck(), asyncMiddleware(async function (req, res) {
-        const userId = req.user.userId;
-        const partnerId = req.params.partnerId;
-
-        await db.transaction(async function (t) {
-            await UserConsent.destroy(
-                {
-                    where: {
-                        userId: userId,
-                        partnerId: partnerId
-                    },
-                    limit: 1,
-                    force: true
-                },
-                {
-                    transaction: t
-                }
-            );
-
-            const consent = UserConsent.build({
-                userId: userId,
-                partnerId: partnerId
-            });
-
-            await cosActivities.deleteActivity(
-                consent,
-                null,
-                {
-                    type: 'User',
-                    id: req.user.userId,
-                    ip: req.ip
-                },
-                req.method + ' ' + req.path,
-                t
-            );
-            t.afterCommit(() => {
-                return res.ok();
-            });
-        });
-    }));
-
 
     /**
      * Get UserConnections

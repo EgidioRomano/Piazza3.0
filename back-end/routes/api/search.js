@@ -23,13 +23,11 @@ module.exports = function (app) {
             const limitMax = 100;
             const limitDefault = 10;
             let userId = null;
-            let partnerId = null;
             let isSuperAdmin = false;
             const searchResults = [];
 
             if (req.user) {
                 userId = req.user.userId;
-                partnerId = req.user.partnerId;
                 isSuperAdmin = req.user.isSuperAdmin;
             }
 
@@ -104,10 +102,6 @@ module.exports = function (app) {
                             });
 
                             myTopicWhere += `AND COALESCE(tmup.level, tmgp.level, 'none')::"enum_TopicMemberUsers_level" ${levelComparer} :level `;
-                            // All partners should see only Topics created by their site, but our own app sees all.
-                            if (partnerId) {
-                                myTopicWhere += ` AND t."sourcePartnerId" = :partnerId `;
-                            }
 
                             if (statuses && statuses.length) {
                                 myTopicWhere += ` AND t.status IN (:statuses)`;
@@ -197,7 +191,6 @@ module.exports = function (app) {
                                     {
                                         replacements: {
                                             userId: userId,
-                                            partnerId: partnerId,
                                             statuses: statuses,
                                             str: '%' + str + '%',
                                             level: level,

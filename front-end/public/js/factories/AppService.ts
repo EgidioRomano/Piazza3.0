@@ -3,7 +3,6 @@ import * as $ from 'jquery';
 
 export class AppService {
     private editMode = false;
-    private partner;
     private showSearch = false;
     private showSearchResults = false;
     private showNav = false;

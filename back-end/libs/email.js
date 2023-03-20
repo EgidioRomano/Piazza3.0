@@ -207,14 +207,12 @@ module.exports = function (app) {
 
     /**
      * Get Moderator list
-     *
-     * @param {String} [sourcePartnerId] Source partner id - UUID
-     *
+     *     *
      * @returns {Promise} Array of incomplete User objects
      *
      * @private
      */
-    const _getModerators = function (sourcePartnerId) {
+    const _getModerators = function () {
         return db
             .query(
                 `SELECT
@@ -225,13 +223,8 @@ module.exports = function (app) {
                     FROM "Moderators" m
                         JOIN "Users" u ON (u.id = m."userId")
                     WHERE u."email" IS NOT NULL
-                    AND (m."partnerId" = :partnerId
-                    OR m."partnerId" IS NULL)
                 `,
                 {
-                    replacements: {
-                        partnerId: sourcePartnerId
-                    },
                     type: db.QueryTypes.SELECT,
                     raw: true,
                     nest: true
@@ -475,7 +468,6 @@ module.exports = function (app) {
 
             const template = resolveTemplate(templateName, toUser.language);
 
-            // Handle Partner links
             // TODO: could use Mu here...
             const subject = template.translations.INVITE_TOPIC.SUBJECT
                 .replace('{{fromUser.name}}', util.escapeHtml(fromUser.name));
@@ -865,7 +857,6 @@ module.exports = function (app) {
                         u."email" as "comment.creator.email",
                         u."language" as "comment.creator.language",
                         t."id" as "topic.id",
-                        t."sourcePartnerId" as "topic.sourcePartnerId",
                         t."visibility" as "topic.visibility"
                     FROM "TopicComments" tc
                         JOIN "Topics" t ON (t.id = tc."topicId")
@@ -884,9 +875,9 @@ module.exports = function (app) {
             )
             .then(function ([commentInfo]) {
                 if (commentInfo.topic.visibility === Topic.VISIBILITY.public) {
-                    logger.debug('Topic is public, sending e-mails to registered partner moderators', commentInfo);
+                    logger.debug('Topic is public, sending e-mails to registered moderators', commentInfo);
 
-                    return _getModerators(commentInfo.topic.sourcePartnerId)
+                    return _getModerators()
                         .then(function (moderators) {
                             return [commentInfo, moderators];
                         });
@@ -1023,7 +1014,7 @@ module.exports = function (app) {
         infoFetchPromises.push(_getTopicMemberUsers(topicReport.topicId, TopicMemberUser.LEVELS.edit));
 
         const [topic, userReporter, topicMemberList] = await Promise.all(infoFetchPromises);
-        const topicModerators = await _getModerators(topic.sourcePartnerId);
+        const topicModerators = await _getModerators();
 
         const linkViewTopic = urlLib.getFe('/topics/:topicId', {topicId: topic.id});
 
@@ -1259,7 +1250,7 @@ module.exports = function (app) {
             }
         });
 
-        const topicModerators = await _getModerators(topic.sourcePartnerId);
+        const topicModerators = await _getModerators();
 
         const linkViewTopic = urlLib.getFe('/topics/:topicId', {topicId: topic.id});
         const sendEmailPromises = [];
@@ -1619,7 +1610,6 @@ module.exports = function (app) {
 
             const template = resolveTemplate(templateName, toUser.language);
 
-            // Handle Partner links
             // TODO: could use Mu here...
             const subject = template.translations.VOTE_REMINDER.SUBJECT
 

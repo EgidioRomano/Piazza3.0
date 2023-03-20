@@ -623,7 +623,6 @@ CREATE TABLE public."Groups" (
     name character varying(255) NOT NULL,
     "creatorId" uuid NOT NULL,
     visibility public."enum_Groups_visibility" DEFAULT 'private'::public."enum_Groups_visibility" NOT NULL,
-    "sourcePartnerId" uuid,
     "createdAt" timestamp with time zone NOT NULL,
     "updatedAt" timestamp with time zone NOT NULL,
     "deletedAt" timestamp with time zone,
@@ -661,13 +660,6 @@ COMMENT ON COLUMN public."Groups".visibility IS 'Who can see (read) the Group ap
 
 
 --
--- Name: COLUMN "Groups"."sourcePartnerId"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."Groups"."sourcePartnerId" IS 'The Partner id of the site from which the Group was created';
-
-
---
 -- Name: COLUMN "Groups"."imageUrl"; Type: COMMENT; Schema: public; Owner: -
 --
 
@@ -688,7 +680,6 @@ COMMENT ON COLUMN public."Groups".description IS 'Short description of what the 
 CREATE TABLE public."Moderators" (
     id uuid DEFAULT (md5(((random())::text || (clock_timestamp())::text)))::uuid NOT NULL,
     "userId" uuid NOT NULL,
-    "partnerId" uuid,
     "createdAt" timestamp with time zone NOT NULL,
     "updatedAt" timestamp with time zone NOT NULL,
     "deletedAt" timestamp with time zone
@@ -700,13 +691,6 @@ CREATE TABLE public."Moderators" (
 --
 
 COMMENT ON COLUMN public."Moderators"."userId" IS 'Id of the User of the Moderator';
-
-
---
--- Name: COLUMN "Moderators"."partnerId"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."Moderators"."partnerId" IS 'Which Partner moderator represents. One User can be a moderator of many Partners';
 
 
 --
@@ -741,42 +725,6 @@ COMMENT ON COLUMN public."Notifications".id IS 'Id of the Notification';
 --
 
 COMMENT ON COLUMN public."Notifications".data IS 'Notification content';
-
-
---
--- Name: Partners; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public."Partners" (
-    id uuid NOT NULL,
-    website character varying(255) NOT NULL,
-    "redirectUriRegexp" character varying(255) NOT NULL,
-    "linkPrivacyPolicy" text,
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL,
-    "deletedAt" timestamp with time zone
-);
-
-
---
--- Name: COLUMN "Partners".id; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."Partners".id IS 'Partner id. Open ID client_id.';
-
-
---
--- Name: COLUMN "Partners".website; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."Partners".website IS 'Partner website';
-
-
---
--- Name: COLUMN "Partners"."redirectUriRegexp"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."Partners"."redirectUriRegexp" IS 'Partner callback (callback_uri) validation regexp. Also may be used to check request Origin and Referer if present.';
 
 
 --
@@ -1296,8 +1244,6 @@ CREATE TABLE public."Topics" (
     status public."enum_Topics_status" DEFAULT 'inProgress'::public."enum_Topics_status" NOT NULL,
     visibility public."enum_Topics_visibility" DEFAULT 'private'::public."enum_Topics_visibility" NOT NULL,
     categories character varying(255)[] DEFAULT (ARRAY[]::character varying[])::character varying(255)[],
-    "sourcePartnerId" uuid,
-    "sourcePartnerObjectId" character varying(255),
     "creatorId" uuid NOT NULL,
     "padUrl" character varying(255) NOT NULL,
     "endsAt" timestamp with time zone,
@@ -1335,21 +1281,6 @@ COMMENT ON COLUMN public."Topics".status IS 'Topic statuses.';
 --
 
 COMMENT ON COLUMN public."Topics".visibility IS 'Who can see (read) the Topic apart from the Members.';
-
-
---
--- Name: COLUMN "Topics"."sourcePartnerId"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."Topics"."sourcePartnerId" IS 'The Partner id of the site from which the Topic was created';
-
-
---
--- Name: COLUMN "Topics"."sourcePartnerObjectId"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."Topics"."sourcePartnerObjectId" IS 'The Partner object/entity id for mapping';
-
 
 --
 -- Name: COLUMN "Topics"."creatorId"; Type: COMMENT; Schema: public; Owner: -
@@ -1420,34 +1351,6 @@ COMMENT ON COLUMN public."UserConnections"."connectionUserId" IS 'User id in the
 --
 
 COMMENT ON COLUMN public."UserConnections"."connectionData" IS 'Connection specific data you want to store.';
-
-
---
--- Name: UserConsents; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public."UserConsents" (
-    "userId" uuid NOT NULL,
-    "partnerId" uuid NOT NULL,
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL,
-    "deletedAt" timestamp with time zone
-);
-
-
---
--- Name: COLUMN "UserConsents"."userId"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."UserConsents"."userId" IS 'Id of the User whom the connection belongs to.';
-
-
---
--- Name: COLUMN "UserConsents"."partnerId"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."UserConsents"."partnerId" IS 'Partner id (client_id).';
-
 
 --
 -- Name: UserNotificationSettings; Type: TABLE; Schema: public; Owner: -
@@ -2071,14 +1974,6 @@ ALTER TABLE ONLY public."Notifications"
 
 
 --
--- Name: Partners Partners_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."Partners"
-    ADD CONSTRAINT "Partners_pkey" PRIMARY KEY (id);
-
-
---
 -- Name: Reports Reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2215,14 +2110,6 @@ ALTER TABLE ONLY public."UserConnections"
 
 
 --
--- Name: UserConsents UserConsents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."UserConsents"
-    ADD CONSTRAINT "UserConsents_pkey" PRIMARY KEY ("userId", "partnerId");
-
-
---
 -- Name: UserNotificationSettings UserNotificationSettings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2349,14 +2236,7 @@ CREATE INDEX activities_user_ids ON public."Activities" USING gin ("userIds");
 -- Name: moderators_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX moderators_user_id ON public."Moderators" USING btree ("userId") WHERE ("partnerId" IS NULL);
-
-
---
--- Name: moderators_user_id_partner_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX moderators_user_id_partner_id ON public."Moderators" USING btree ("userId", "partnerId") WHERE ("partnerId" IS NOT NULL);
+CREATE UNIQUE INDEX moderators_user_id ON public."Moderators" USING btree ("userId") WHERE (1=1);
 
 
 --
@@ -2413,13 +2293,6 @@ CREATE INDEX topic_member_users_topic_id_user_id ON public."TopicMemberUsers" US
 --
 
 CREATE INDEX topic_votes_topic_id ON public."TopicVotes" USING btree ("topicId");
-
-
---
--- Name: topics_source_partner_id_source_partner_object_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX topics_source_partner_id_source_partner_object_id ON public."Topics" USING btree ("sourcePartnerId", "sourcePartnerObjectId");
 
 
 --
@@ -2576,22 +2449,6 @@ ALTER TABLE ONLY public."GroupMemberUsers"
 
 ALTER TABLE ONLY public."Groups"
     ADD CONSTRAINT "Groups_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES public."Users"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Groups Groups_sourcePartnerId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."Groups"
-    ADD CONSTRAINT "Groups_sourcePartnerId_fkey" FOREIGN KEY ("sourcePartnerId") REFERENCES public."Partners"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: Moderators Moderators_partnerId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."Moderators"
-    ADD CONSTRAINT "Moderators_partnerId_fkey" FOREIGN KEY ("partnerId") REFERENCES public."Partners"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2787,35 +2644,11 @@ ALTER TABLE ONLY public."Topics"
 
 
 --
--- Name: Topics Topics_sourcePartnerId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."Topics"
-    ADD CONSTRAINT "Topics_sourcePartnerId_fkey" FOREIGN KEY ("sourcePartnerId") REFERENCES public."Partners"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
 -- Name: UserConnections UserConnections_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."UserConnections"
     ADD CONSTRAINT "UserConnections_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."Users"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: UserConsents UserConsents_partnerId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."UserConsents"
-    ADD CONSTRAINT "UserConsents_partnerId_fkey" FOREIGN KEY ("partnerId") REFERENCES public."Partners"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: UserConsents UserConsents_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."UserConsents"
-    ADD CONSTRAINT "UserConsents_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."Users"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2927,33 +2760,4 @@ ALTER TABLE ONLY public."VoteUserContainers"
 --
 
 COPY public."SequelizeMeta" (name) FROM stdin;
-20181213213857-create-topic-favourite.js
-20190131123024-alter-topic-title-limit.js
-20190529193321-topic-report.js
-20190616115724-alter-user-accpet-terms.js
-20190627132611-alter-partner-terms-link.js
-20191119124917-create-topic-invite-user.js
-20191218091941-update-vote-option-max-value.js
-20200130121507-create-signature.js
-202002192021-alter-user-connection.js
-20200225152502-remove-vote-user-container-activity.js
-202010261616-alter-user-add-auhorID.js
-20210310104918-create-group-invite-user.js
-202103251231-alter-vote-lists-add-userhash.js
-20210329141948-alter-vote-user-containers.js
-20210510112610-groupmember_to_groupmemberusers.js
-202106111127-alter-relations-add-on-cascade.js
-20210722084618-alter-vote-add-auto-close.js
-20211008104906-create-topic-join.js
-20211008193321-alter-user-add-preferences.js
-20211028142538-create-group-join.js
-20211209091354-create-token-revocation.js
-20211217120934-comment-type-poi.js
-20220203120245-users-password-comment.js
-20220228174313-duplicate-email-users-issue-234.js
-20220405120631-create-user-notification-settings.js
-20220520100104-add-vote-reminder.js
-20220808083309-alter_group.js
-20220816103332-alter-topic-invite-user.js
-20220816103355-alter-group-invite-user.js
 \.

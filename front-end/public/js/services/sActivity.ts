@@ -293,12 +293,11 @@ export class Activity {
             .then(this.success, this.defaultError);
     };
 
-    getActivitiesUnauth (offsetNr?, limitNr?, include?, filter?, sourcePartnerId?) {
+    getActivitiesUnauth (offsetNr?, limitNr?, include?, filter?) {
         const path = this.sLocation.getAbsoluteUrlApi('/api/activities');
         const paramsObj = {
             offset: offsetNr,
-            limit: limitNr,
-            sourcePartnerId: sourcePartnerId
+            limit: limitNr
         };
         if (include) {
             paramsObj['include'] = include;

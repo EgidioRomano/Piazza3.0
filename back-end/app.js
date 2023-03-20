@@ -30,8 +30,6 @@ const Cacheman = require('cacheman');
 const striptags = require('striptags');
 const device = require('express-device');
 const SevenZip = require('node-7z');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
 const Busboy = require('busboy');
 const StreamUpload = require('stream_upload');
 const notifications = require('./libs/notifications');
@@ -104,7 +102,6 @@ if (app.get('env') === 'production' || app.get('env') === 'test') {
 }
 app.set('rateLimiter', rateLimiter);
 app.set('speedLimiter', speedLimiter);
-app.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const prerender = require('prerender-node');
 prerender.set('prerenderServiceUrl', config.services.prerender.serviceUrl).set('prerenderToken', config.services.prerender.apiKey);
 app.use(prerender);
@@ -309,7 +306,6 @@ app.set('middleware.isSuperAdmin', require('./libs/middleware/isSuperAdmin'));
 app.set('middleware.expressRateLimitInput', require('./libs/middleware/expressRateLimitInput')(app));
 app.set('middleware.authApiKey', require('./libs/middleware/authApiKey'));
 app.set('middleware.authTokenRestrictedUse', require('./libs/middleware/authTokenRestrictedUse'));
-app.set('middleware.partnerParser', require('./libs/middleware/partnerParser')(app));
 app.set('middleware.uuidValidator', require('./libs/middleware/uuidValidator')(app));
 app.set('middleware.deprecated', require('./libs/middleware/deprecated'));
 app.set('middleware.asyncMiddleware', require('./libs/middleware/asyncMiddleware'));

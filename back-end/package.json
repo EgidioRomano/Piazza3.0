@@ -74,7 +74,6 @@
     "stream_upload": "0.1.5",
     "striptags": "3.2.0",
     "superagent": "8.0.2",
-    "swagger-ui-express": "4.5.0",
     "twit": "2.2.11",
     "undersign": "git+https://github.com/citizenos/js-undersign.git#06e5690c8a5c19f290b6a73839f946b96acf911b",
     "uuid": "9.0.0",

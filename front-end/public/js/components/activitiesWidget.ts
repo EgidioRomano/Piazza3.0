@@ -15,10 +15,6 @@ let activitiesWidget = {
                 case 'widgets/topicActivities':
                     sActivity.getTopicActivitiesUnauth($stateParams.topicId)
                     .then((activities) => this.activities = activities);
-                    break;
-                case 'widgets/partnerActivities':
-                    sActivity.getActivitiesUnauth(0, 50, null, $stateParams.filter, $stateParams.partnerId)
-                    .then((activities) => this.activities = activities);
                 break;
                 default:
                     sActivity.getActivitiesUnauth(0, 100)

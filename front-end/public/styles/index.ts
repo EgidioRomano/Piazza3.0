@@ -17,7 +17,6 @@ import "./lightbox.scss";
 import "./my_groups.scss";
 import "./nav.scss";
 import "./no_topics.scss";
-import "./partner.scss";
 import "./picker.scss";
 import "./topics_admin.scss";
 import "./topics.scss";

@@ -17,7 +17,6 @@ skinparam database {
 }
 
 actor User
-actor Partner
 
 database "citizenos-api-db \n(postgres)" {
    ["public.*"] #white
@@ -37,7 +36,6 @@ cloud "3rd party services" {
 
 User-down->[citizenos-fe]
 User-down->[etherpad-lite]
-Partner-down-->[citizenos-api]: REST
 [citizenos-fe]-down->[citizenos-api]: REST
 [citizenos-api]-left->[etherpad-lite]: REST
 [citizenos-api]-down->["public.*"]

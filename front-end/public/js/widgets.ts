@@ -17,14 +17,13 @@
          * Argument
          *
          * @param {string} language 2 letter language code (ISO 639-1 Code)
-         * @param {string} topicId CitizenOS Topic ID OR Partner entity ID IF "partnerId" is provided.
-         * @param {string|null} [partnerId=undefined] Partner id for the Topic. If used, the "topicId" is considered to be Partner entity id and will be internally mapped to CitizenOS Topic id
+         * @param {string} topicId CitizenOS Topic ID.
          * @param {string} [targetId=undefined] Containing pages target element id
          * @param {object} [options=undefined] Containing custom title, style properties
          *
          * @constructor
          */
-        window.CITIZENOS.widgets.Argument = function (language, topicId, partnerId, targetId, options) {
+        window.CITIZENOS.widgets.Argument = function (language, topicId, targetId, options) {
             if(!options) {
                 options = {};
             }
@@ -46,16 +45,10 @@
             widgetFrame.style.visibility = 'hidden';
 
             var path;
-            if (partnerId) {
-                path = '/:language/widgets/partners/:partnerId/topics/:sourcePartnerObjectId/arguments'
-                    .replace(':language', encodeURIComponent(language))
-                    .replace(':partnerId', encodeURIComponent(partnerId))
-                    .replace(':sourcePartnerObjectId', encodeURIComponent(topicId));
-            } else {
-                path = '/:language/widgets/topics/:topicId/arguments'
+            path = '/:language/widgets/topics/:topicId/arguments'
                     .replace(':language', encodeURIComponent(language))
                     .replace(':topicId', encodeURIComponent(topicId));
-            }
+
             var queryParams = [];
             var queryString = '';
             if (targetElementId) {
@@ -86,15 +79,14 @@
      * Activity Feed
      *
      * @param {string} language 2 letter language code (ISO 639-1 Code)
-     * @param {string|null} [topicId=undefined] CitizenOS Topic ID OR Partner entity ID IF "partnerId" is provided. If not provided, all events of Topics for that "partnerId" are fetched.
-     * @param {string|null} [partnerId=undefined] Partner id for the Topic. If used, the "topicId" is considered to be Partner entity id and will be internally mapped to CitizenOS Topic id
+     * @param {string|null} [topicId=undefined] CitizenOS Topic ID-
      * @param {string} [targetId=undefined] Containing pages target element id
      * @param {object} [options=undefined] Containing custom title, style, filter properties
      *
      * @constructor
      */
     if (!window.CITIZENOS.widgets.ActivityFeed) {
-        window.CITIZENOS.widgets.ActivityFeed = function (language, topicId, partnerId, targetId, options) {
+        window.CITIZENOS.widgets.ActivityFeed = function (language, topicId, targetId, options) {
             var targetElementId = targetId || 'citizenos-widget-argument-' + Math.random().toString(36).replace(/[^a-z0-9]+/g, '').substr(0, 5);
 
             var targetElement = document.getElementById(targetElementId);
@@ -112,16 +104,8 @@
             widgetFrame.style.visibility = 'hidden';
 
             var path;
-            if (partnerId && topicId) {
-                path = '/:language/widgets/partners/:partnerId/topics/:sourcePartnerObjectId/activities'
-                    .replace(':language', encodeURIComponent(language))
-                    .replace(':partnerId', encodeURIComponent(partnerId))
-                    .replace(':sourcePartnerObjectId', encodeURIComponent(topicId));
-            } else if (partnerId) {
-                path = '/:language/widgets/partners/:partnerId/activities'
-                    .replace(':language', encodeURIComponent(language))
-                    .replace(':partnerId', encodeURIComponent(partnerId));
-            } else if (topicId) {
+            
+            if (topicId) {
                 path = '/:language/widgets/topics/:topicId/activities'
                     .replace(':language', encodeURIComponent(language))
                     .replace(':topicId', encodeURIComponent(topicId));

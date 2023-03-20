@@ -86,7 +86,7 @@ const groupList = async function (agent, userId, include) {
     return _groupList(agent, userId, include, 200);
 };
 
-const _groupsListUnauth = async function (agent, statuses, orderBy, offset, limit, sourcePartnerId, expectedHttpCode) {
+const _groupsListUnauth = async function (agent, statuses, orderBy, offset, limit, expectedHttpCode) {
     const path = '/api/groups';
 
     return agent
@@ -95,15 +95,14 @@ const _groupsListUnauth = async function (agent, statuses, orderBy, offset, limi
             statuses: statuses,
             orderBy: orderBy,
             offset: offset,
-            limit: limit,
-            sourcePartnerId: sourcePartnerId
+            limit: limit
         })
         .expect(expectedHttpCode)
         .expect('Content-Type', /json/);
 };
 
-const groupsListUnauth = async function (agent, status, orderBy, offset, limit, sourcePartnerId) {
-    return _groupsListUnauth(agent, status, orderBy, offset, limit, sourcePartnerId, 200);
+const groupsListUnauth = async function (agent, status, orderBy, offset, limit) {
+    return _groupsListUnauth(agent, status, orderBy, offset, limit, 200);
 };
 
 const _groupInviteUsersCreate = async function (agent, userId, groupId, invites, expectedHttpCode) {
@@ -659,14 +658,6 @@ suite('Users', function () {
                 const creator = group.creator;
                 assert.equal(creator.id, user.id);
                 assert.equal(creator.name, user.name);
-            });
-
-            test('Success - non-authenticated User - show "public" Groups with sourcePartnerId', async function () {
-                const topicList = (await groupsListUnauth(agentCreator, null, null, null, null, '4b511ad1-5b20-4c13-a6da-0b95d07b6900')).body.data;
-                const topicListRow = topicList.rows;
-                assert.property(topicList, 'countTotal');
-                assert.equal(topicList.count, topicListRow.length);
-                assert.equal(topicListRow.length, 0);
             });
 
             test('Success - include users and topics', async function () {
@@ -1453,7 +1444,6 @@ suite('Users', function () {
                         // Make the User a moderator
                         await Moderator.create({
                             userId: groupInviteCreated1.userId,
-                            partnerId: null
                         });
 
                         const invitesListResult = (await groupInviteUsersList(agentUserToInvite1, groupInviteCreated1.userId, group.id)).body.data;

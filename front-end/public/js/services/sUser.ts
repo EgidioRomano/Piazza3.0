@@ -66,12 +66,6 @@ export class User {
         return this.$http.delete(path);
     };
 
-    consentsCreate (partnerId) {
-        const path = this.sLocation.getAbsoluteUrlApi('/api/users/self/consents');
-
-        return this.$http.post(path, {partnerId: partnerId});
-    };
-
     listUserConnections (userId) {
         const path = this.sLocation.getAbsoluteUrlApi('/api/users/:userId/userconnections', {userId: userId});
 

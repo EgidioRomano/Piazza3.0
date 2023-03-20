@@ -64,17 +64,6 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false,
                 defaultValue: VISIBILITY.private
             },
-            sourcePartnerId: {
-                type: DataTypes.UUID,
-                allowNull: true,
-                comment: 'The Partner id of the site from which the Group was created',
-                references: {
-                    model: 'Partners',
-                    key: 'id'
-                },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE'
-            },
             imageUrl: {
                 type: DataTypes.STRING,
                 allowNull: true,

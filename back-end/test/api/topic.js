@@ -9812,66 +9812,6 @@ suite('Topics', function () {
 
         });
 
-        test('Success - non-authenticated User - show "public" Topics with sourcePartnerId', async function () {
-            const now = moment().format();
-            const partnerId = uuid.v4();
-            await db
-                .query(
-                    `
-                    INSERT INTO
-                    "Partners" (id, website, "redirectUriRegexp", "createdAt", "updatedAt")
-                        SELECT
-                        :partnerId,
-                        :website,
-                        :partnerRegEx,
-                        :updatedAt,
-                        :createdAt
-                        WHERE NOT EXISTS (
-                            SELECT 1
-                            FROM "Partners"
-                            WHERE id = :partnerId
-                        );
-                    `,
-                    {
-                        replacements: {
-                            partnerId: partnerId,
-                            website: 'http://www.partner.com',
-                            partnerRegEx: '^http(s)?://([^.]*.)?partner.com(:[0-9]{2,5})?/.*',
-                            createdAt: now,
-                            updatedAt: now
-                        },
-                        type: db.QueryTypes.INSERT,
-                        raw: true
-                    }
-                );
-
-            const partnerTopic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.environment, Topic.CATEGORIES.health], null, null, null)).body.data;
-
-            // Set "title" to Topic, otherwise there will be no results because of the "title NOT NULL" in the query
-            await Topic.update(
-                {
-                    title: 'TEST PUBLIC PARTNER',
-                    sourcePartnerId: partnerId
-                },
-                {
-                    where: {
-                        id: partnerTopic.id
-                    }
-                }
-            );
-            const data = (await topicsListUnauth(userAgent, null, null, null, null, null, partnerId, null)).body.data;
-
-            assert.property(data, 'countTotal');
-
-            const listOfTopics = data.rows;
-            assert.equal(data.count, listOfTopics.length);
-            assert.equal(listOfTopics.length, 1);
-            listOfTopics.forEach(function (topic) {
-                assert.property(topic, 'sourcePartnerId');
-                assert.equal(topic.sourcePartnerId, partnerId);
-            });
-        });
-
         suite('Include', function () {
             const creatorAgent = request.agent(app);
             const userAgent = request.agent(app);

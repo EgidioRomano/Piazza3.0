@@ -38,7 +38,6 @@ module.exports = function (app) {
     const isSuperAdmin = app.get('middleware.isSuperAdmin');
     const asyncMiddleware = app.get('middleware.asyncMiddleware');
     const authTokenRestrictedUse = app.get('middleware.authTokenRestrictedUse');
-    const partnerParser = app.get('middleware.partnerParser');
     const speedLimiter = app.get('speedLimiter');
     const rateLimiter = app.get('rateLimiter');
     const cosUpload = app.get('cosUpload');
@@ -82,7 +81,7 @@ module.exports = function (app) {
         return hmac.digest('hex');
     };
 
-    const _hasPermission = async function (topicId, userId, level, allowPublic, topicStatusesAllowed, allowSelf, partnerId) {
+    const _hasPermission = async function (topicId, userId, level, allowPublic, topicStatusesAllowed, allowSelf) {
         const LEVELS = {
             none: 0, // Enables to override inherited permissions.
             read: 1,
@@ -105,8 +104,7 @@ module.exports = function (app) {
                         END,
                         'none'
                     ) as level,
-                    COALESCE(tmup.level, tmgp.level, 'none')::"enum_TopicMemberUsers_level" >= :level AS "hasDirectAccess",
-                    t."sourcePartnerId"
+                    COALESCE(tmup.level, tmgp.level, 'none')::"enum_TopicMemberUsers_level" >= :level AS "hasDirectAccess"
                 FROM "Topics" t
                     LEFT JOIN (
                         SELECT
@@ -145,22 +143,12 @@ module.exports = function (app) {
             const status = result[0].status;
             const hasDirectAccess = result[0].hasDirectAccess;
             const level = result[0].level;
-            const sourcePartnerId = result[0].sourcePartnerId;
             if (hasDirectAccess || (allowPublic && isPublic) || allowSelf) {
                 // If Topic status is not in the allowed list, deny access.
                 if (topicStatusesAllowed && !(topicStatusesAllowed.indexOf(status) > -1)) {
                     logger.warn('Access denied to topic due to status mismatch! ', 'topicStatusesAllowed:', topicStatusesAllowed, 'status:', status);
 
                     return false
-                }
-
-                // Don't allow Partner to edit other Partners topics
-                if (!isPublic && partnerId && sourcePartnerId) {
-                    if (partnerId !== sourcePartnerId) {
-                        logger.warn('Access denied to topic due to Partner mismatch! ', 'partnerId:', partnerId, 'sourcePartnerId:', sourcePartnerId);
-
-                        return false;
-                    }
                 }
 
                 if (!allowSelf && (LEVELS[minRequiredLevel] > LEVELS[level])) {
@@ -173,7 +161,6 @@ module.exports = function (app) {
                     topic: {
                         id: topicId,
                         isPublic: isPublic,
-                        sourcePartnerId: sourcePartnerId,
                         status: status,
                         permissions: {
                             level: level,
@@ -204,7 +191,6 @@ module.exports = function (app) {
     const hasPermission = function (level, allowPublic, topicStatusesAllowed, allowSelf) {
         return async function (req, res, next) {
             const userId = req.user.userId;
-            const partnerId = req.user.partnerId;
             const topicId = req.params.topicId;
 
             allowPublic = allowPublic ? allowPublic : false;
@@ -224,7 +210,7 @@ module.exports = function (app) {
             }
 
             try {
-                const authorizationResult = await _hasPermission(topicId, userId, level, allowPublic, topicStatusesAllowed, allowSelfDelete, partnerId)
+                const authorizationResult = await _hasPermission(topicId, userId, level, allowPublic, topicStatusesAllowed, allowSelfDelete)
                 // Add "req.locals" to store info collected from authorization for further use in the request. Might save a query or two for some use cases.
                 // Naming convention ".locals" is inspired by "res.locals" - http://expressjs.com/api.html#res.locals
                 if (authorizationResult) {
@@ -268,12 +254,10 @@ module.exports = function (app) {
                 `
                 SELECT
                     t."id" as "topicId",
-                    m."userId",
-                    m."partnerId"
+                    m."userId"
                 FROM "Topics" t
                 JOIN "Moderators" m
-                    ON (m."partnerId" = t."sourcePartnerId" OR m."partnerId" IS NULL)
-                    AND m."userId" = :userId
+                    ON (m."userId" = :userId)
                 WHERE t.id = :topicId
                 AND t."deletedAt" IS NULL
                 AND m."deletedAt" IS NULL
@@ -293,7 +277,7 @@ module.exports = function (app) {
             const isTopicModerator = result[0].topicId === topicId;
 
             if (isUserModerator && isTopicModerator) {
-                return { isModerator: result[0].partnerId ? result[0].partnerId : true };
+                return { isModerator: true };
             }
         }
 
@@ -692,8 +676,6 @@ module.exports = function (app) {
                      t.categories,
                      t."endsAt",
                      t."padUrl",
-                     t."sourcePartnerId",
-                     t."sourcePartnerObjectId",
                      t."updatedAt",
                      t."createdAt",
                      t."hashtag",
@@ -840,7 +822,7 @@ module.exports = function (app) {
         return topic;
     };
 
-    const _topicReadAuth = async function (topicId, include, user, partner) {
+    const _topicReadAuth = async function (topicId, include, user) {
         await _syncTopicAuthors(topicId);
 
         let join = '';
@@ -936,8 +918,6 @@ module.exports = function (app) {
                     t.categories,
                     t."endsAt",
                     t."padUrl",
-                    t."sourcePartnerId",
-                    t."sourcePartnerObjectId",
                     t."createdAt",
                     t."updatedAt",
                     c.id as "creator.id",
@@ -1070,7 +1050,7 @@ module.exports = function (app) {
             logger.warn('Topic not found', topicId);
             return;
         }
-        topic.padUrl = cosEtherpad.getUserAccessUrl(topic, topic.user.id, topic.user.name, 'it', partner);
+        topic.padUrl = cosEtherpad.getUserAccessUrl(topic, topic.user.id, topic.user.name, 'it');
         topic.url = urlLib.getFe('/topics/:topicId', { topicId: topic.id });
 
         if (topic.visibility === Topic.VISIBILITY.public && topic.permission.level === TopicMemberUser.LEVELS.none) {
@@ -1366,7 +1346,7 @@ module.exports = function (app) {
     /**
      * Create a new Topic
      */
-    app.post('/api/users/:userId/topics', loginCheck(['partner']), partnerParser, async function (req, res, next) {
+    app.post('/api/users/:userId/topics', loginCheck(), async function (req, res, next) {
         try {
             // I wish Sequelize Model.build supported "fields". This solution requires you to add a field here once new are defined in model.
             let topic = Topic.build({
@@ -1374,15 +1354,10 @@ module.exports = function (app) {
                 creatorId: req.user.userId,
                 categories: req.body.categories,
                 endsAt: req.body.endsAt,
-                sourcePartnerObjectId: req.body.sourcePartnerObjectId,
                 authorIds: [req.user.userId]
             });
 
             topic.padUrl = cosEtherpad.getTopicPadUrl(topic.id);
-
-            if (req.locals.partner) {
-                topic.sourcePartnerId = req.locals.partner.id;
-            }
 
             const topicDescription = req.body.description;
 
@@ -1451,14 +1426,8 @@ module.exports = function (app) {
 
                     const resObject = topic.toJSON();
                     resObject.authors = authors;
-                    resObject.padUrl = cosEtherpad.getUserAccessUrl(topic, user.id, user.name, 'it', req.locals.partner);
+                    resObject.padUrl = cosEtherpad.getUserAccessUrl(topic, user.id, user.name, 'it');
                     resObject.url = urlLib.getFe('/topics/:topicId', { topicId: topic.id });
-
-                    if (req.locals.partner) {
-                        resObject.sourcePartnerId = req.locals.partner.id;
-                    } else {
-                        resObject.sourcePartnerId = null;
-                    }
 
                     resObject.pinned = false;
                     resObject.permission = {
@@ -1476,7 +1445,7 @@ module.exports = function (app) {
     });
 
     //Copy topic
-    app.get('/api/users/:userId/topics/:topicId/duplicate', loginCheck(['partner']), partnerParser, async function (req, res, next) {
+    app.get('/api/users/:userId/topics/:topicId/duplicate', loginCheck(), async function (req, res, next) {
         try {
             // I wish Sequelize Model.build supported "fields". This solution requires you to add a field here once new are defined in model.
             const sourceTopic = await Topic.findOne({
@@ -1496,10 +1465,6 @@ module.exports = function (app) {
             });
 
             topic.padUrl = cosEtherpad.getTopicPadUrl(topic.id);
-
-            if (req.locals.partner) {
-                topic.sourcePartnerId = req.locals.partner.id;
-            }
 
             const user = await User.findOne({
                 where: {
@@ -1589,14 +1554,8 @@ module.exports = function (app) {
 
                     const resObject = topic.toJSON();
                     resObject.authors = authors;
-                    resObject.padUrl = cosEtherpad.getUserAccessUrl(topic, user.id, user.name, 'it', req.locals.partner);
+                    resObject.padUrl = cosEtherpad.getUserAccessUrl(topic, user.id, user.name, 'it');
                     resObject.url = urlLib.getFe('/topics/:topicId', { topicId: topic.id });
-
-                    if (req.locals.partner) {
-                        resObject.sourcePartnerId = req.locals.partner.id;
-                    } else {
-                        resObject.sourcePartnerId = null;
-                    }
 
                     resObject.pinned = false;
                     resObject.permission = {
@@ -1614,13 +1573,12 @@ module.exports = function (app) {
     /**
      * Read a Topic
      */
-    app.get('/api/users/:userId/topics/:topicId', loginCheck(['partner']), partnerParser, hasPermission(TopicMemberUser.LEVELS.read, true), isModerator(), async function (req, res, next) {
+    app.get('/api/users/:userId/topics/:topicId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true), isModerator(), async function (req, res, next) {
         try {
             const include = req.query.include;
             const topicId = req.params.topicId;
             const user = req.user;
-            const partner = req.locals.partner;
-            const topic = await _topicReadAuth(topicId, include, user, partner);
+            const topic = await _topicReadAuth(topicId, include, user);
 
             if (!topic) {
                 return res.notFound();
@@ -1653,7 +1611,7 @@ module.exports = function (app) {
         }
     });
 
-    app.get('/api/users/:userId/topics/:topicId/inlinecomments', loginCheck(['partner']), async (req, res, next) => {
+    app.get('/api/users/:userId/topics/:topicId/inlinecomments', loginCheck(), async (req, res, next) => {
         const topicId = req.params.topicId;
         const user = req.user;
 
@@ -1719,7 +1677,7 @@ module.exports = function (app) {
             }
 
             // NOTE: Description is handled separately below
-            const fieldsAllowedToUpdate = ['categories', 'endsAt', 'hashtag', 'sourcePartnerObjectId'];
+            const fieldsAllowedToUpdate = ['categories', 'endsAt'];
             if (req.locals.topic.permissions.level === TopicMemberUser.LEVELS.admin) {
                 fieldsAllowedToUpdate.push('visibility');
                 fieldsAllowedToUpdate.push('status');
@@ -1797,7 +1755,7 @@ module.exports = function (app) {
     /**
      * Update Topic info
      */
-    app.put('/api/users/:userId/topics/:topicId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.edit, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
+    app.put('/api/users/:userId/topics/:topicId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.edit, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
         try {
             await _topicUpdate(req, res, next);
 
@@ -1807,7 +1765,7 @@ module.exports = function (app) {
         }
     });
 
-    app.patch('/api/users/:userId/topics/:topicId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.edit, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
+    app.patch('/api/users/:userId/topics/:topicId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.edit, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
         try {
             await _topicUpdate(req, res, next);
 
@@ -1824,7 +1782,7 @@ module.exports = function (app) {
      *
      * @see https://github.com/citizenos/citizenos-fe/issues/311
      */
-    app.put('/api/users/:userId/topics/:topicId/join', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), asyncMiddleware(async function (req, res) {
+    app.put('/api/users/:userId/topics/:topicId/join', loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), asyncMiddleware(async function (req, res) {
         const topicId = req.params.topicId;
         const level = req.body.level;
         if (!Object.values(TopicJoin.LEVELS).includes(level)) {
@@ -1866,7 +1824,7 @@ module.exports = function (app) {
      *
      * @see https://github.com/citizenos/citizenos-fe/issues/311
      */
-    app.put('/api/users/:userId/topics/:topicId/join/:token', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), asyncMiddleware(async function (req, res) {
+    app.put('/api/users/:userId/topics/:topicId/join/:token', loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), asyncMiddleware(async function (req, res) {
         const topicId = req.params.topicId;
         const token = req.params.token;
         const level = req.body.level;
@@ -1914,7 +1872,7 @@ module.exports = function (app) {
     /**
      * Delete Topic
      */
-    app.delete('/api/users/:userId/topics/:topicId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin), async function (req, res, next) {
+    app.delete('/api/users/:userId/topics/:topicId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin), async function (req, res, next) {
         try {
             const topic = await Topic.findByPk(req.params.topicId);
             if (!topic) {
@@ -1970,18 +1928,16 @@ module.exports = function (app) {
     /**
      * Get all Topics User belongs to
      */
-    app.get('/api/users/:userId/topics', loginCheck(['partner']), async function (req, res, next) {
+    app.get('/api/users/:userId/topics', loginCheck(), async function (req, res, next) {
         const userId = req.user.userId;
-        const partnerId = req.user.partnerId;
-
         let include = req.query.include;
-
         const visibility = req.query.visibility;
         const creatorId = req.query.creatorId;
         let statuses = req.query.statuses;
         const pinned = req.query.pinned;
         const hasVoted = req.query.hasVoted; // Filter out Topics where User has participated in the voting process.
         const showModerated = req.query.showModerated || false;
+
         if (statuses && !Array.isArray(statuses)) {
             statuses = [statuses];
         }
@@ -2041,11 +1997,6 @@ module.exports = function (app) {
                     AND t.title IS NOT NULL
                     AND COALESCE(tmup.level, tmgp.level, 'none')::"enum_TopicMemberUsers_level" > 'none' `;
 
-        // All partners should see only Topics created by their site, but our own app sees all.
-        if (partnerId) {
-            where += ` AND t."sourcePartnerId" = :partnerId `;
-        }
-
         if (visibility) {
             where += ` AND t.visibility=:visibility `;
         }
@@ -2103,8 +2054,6 @@ module.exports = function (app) {
                         ELSE false
                      END as "pinned",
                      t.categories,
-                     t."sourcePartnerId",
-                     t."sourcePartnerObjectId",
                      t."endsAt",
                      t."createdAt",
                      c.id as "creator.id",
@@ -2237,7 +2186,6 @@ module.exports = function (app) {
                     {
                         replacements: {
                             userId: userId,
-                            partnerId: partnerId,
                             visibility: visibility,
                             statuses: statuses,
                             creatorId: creatorId
@@ -2397,14 +2345,6 @@ module.exports = function (app) {
                 where += ' AND t.status IN (:statuses)';
             }
 
-            let sourcePartnerId = req.query.sourcePartnerId;
-            if (sourcePartnerId) {
-                if (!Array.isArray(sourcePartnerId)) {
-                    sourcePartnerId = [sourcePartnerId];
-                }
-                where += ' AND t."sourcePartnerId" IN (:partnerId)';
-            }
-
             const title = req.query.title;
             if (title) {
                 where += ` AND t.title LIKE '%:title%' `;
@@ -2423,8 +2363,6 @@ module.exports = function (app) {
                         t.categories,
                         t."endsAt",
                         t."createdAt",
-                        t."sourcePartnerId",
-                        t."sourcePartnerObjectId",
                         c.id as "creator.id",
                         c.name as "creator.name",
                         COALESCE(MAX(a."updatedAt"), t."updatedAt") as "lastActivity",
@@ -2533,7 +2471,6 @@ module.exports = function (app) {
                     query,
                     {
                         replacements: {
-                            partnerId: sourcePartnerId,
                             categories: categories,
                             statuses: statuses,
                             limit: limit,
@@ -2730,7 +2667,7 @@ module.exports = function (app) {
     /**
      * Get all members of the Topic
      */
-    app.get('/api/users/:userId/topics/:topicId/members', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read), async function (req, res, next) {
+    app.get('/api/users/:userId/topics/:topicId/members', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read), async function (req, res, next) {
         try {
             const showExtraUserInfo = (req.user && req.user.moderator) || req.locals.topic.permissions.level === TopicMemberUser.LEVELS.admin;
             const response = await _getAllTopicMembers(req.params.topicId, req.user.userId, showExtraUserInfo);
@@ -2744,7 +2681,7 @@ module.exports = function (app) {
     /**
      * Get all member Users of the Topic
      */
-    app.get('/api/users/:userId/topics/:topicId/members/users', loginCheck(['partner']), isModerator(), hasPermission(TopicMemberUser.LEVELS.read), async function (req, res, next) {
+    app.get('/api/users/:userId/topics/:topicId/members/users', loginCheck(), isModerator(), hasPermission(TopicMemberUser.LEVELS.read), async function (req, res, next) {
         const limitDefault = 10;
         const offset = parseInt(req.query.offset, 10) ? parseInt(req.query.offset, 10) : 0;
         let limit = parseInt(req.query.limit, 10) ? parseInt(req.query.limit, 10) : limitDefault;
@@ -2897,7 +2834,7 @@ module.exports = function (app) {
     /**
      * Get all member Groups of the Topic
      */
-    app.get('/api/users/:userId/topics/:topicId/members/groups', isSuperAdmin(), async function (req, res, next) {
+    app.get('/api/users/:userId/topics/:topicId/members/groups', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read), async function (req, res, next) {
         const limitDefault = 10;
         const offset = parseInt(req.query.offset, 10) ? parseInt(req.query.offset, 10) : 0;
         let limit = parseInt(req.query.limit, 10) ? parseInt(req.query.limit, 10) : limitDefault;
@@ -3077,7 +3014,7 @@ module.exports = function (app) {
     /**
      * Create new member Groups to a Topic
      */
-    app.post('/api/users/:userId/topics/:topicId/members/groups', isSuperAdmin(), /*loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]),*/ async function (req, res, next) {
+    app.post('/api/users/:userId/topics/:topicId/members/groups', isSuperAdmin(), /*loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]),*/ async function (req, res, next) {
         let members = req.body;
         const topicId = req.params.topicId;
 
@@ -3182,7 +3119,7 @@ module.exports = function (app) {
     /**
      * Update User membership information
      */
-    app.put('/api/users/:userId/topics/:topicId/members/users/:memberId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
+    app.put('/api/users/:userId/topics/:topicId/members/users/:memberId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
         const newLevel = req.body.level;
         const memberId = req.params.memberId;
         const topicId = req.params.topicId;
@@ -3250,7 +3187,7 @@ module.exports = function (app) {
     /**
      * Update Group membership information
      */
-    app.put('/api/users/:userId/topics/:topicId/members/groups/:memberId', isSuperAdmin(), /*loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]),*/ async function (req, res, next) {
+    app.put('/api/users/:userId/topics/:topicId/members/groups/:memberId', isSuperAdmin(), /*loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]),*/ async function (req, res, next) {
         const newLevel = req.body.level;
         const memberId = req.params.memberId;
         const topicId = req.params.topicId;
@@ -3334,7 +3271,6 @@ module.exports = function (app) {
                         tj."level" as "Topic.join.level",
                         t.categories as "Topic.categories",
                         t."padUrl" as "Topic.padUrl",
-                        t."sourcePartnerId" as "Topic.sourcePartnerId",
                         t."endsAt" as "Topic.endsAt",
                         t.hashtag as "Topic.hashtag",
                         t."createdAt" as "Topic.createdAt",
@@ -3467,7 +3403,6 @@ module.exports = function (app) {
                             tj."level" as "Topic.join.level",
                             t.categories as "Topic.categories",
                             t."padUrl" as "Topic.padUrl",
-                            t."sourcePartnerId" as "Topic.sourcePartnerId",
                             t."endsAt" as "Topic.endsAt",
                             t.hashtag as "Topic.hashtag",
                             t."createdAt" as "Topic.createdAt",
@@ -4310,7 +4245,7 @@ module.exports = function (app) {
      *
      * Allows sharing of private join urls for example in forums, on conference screen...
      */
-    app.post('/api/topics/join/:token', loginCheck(['partner']), asyncMiddleware(async function (req, res) {
+    app.post('/api/topics/join/:token', loginCheck(), asyncMiddleware(async function (req, res) {
         const token = req.params.token;
         const userId = req.user.userId;
 
@@ -4384,7 +4319,7 @@ module.exports = function (app) {
     /**
      * Add Topic Attachment
      */
-    app.post('/api/users/:userId/topics/:topicId/attachments/upload', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.edit, false, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
+    app.post('/api/users/:userId/topics/:topicId/attachments/upload', loginCheck(), hasPermission(TopicMemberUser.LEVELS.edit, false, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
         const attachmentLimit = config.attachments.limit || 5;
         const topicId = req.params.topicId;
         try {
@@ -4442,7 +4377,7 @@ module.exports = function (app) {
         }
     });
 
-    app.post('/api/users/:userId/topics/:topicId/attachments', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.edit, false, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
+    app.post('/api/users/:userId/topics/:topicId/attachments', loginCheck(), hasPermission(TopicMemberUser.LEVELS.edit, false, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
         const topicId = req.params.topicId;
         const name = req.body.name;
         const type = req.body.type;
@@ -4542,7 +4477,7 @@ module.exports = function (app) {
         }
     });
 
-    app.put('/api/users/:userId/topics/:topicId/attachments/:attachmentId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.edit, false, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
+    app.put('/api/users/:userId/topics/:topicId/attachments/:attachmentId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.edit, false, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), async function (req, res, next) {
         const newName = req.body.name;
 
         if (!newName) {
@@ -4593,7 +4528,7 @@ module.exports = function (app) {
     /**
      * Delete Topic Attachment
      */
-    app.delete('/api/users/:userId/topics/:topicId/attachments/:attachmentId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.edit, false, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp], true), async function (req, res, next) {
+    app.delete('/api/users/:userId/topics/:topicId/attachments/:attachmentId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.edit, false, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp], true), async function (req, res, next) {
         try {
             const attachment = await Attachment.findOne({
                 where: {
@@ -4669,7 +4604,7 @@ module.exports = function (app) {
         }
     };
 
-    app.get('/api/users/:userId/topics/:topicId/attachments', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true), topicAttachmentsList);
+    app.get('/api/users/:userId/topics/:topicId/attachments', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true), topicAttachmentsList);
     app.get('/api/topics/:topicId/attachments', hasVisibility(Topic.VISIBILITY.public), topicAttachmentsList);
 
     const readAttachment = async function (req, res, next) {
@@ -4716,7 +4651,7 @@ module.exports = function (app) {
         }
     };
 
-    app.get('/api/users/:userId/topics/:topicId/attachments/:attachmentId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true), readAttachment);
+    app.get('/api/users/:userId/topics/:topicId/attachments/:attachmentId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true), readAttachment);
     app.get('/api/topics/:topicId/attachments/:attachmentId', hasVisibility(Topic.VISIBILITY.public), readAttachment);
 
     const topicReportsCreate = async function (req, res, next) {
@@ -4766,7 +4701,7 @@ module.exports = function (app) {
      *
      * @see https://github.com/citizenos/citizenos-api/issues/5
      */
-    app.post(['/api/users/:userId/topics/:topicId/reports', '/api/topics/:topicId/reports'], loginCheck(['partner']), hasVisibility(Topic.VISIBILITY.public), topicReportsCreate);
+    app.post(['/api/users/:userId/topics/:topicId/reports', '/api/topics/:topicId/reports'], loginCheck(), hasVisibility(Topic.VISIBILITY.public), topicReportsCreate);
 
     /**
      * Read Topic Report
@@ -4884,7 +4819,7 @@ module.exports = function (app) {
     });
 
     /** Send a Topic report for review - User let's Moderators know that the violations have been corrected **/
-    app.post(['/api/users/:userId/topics/:topicId/reports/:reportId/review', '/api/topics/:topicId/reports/:reportId/review'], loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read), async function (req, res, next) {
+    app.post(['/api/users/:userId/topics/:topicId/reports/:reportId/review', '/api/topics/:topicId/reports/:reportId/review'], loginCheck(), hasPermission(TopicMemberUser.LEVELS.read), async function (req, res, next) {
         const topicId = req.params.topicId;
         const reportId = req.params.reportId;
         const text = req.body.text;
@@ -4948,7 +4883,7 @@ module.exports = function (app) {
     /**
      * Create Topic Comment
      */
-    app.post('/api/users/:userId/topics/:topicId/comments', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true), asyncMiddleware(async function (req, res) {
+    app.post('/api/users/:userId/topics/:topicId/comments', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true), asyncMiddleware(async function (req, res) {
         let type = req.body.type;
         const parentId = req.body.parentId;
         const parentVersion = req.body.parentVersion;
@@ -5430,7 +5365,7 @@ module.exports = function (app) {
     /**
      * Read (List) Topic Comments
      */
-    app.get('/api/users/:userId/topics/:topicId/comments', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true), isModerator(), topicCommentsList);
+    app.get('/api/users/:userId/topics/:topicId/comments', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true), isModerator(), topicCommentsList);
 
     /**
      * Read (List) public Topic Comments
@@ -5440,7 +5375,7 @@ module.exports = function (app) {
     /**
      * Delete Topic Comment
      */
-    app.delete('/api/users/:userId/topics/:topicId/comments/:commentId', loginCheck(['partner']), isCommentCreator(), hasPermission(TopicMemberUser.LEVELS.admin, false, null, true));
+    app.delete('/api/users/:userId/topics/:topicId/comments/:commentId', loginCheck(), isCommentCreator(), hasPermission(TopicMemberUser.LEVELS.admin, false, null, true));
 
     //WARNING: Don't mess up with order here! In order to use "next('route')" in the isCommentCreator, we have to have separate route definition
     //NOTE: If you have good ideas how to keep one route definition with several middlewares, feel free to share!
@@ -5483,7 +5418,7 @@ module.exports = function (app) {
             });
     }));
 
-    app.put('/api/users/:userId/topics/:topicId/comments/:commentId', loginCheck(['partner']), isCommentCreator());
+    app.put('/api/users/:userId/topics/:topicId/comments/:commentId', loginCheck(), isCommentCreator());
 
     //WARNING: Don't mess up with order here! In order to use "next('route')" in the isCommentCreator, we have to have separate route definition.
     //NOTE: If you have good ideas how to keep one route definition with several middlewares, feel free to share!
@@ -5629,7 +5564,7 @@ module.exports = function (app) {
         }
     };
 
-    app.post(['/api/users/:userId/topics/:topicId/comments/:commentId/reports', '/api/topics/:topicId/comments/:commentId/reports'], loginCheck(['partner']), topicCommentsReportsCreate);
+    app.post(['/api/users/:userId/topics/:topicId/comments/:commentId/reports', '/api/topics/:topicId/comments/:commentId/reports'], loginCheck(), topicCommentsReportsCreate);
 
     /**
      * Read Report
@@ -5787,7 +5722,7 @@ module.exports = function (app) {
      * Read (List) Topic Comment votes
      */
 
-    app.get('/api/users/:userId/topics/:topicId/comments/:commentId/votes', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true), async function (req, res, next) {
+    app.get('/api/users/:userId/topics/:topicId/comments/:commentId/votes', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true), async function (req, res, next) {
         try {
             const results = await db.query(
                 `
@@ -5830,7 +5765,7 @@ module.exports = function (app) {
     /**
      * Create a Comment Vote
      */
-    app.post('/api/topics/:topicId/comments/:commentId/votes', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true), async function (req, res, next) {
+    app.post('/api/topics/:topicId/comments/:commentId/votes', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true), async function (req, res, next) {
         const value = parseInt(req.body.value, 10);
         try {
             const comment = await Comment
@@ -5952,7 +5887,7 @@ module.exports = function (app) {
     /**
      * Create a Vote
      */
-    app.post('/api/users/:userId/topics/:topicId/votes', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress]), asyncMiddleware(async function (req, res) {
+    app.post('/api/users/:userId/topics/:topicId/votes', loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.inProgress]), asyncMiddleware(async function (req, res) {
         const voteOptions = req.body.options;
 
         if (!voteOptions || !Array.isArray(voteOptions) || voteOptions.length < 2) {
@@ -6110,7 +6045,7 @@ module.exports = function (app) {
     /**
      * Read a Vote
      */
-    app.get('/api/users/:userId/topics/:topicId/votes/:voteId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true), asyncMiddleware(async function (req, res) {
+    app.get('/api/users/:userId/topics/:topicId/votes/:voteId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true), asyncMiddleware(async function (req, res) {
         const topicId = req.params.topicId;
         const voteId = req.params.voteId;
         const userId = req.user.userId;
@@ -6199,7 +6134,7 @@ module.exports = function (app) {
     /**
      * Update a Vote
      */
-    app.put('/api/users/:userId/topics/:topicId/votes/:voteId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin), asyncMiddleware(async function (req, res) {
+    app.put('/api/users/:userId/topics/:topicId/votes/:voteId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin), asyncMiddleware(async function (req, res) {
         const topicId = req.params.topicId;
         const voteId = req.params.voteId;
 
@@ -6695,7 +6630,7 @@ module.exports = function (app) {
      * TODO: Should simplify all of this routes code. It's a mess cause I decided to keep one endpoint for all of the voting. Maybe it's a better idea to move authType===hard to separate endpont
      * TODO: create an alias /api/topics/:topicId/votes/:voteId for un-authenticated signing? I's weird to call /users/self when user has not logged in...
      */
-    app.post('/api/users/:userId/topics/:topicId/votes/:voteId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.voting]), async function (req, res, next) {
+    app.post('/api/users/:userId/topics/:topicId/votes/:voteId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.voting]), async function (req, res, next) {
         try {
             const vote = await handleTopicVotePreconditions(req, res);
             if (vote.authType === Vote.AUTH_TYPES.soft) {
@@ -6871,7 +6806,7 @@ module.exports = function (app) {
      *
      * Complete the ID-card signing flow started by calling POST /api/users/:userId/topics/:topicId/votes/:voteId
      */
-    app.post('/api/users/:userId/topics/:topicId/votes/:voteId/sign', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.voting]), handleTopicVoteSign);
+    app.post('/api/users/:userId/topics/:topicId/votes/:voteId/sign', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.voting]), handleTopicVoteSign);
 
 
     const handleTopicVoteStatus = async function (req, res, next) {
@@ -7049,7 +6984,7 @@ module.exports = function (app) {
      *
      * Initially designed only for Mobile-ID signing. The signing is to be started by calling POST /api/users/:userId/topics/:topicId/votes/:voteId.
      */
-    app.get('/api/users/:userId/topics/:topicId/votes/:voteId/status', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.voting]), handleTopicVoteStatus);
+    app.get('/api/users/:userId/topics/:topicId/votes/:voteId/status', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.voting]), handleTopicVoteStatus);
 
 
     /**
@@ -7258,7 +7193,7 @@ module.exports = function (app) {
     /**
      * Delegate a Vote
      */
-    app.post('/api/users/:userId/topics/:topicId/votes/:voteId/delegations', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, null, [Topic.STATUSES.voting]), async function (req, res, next) {
+    app.post('/api/users/:userId/topics/:topicId/votes/:voteId/delegations', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, null, [Topic.STATUSES.voting]), async function (req, res, next) {
         const topicId = req.params.topicId;
         const voteId = req.params.voteId;
 
@@ -7268,7 +7203,7 @@ module.exports = function (app) {
             return res.badRequest('Cannot delegate to self.', 1);
         }
 
-        const hasAccess = await _hasPermission(topicId, toUserId, TopicMemberUser.LEVELS.read, false, null, null, req.user.partnerId);
+        const hasAccess = await _hasPermission(topicId, toUserId, TopicMemberUser.LEVELS.read, false, null, null);
 
         if (!hasAccess) {
             return res.badRequest('Cannot delegate Vote to User who does not have access to this Topic.', 2);
@@ -7392,7 +7327,7 @@ module.exports = function (app) {
     /**
      * Delete Vote delegation
      */
-    app.delete('/api/users/:userId/topics/:topicId/votes/:voteId/delegations', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, null, [Topic.STATUSES.voting]), async function (req, res, next) {
+    app.delete('/api/users/:userId/topics/:topicId/votes/:voteId/delegations', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, null, [Topic.STATUSES.voting]), async function (req, res, next) {
         try {
             const topicId = req.params.topicId;
             const voteId = req.params.voteId;
@@ -7513,7 +7448,7 @@ module.exports = function (app) {
     };
 
     /** Create an Event **/
-    app.post('/api/users/:userId/topics/:topicId/events', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.followUp]), topicEventsCreate);
+    app.post('/api/users/:userId/topics/:topicId/events', loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.followUp]), topicEventsCreate);
 
 
     /**
@@ -7544,7 +7479,7 @@ module.exports = function (app) {
 
 
     /** List Events **/
-    app.get('/api/users/:userId/topics/:topicId/events', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.followUp, Topic.STATUSES.closed]), topicEventsList);
+    app.get('/api/users/:userId/topics/:topicId/events', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.followUp, Topic.STATUSES.closed]), topicEventsList);
 
 
     /**
@@ -7556,7 +7491,7 @@ module.exports = function (app) {
     /**
      * Delete event
      */
-    app.delete('/api/users/:userId/topics/:topicId/events/:eventId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.followUp]), async function (req, res, next) {
+    app.delete('/api/users/:userId/topics/:topicId/events/:eventId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin, null, [Topic.STATUSES.followUp]), async function (req, res, next) {
         const topicId = req.params.topicId;
         const eventId = req.params.eventId;
         try {
@@ -7594,7 +7529,7 @@ module.exports = function (app) {
         }
     });
 
-    app.post('/api/users/:userId/topics/:topicId/pin', loginCheck(['partner']), async function (req, res, next) {
+    app.post('/api/users/:userId/topics/:topicId/pin', loginCheck(), async function (req, res, next) {
         const userId = req.user.userId;
         const topicId = req.params.topicId;
 
@@ -7618,7 +7553,7 @@ module.exports = function (app) {
         }
     });
 
-    app.delete('/api/users/:userId/topics/:topicId/pin', loginCheck(['partner']), async function (req, res, next) {
+    app.delete('/api/users/:userId/topics/:topicId/pin', loginCheck(), async function (req, res, next) {
         const userId = req.user.userId;
         const topicId = req.params.topicId;
 
@@ -7667,7 +7602,6 @@ module.exports = function (app) {
             const limitDefault = 10;
             const offset = parseInt(req.query.offset, 10) ? parseInt(req.query.offset, 10) : 0;
             let limit = parseInt(req.query.limit, 10) ? parseInt(req.query.limit, 10) : limitDefault;
-            const partnerId = req.user.partnerId;
 
             let title = req.query.search;
             let where = `t."deletedAt" IS NULL
@@ -7678,17 +7612,10 @@ module.exports = function (app) {
                 where += ` AND t.title ILIKE :title `;
             }
 
-            // All partners should see only Topics created by their site, but our own app sees all.
-            if (partnerId) {
-                where += ` AND t."sourcePartnerId" = :partnerId `;
-            }
-
             const query = `
                     SELECT
                          t.id AS "topicId",
                          t.title,
-                         t."sourcePartnerId",
-                         t."sourcePartnerObjectId",
                          usn."allowNotifications",
                          usn."preferences",
                          count(*) OVER()::integer AS "countTotal"
@@ -7725,7 +7652,6 @@ module.exports = function (app) {
                         replacements: {
                             userId: req.user.id,
                             title: title,
-                            partnerId,
                             offset,
                             limit
                         },

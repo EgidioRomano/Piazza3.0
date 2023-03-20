@@ -2,7 +2,6 @@ import './account';
 import './default';
 import './group';
 import './my';
-import './partners';
 import './topic';
 
 import './activities';

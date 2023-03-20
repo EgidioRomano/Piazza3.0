@@ -8,8 +8,6 @@ let loginFormComponent = {
         email: '@?'
     },
     controller: ['$log', '$state', '$stateParams', '$window', '$document', '$interval', 'cosConfig', 'ngDialog', 'sAuth', 'sLocation', 'sUser', 'sNotification', 'AppService', class LoginFormController {
-        public LOGIN_PARTNERS = {
-        };
         private email;
         public authMethodsAvailable;
         public isFormEmailProvided;
@@ -123,14 +121,10 @@ let loginFormComponent = {
 
             this.errors = null;
             const success = (response) => {
-                if (this.$state.is('partners.consent') || this.$state.is('partners.login')) {
-                    return this.$window.location.href = this.sLocation.getAbsoluteUrlApi('/api/auth/openid/authorize');
+                if (this.$stateParams.redirectSuccess) {
+                    this.$window.location.href = this.$stateParams.redirectSuccess;
                 } else {
-                    if (this.$stateParams.redirectSuccess) {
-                        this.$window.location.href = this.$stateParams.redirectSuccess;
-                    } else {
-                        this.$window.location = '/';
-                    }
+                    this.$window.location = '/';
                 }
             };
 
@@ -186,81 +180,6 @@ let loginFormComponent = {
                 });
         };
 
-        doLoginPartner(partnerId) {
-            // All /widgets/* require pop-up login flow as they are in the iframe
-            if (this.$state.includes('widgets')) {
-                this.doLoginPartnerPopup(partnerId);
-            } else {
-                this.doLoginPartnerNoPopup(partnerId);
-            }
-        };
-
-        /**
-         * Login with partner
-         *
-         * @param {string} partnerId String representing the partner. For ex "facebook", "google".
-         */
-        doLoginPartnerPopup(partnerId) {
-            if (Object.values(this.LOGIN_PARTNERS).indexOf(partnerId) < 0) {
-                throw new Error(`LoginFormCtrl.doLoginPartner() Invalid parameter for partnerId ${partnerId}`);
-            }
-
-            const url = this.sLocation.getAbsoluteUrlApi(
-                '/api/auth/:partnerId',
-                {
-                    partnerId: partnerId
-                },
-                {
-                    redirectSuccess: this.sLocation.getAbsoluteUrl('/auth/callback'),
-                    display: 'popup'
-                }
-            );
-
-            const redirectSuccess = this.$stateParams.redirectSuccess || this.sLocation.currentUrl(); // Final url to land after successful login
-
-            const loginWindow = this.popupCenter(url, 'CitizenOS Partner Login', 470, 500);
-
-            if (this.$document[0].documentMode || this.$window.navigator.userAgent.indexOf('Edge') > -1) {
-                const popupCheck = this.$interval(() => {
-                    if (loginWindow.closed) {
-                        this.$interval.cancel(popupCheck);
-                        this.$window.focus();
-                        this.sAuth
-                            .status()
-                            .then((user) => {
-                                if (user) {
-                                    this.$window.location.href = redirectSuccess;
-                                }
-                            });
-                    }
-                }, 250);
-            }
-
-            const messageHandler = (message) => {
-                loginWindow.close();
-                this.$window.focus();
-                this.$window.location.href = redirectSuccess;
-            };
-            this.$window.addEventListener('message', messageHandler, false);
-        };
-
-        // No-popup partner login version. Used for /partners/{partnerId}/login pages where the popup version would add too much extra complexity with the redirect urls.
-        // Popup version was initially needed only for the widget logins. Maybe worth making an exception for the widgets and revert everything else to normal.
-        doLoginPartnerNoPopup(partnerId) {
-            if (Object.values(this.LOGIN_PARTNERS).indexOf(partnerId) < 0) {
-                throw new Error(`LoginFormCtrl.doLoginPartner() Invalid parameter for partnerId ${partnerId}`);
-            }
-
-            let url = this.sLocation.getAbsoluteUrlApi('/api/auth/:partnerId', { partnerId: partnerId });
-            if (this.$stateParams.redirectSuccess) {
-                url += '?redirectSuccess=' + encodeURIComponent(this.$stateParams.redirectSuccess);
-            } else {
-                const redirectSuccess = this.sLocation.currentUrl();
-                url += '?redirectSuccess=' + redirectSuccess + '?'; // HACK: + '?' avoids digest loop on Angular side for Google callbacks.
-            }
-
-            this.$window.location.href = url;
-        };
     }]
 };
 angular

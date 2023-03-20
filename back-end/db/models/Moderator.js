@@ -35,38 +35,17 @@ module.exports = function (sequelize, DataTypes) {
                 },
                 onUpdate: 'CASCADE',
                 onDelete: 'CASCADE'
-            },
-            partnerId: {
-                type: DataTypes.UUID,
-                allowNull: true,
-                comment: 'Which Partner moderator represents. One User can be a moderator of many Partners',
-                references: {
-                    model: 'Partners',
-                    key: 'id'
-                },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE'
             }
         },
         {
             indexes: [
                 {
                     unique: true,
-                    fields: ['userId', 'partnerId'],
-                    where: {
-                        partnerId: {
-                            [Op.not]: null
-                        }
-                    }
+                    fields: ['userId']
                 },
                 {
                     unique: true,
-                    fields: ['userId'],
-                    where: {
-                        partnerId: {
-                            [Op.eq]: null
-                        }
-                    }
+                    fields: ['userId']
                 }
             ]
         }

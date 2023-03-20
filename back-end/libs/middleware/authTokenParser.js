@@ -3,7 +3,6 @@
 /**
  * Middleware to parse authorization token and set "req.user" if the token is present and valid
  *
- * Partners use "Authorization: Bearer <JWT>
  * App itself uses cookie which contains JWT
  *
  * @param {object} req  Express request object
@@ -27,7 +26,7 @@ module.exports = function (req, res, next) {
         token = cookieAuthorization;
     }
 
-    // Partners use "Authorization: Bearer <JWT>. Partner JWT always overrides app cookie JWT
+    // Use "Authorization: Bearer <JWT>. JWT always overrides app cookie JWT
     const headerAuthorization = req.headers.authorization;
     if (headerAuthorization) {
         const headerInfoArr = headerAuthorization.split(' ');

@@ -260,7 +260,6 @@ module.exports = function (app) {
                             object.creatorId = activity.data[field].creatorId;
                             object.updatedAt = activity.data[field].updatedAt;
                             object.deletedAt = activity.data[field].deletedAt;
-                            object.sourcePartnerId = activity.data[field].sourcePartnerId;
                             delete object.creator;
                             break;
                         case 'User':
@@ -517,21 +516,13 @@ module.exports = function (app) {
         return activitiesList(req, res, next);
     });
 
-    app.get('/api/users/:userId/topics/:topicId/activities', loginCheck(['partner']), topicLib.hasPermission(TopicMemberUser.LEVELS.read, true), function (req, res, next) {
+    app.get('/api/users/:userId/topics/:topicId/activities', loginCheck(), topicLib.hasPermission(TopicMemberUser.LEVELS.read, true), function (req, res, next) {
         return topicActivitiesList(req, res, next);
     });
 
-    app.get('/api/users/:userId/activities/unread', loginCheck(['partner']), async function (req, res, next) {
+    app.get('/api/users/:userId/activities/unread', loginCheck(), async function (req, res, next) {
         const userId = req.user.userId;
-        const sourcePartnerId = req.query.sourcePartnerId;
 
-        // All partners should see only Topics created by their site, but our own app sees all.
-        let wherePartnerTopics = '';
-        let wherePartnerGroups = '';
-        if (sourcePartnerId) {
-            wherePartnerTopics = injectReplacements(` AND t."sourcePartnerId" = :sourcePartnerId `, Sequelize.postgres, {sourcePartnerId});
-            wherePartnerGroups = injectReplacements(`' AND g."sourcePartnerId" = :sourcePartnerId `, Sequelize.postgres, {sourcePartnerId});
-        }
         try {
             const queryFunctions = `
                 CREATE OR REPLACE FUNCTION pg_temp.getUserTopics(uuid)
@@ -562,7 +553,6 @@ module.exports = function (app) {
                         LEFT JOIN "Users" c ON (c.id = t."creatorId")
                         WHERE
                             t.title IS NOT NULL
-                            ${wherePartnerTopics}
                             AND COALESCE(tmup.level, tmgp.level, 'none')::"enum_TopicMemberUsers_level" > 'none'
                         ORDER BY t."updatedAt" DESC
                     ; $$
@@ -601,7 +591,6 @@ module.exports = function (app) {
                                 ORDER BY t."updatedAt" ASC
                             ) AS gt ON (gt."groupId" = g.id)
                         WHERE gm."deletedAt" is NULL
-                            ${wherePartnerGroups}
                             AND gm."userId" = $1
                         GROUP BY g.id
                         ORDER BY g."updatedAt" DESC, g.id
@@ -781,7 +770,6 @@ module.exports = function (app) {
             if (req.user) {
                 userId = req.user.userId;
             }
-            const sourcePartnerId = req.query.sourcePartnerId;
             const page = parseInt(req.query.page, 10);
             let offset = parseInt(req.query.offset, 10) ? parseInt(req.query.offset, 10) : 0;
             let limit = parseInt(req.query.limit, 10) ? parseInt(req.query.limit, 10) : limitDefault;
@@ -818,14 +806,6 @@ module.exports = function (app) {
 
             if (limit > limitMax) limit = limitDefault;
 
-            // All partners should see only Topics created by their site, but our own app sees all.
-            let wherePartnerTopics = '';
-            let wherePartnerGroups = '';
-            if (sourcePartnerId) {
-                wherePartnerTopics = injectReplacements(` AND t."sourcePartnerId" = :sourcePartnerId `, Sequelize.postgres, {sourcePartnerId});
-                wherePartnerGroups = injectReplacements(` AND g."sourcePartnerId" = :sourcePartnerId `, Sequelize.postgres, {sourcePartnerId});
-            }
-
             const query = `
                 ${activitiesDataFunction}
                 CREATE OR REPLACE FUNCTION pg_temp.getPublicTopics()
@@ -838,7 +818,6 @@ module.exports = function (app) {
                         WHERE
                             t.title IS NOT NULL
                             AND t.visibility = 'public'
-                            ${wherePartnerTopics}
                     ; $$
                 LANGUAGE SQL IMMUTABLE;
 
@@ -849,7 +828,6 @@ module.exports = function (app) {
                             g.id
                         FROM "Groups" g
                         WHERE g."visibility" = 'public'
-                            ${wherePartnerGroups}
                         GROUP BY g.id
                     ; $$
                 LANGUAGE SQL IMMUTABLE;
@@ -882,7 +860,6 @@ module.exports = function (app) {
                             LEFT JOIN "Users" c ON (c.id = t."creatorId")
                         WHERE
                             t.title IS NOT NULL
-                            ${wherePartnerTopics}
                             AND COALESCE(tmup.level, tmgp.level, 'none')::"enum_TopicMemberUsers_level" > 'none'
                         ORDER BY t."updatedAt" DESC
                     ; $$
@@ -921,7 +898,6 @@ module.exports = function (app) {
                                 ORDER BY t."updatedAt" ASC
                             ) AS gt ON (gt."groupId" = g.id)
                         WHERE gm."deletedAt" is NULL
-                            ${wherePartnerGroups}
                             AND gm."userId" = $1
                         GROUP BY g.id
                     ; $$
@@ -1112,7 +1088,7 @@ module.exports = function (app) {
         }
     };
 
-    app.get('/api/users/:userId/activities', loginCheck(['partner']), function (req, res, next) {
+    app.get('/api/users/:userId/activities', loginCheck(), function (req, res, next) {
         return activitiesList(req, res, next);
     });
 
@@ -1221,11 +1197,7 @@ module.exports = function (app) {
         }
     };
 
-    app.get('/api/groups/:groupId/activities', function (req, res, next) {
-        return groupActivitiesList(req, res, next, 'public')
-    });
-
-    app.get('/api/users/:userId/groups/:groupId/activities', loginCheck(['partner']), groupLib.hasPermission(GroupMemberUser.LEVELS.read, true), function (req, res, next) {
+    app.get('/api/users/:userId/groups/:groupId/activities', loginCheck(), groupLib.hasPermission(GroupMemberUser.LEVELS.read, true), function (req, res, next) {
         return groupActivitiesList(req, res, next);
     });
 

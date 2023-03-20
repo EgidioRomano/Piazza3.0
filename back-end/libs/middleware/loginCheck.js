@@ -3,7 +3,7 @@
 /**
  * Middleware to perform login check and verify appropriate scope
  *
- * @param {Array<String>} [scopes=['all']] Array of scopes to which the endpoint access is restricted to. By default requires "all" which is only true for the app itself and to NO Partner.
+ * @param {Array<String>} [scopes=['all']] Array of scopes to which the endpoint access is restricted to. By default requires "all" which is only true for the app itself.
  *
  * @returns {function} Express middleware function
  */

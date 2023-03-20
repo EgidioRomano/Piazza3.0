@@ -1120,35 +1120,6 @@ import * as angular from 'angular';
                         });
                     }]
                 })
-                .state('partners', {
-                    url: '/partners/:partnerId',
-                    abstract: true,
-                    parent: 'index',
-                    resolve: {
-                        rPartner: ['$stateParams', 'sPartner', 'AppService', function ($stateParams, sPartner, AppService) {
-                            return sPartner
-                                .info($stateParams.partnerId)
-                                .then(function (partnerInfo) {
-                                    AppService.partner = AppService;
-                                    return partnerInfo;
-                                });
-                        }]
-                    },
-                    controller: ['$scope', 'rPartner', function ($scope, rPartner) {
-                        $scope.partner = rPartner;
-                    }],
-                    templateUrl: '/views/layouts/partner.html'
-                })
-                .state('partners/login', {
-                    url: '/login',
-                    parent: 'partners',
-                    template: '<partner-login></partner-login>'
-                })
-                .state('partners/consent', {
-                    url: '/consent',
-                    parent: 'partners',
-                    template: '<user-consent-form></user-consent-form>'
-                })
                 .state('widgets', {
                     url: '/widgets?widgetId&widgetTitle&style',
                     parent: 'index',
@@ -1219,35 +1190,6 @@ import * as angular from 'angular';
                     abstract: true,
                     templateUrl: '/views/layouts/widget.html'
                 })
-                .state('widgets/wrapped/sourcePartnerObjectId', {
-                    url: '/partners/:partnerId/topics/:sourcePartnerObjectId',
-                    parent: 'widgets',
-                    abstract: true,
-                    template: '<div ui-view></div>',
-                    resolve: {
-                        TopicResolve: ['$http', '$stateParams', 'sLocation', function ($http, $stateParams, sLocation) {
-                            var path = sLocation.getAbsoluteUrlApi(
-                                '/api/partners/:partnerId/topics/:sourcePartnerObjectId',
-                                $stateParams
-                            );
-                            return $http
-                                .get(path)
-                                .then(function (res) {
-                                    return res.data.data;
-                                });
-                        }]
-                    }
-                })
-                .state('widgets/wrapped/sourcePartnerObjectId/arguments', {
-                    url: '/arguments',
-                    parent: 'widgets/wrapped/sourcePartnerObjectId',
-                    controller: ['$state', '$stateParams', 'TopicResolve', function ($state, $stateParams, TopicResolve) {
-                        $state.go('widgets/wrapped/arguments', {
-                            topicId: TopicResolve.id,
-                            widgetId: $stateParams.widgetId
-                        });
-                    }]
-                })
                 .state('widgets/wrapped/arguments', {
                     url: '/topics/:topicId/arguments',
                     parent: 'widgets/wrapped',
@@ -1262,32 +1204,6 @@ import * as angular from 'angular';
                     url: '/topics/:topicId/activities',
                     parent: 'widgets',
                     template: '<activities-widget></activities-widget>'
-                })
-                .state('widgets/partnerActivities', {
-                    url: '/partners/:partnerId/activities?filter',
-                    parent: 'widgets',
-                    template: '<activities-widget></activities-widget>'
-                })
-                .state('widgets/partnerTopicActivities', {
-                    url: '/activities',
-                    parent: 'widgets/wrapped/sourcePartnerObjectId',
-                    controller: ['$state', '$stateParams', 'TopicResolve', function ($state, $stateParams, TopicResolve) {
-                        $state.go('widgets/topicActivities', {
-                            topicId: TopicResolve.id,
-                            widgetId: $stateParams.widgetId
-                        });
-                    }]
-                })
-                .state('authCallback', { // Callback page for the "popup" style (facebook, google) authentication flow.
-                    url: '/auth/callback',
-                    template: '<h1>Redirecting...</h1>',
-                    controller: ['$window', '$document', function ($window, $document) {
-                        if ($document[0].documentMode || $window.navigator.userAgent.indexOf('Edge') > -1) {
-                            return $window.close();
-                        } else {
-                            $window.opener.postMessage({ status: 'success' }, $window.origin);
-                        }
-                    }]
                 })
                 .state('onedrive', {
                     url: '/onedrive',

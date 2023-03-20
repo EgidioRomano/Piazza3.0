@@ -163,8 +163,6 @@
     "NOTIFICATION_USER_ADD_USERCONNECTION_USER": "User <em>{{userName}}</em> has added a new log-in method: <em>{{connectionName}}</em>",
     "NOTIFICATION_USER_CREATE_USER": "User <em>{{userName}}</em> has just been created",
     "NOTIFICATION_SYSTEM_CREATE_USER": "User has been created in the system by invite from another user.",
-    "NOTIFICATION_USER_CREATE_USERCONSENT": "",
-    "NOTIFICATION_USER_DELETE_CONSENT": "",
     "NOTIFICATION_USERCONNECTION_CONNECTION_NAME_GOOGLE": "Google",
     "NOTIFICATION_USERCONNECTION_CONNECTION_NAME_FACEBOOK": "Facebook",
     "NOTIFICATION_USERCONNECTION_CONNECTION_NAME_SMARTID": "Smart-ID",
