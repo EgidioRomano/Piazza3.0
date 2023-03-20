@@ -35,6 +35,7 @@ module.exports = function (app) {
     const path = require('path');
 
     const loginCheck = app.get('middleware.loginCheck');
+    const isSuperAdmin = app.get('middleware.isSuperAdmin');
     const asyncMiddleware = app.get('middleware.asyncMiddleware');
     const authTokenRestrictedUse = app.get('middleware.authTokenRestrictedUse');
     const partnerParser = app.get('middleware.partnerParser');
@@ -3300,7 +3301,7 @@ module.exports = function (app) {
     /**
      * Delete User membership information
      */
-    app.delete('/api/users/:userId/topics/:topicId/members/users/:memberId', loginCheck(['partner']), hasPermission(TopicMemberUser.LEVELS.admin, null, null, true), async function (req, res, next) {
+    app.delete('/api/users/:userId/topics/:topicId/members/users/:memberId', isSuperAdmin(), async function (req, res, next) {
         const topicId = req.params.topicId;
         const memberId = req.params.memberId;
         try {
