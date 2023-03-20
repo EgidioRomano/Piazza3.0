@@ -1411,7 +1411,7 @@ CREATE TABLE public."Users" (
     id uuid NOT NULL,
     name character varying(255),
     birthday character varying(255),
-    language character varying(5) DEFAULT 'en'::character varying,
+    language character varying(5) DEFAULT 'it'::character varying,
     email character varying(254),
     password character varying(64),
     "passwordResetCode" uuid,
