@@ -17,12 +17,12 @@
                         </div>
                     </div>
 
-                    <div class="tab_button" ng-click="$ctrl.app.selectTab('preferences')" ng-class="$ctrl.app.tabSelected === 'preferences' ? 'active' : ''">
+                    <!--div class="tab_button" ng-click="$ctrl.app.selectTab('preferences')" ng-class="$ctrl.app.tabSelected === 'preferences' ? 'active' : ''">
                         <div class="tab_buttom_wrap">
                             <div class="tab_button_text" translate="MODALS.MY_ACCOUNT_TAB_PREFERENCES">PREFERENCES</div>
                             <div class="blue_bottom_line"></div>
                         </div>
-                    </div>
+                    </div-->
 
                     <div class="tab_button" ng-click="$ctrl.app.selectTab('notifications')" ng-class="$ctrl.app.tabSelected === 'notifications' ? 'active' : ''">
                         <div class="tab_buttom_wrap">
@@ -111,7 +111,8 @@
                     </div>
                 </div>
         </div>
-        <div class="content" ng-if="$ctrl.app.tabSelected === 'preferences'">
+        
+        <!--div class="content" ng-if="$ctrl.app.tabSelected === 'preferences'">
             <div class="content_section">
                 <div class="settings_section">
                     <div class="settings_cell">
@@ -125,8 +126,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!--div class="content_description" ng-if="tabSelected === 'notifications'">Make your topic private</div-->
+        </div-->
+
         <div class="content" ng-if="$ctrl.app.tabSelected === 'notifications'">
             <div class="content_section">
                 <div class="settings_section">
