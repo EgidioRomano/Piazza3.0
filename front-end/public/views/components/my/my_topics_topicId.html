@@ -137,9 +137,6 @@
                             <span class="item_text blue_link" ng-if="$ctrl.Topic.canEditDescription($ctrl.topic)"
                                 ui-sref="topics/view({topicId: $ctrl.topic.id, editMode: true})"
                                 translate="VIEWS.MY_TOPICS_TOPICID.LNK_EDIT">edit</span>
-                            <span class="separator">|</span>
-                            <span class="item_text blue_link" ng-click="$ctrl.doLeaveTopic()"
-                                translate="VIEWS.MY_TOPICS_TOPICID.LNK_LEAVE">leave</span>
                             <span ng-if="$ctrl.Topic.canDelete($ctrl.topic)">
                                 <span class="separator">|</span>
                                 <span ng-click="$ctrl.doDeleteTopic()">

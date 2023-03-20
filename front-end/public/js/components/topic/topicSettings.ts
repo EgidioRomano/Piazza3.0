@@ -34,7 +34,7 @@ let topicSettings = {
 
         constructor(private $state, private $stateParams, $log, private $timeout, private $translate, private $anchorScroll, private Topic, private Group, private TopicVote, private TopicMemberUser, private TopicMemberGroupService, private ngDialog, private app) {
             $log.debug('TopicSettingsCtrl', $state, $stateParams);
-            this.app.tabSelected = $stateParams.tab || 'settings';
+            this.app.tabSelected = $stateParams.tab || 'categories';
             TopicMemberGroupService.topicId = $stateParams.topicId;
             TopicMemberGroupService.reload();
 

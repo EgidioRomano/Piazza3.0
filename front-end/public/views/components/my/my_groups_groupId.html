@@ -129,9 +129,6 @@
                             <span class="item_text blue_link" ng-if="$ctrl.Group.canUpdate($ctrl.group)"
                                 ui-sref="my/groups/groupId/settings({groupId: $ctrl.group.id})"
                                 translate="VIEWS.MY_GROUPS_GROUPID.LNK_SETTINGS">settings</span>
-                            <span class="separator" ng-if="$ctrl.Group.canUpdate($ctrl.group)">|</span>
-                            <span class="item_text blue_link" ng-click="$ctrl.doLeaveGroup()"
-                                translate="VIEWS.MY_GROUPS_GROUPID.LNK_LEAVE">leave</span>
                             <span ng-if="$ctrl.Group.canDelete($ctrl.group)">
                                 <span class="separator">|</span>
                                 <span class="remove item_text blue_link" ng-click="$ctrl.doDeleteGroup(group)">
