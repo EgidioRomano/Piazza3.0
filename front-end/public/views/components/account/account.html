@@ -70,7 +70,7 @@
                     <div id="profile_edit_section">
                         <div class="input_wrap">
                             <span translate="MODALS.MY_ACCOUNT_PLACEHOLDER_NAME">Name</span>
-                            <input id="name" ng-model="$ctrl.form.name" placeholder="{{'MODALS.MY_ACCOUNT_PLACEHOLDER_NAME' | translate}}" focus-if="{{$ctrl.app.wWidth > 1024}}" ng-class="{'error_input': $ctrl.errors.name}" maxlength="255" required>
+                            <input id="name" disabled ng-model="$ctrl.form.name" placeholder="{{'MODALS.MY_ACCOUNT_PLACEHOLDER_NAME' | translate}}" ng-class="{'error_input': $ctrl.errors.name}" maxlength="255" required>
                             <label for="name" class="error_label" ng-if="$ctrl.errors.name">
                                 <div class="table_cell">
                                     <div class="sprite sprite-icon-inputfield-error2x"></div>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="input_wrap">
                             <span translate="MODALS.MY_ACCOUNT_PLACEHOLDER_BIRTHDAY">Birthday</span>
-                            <input id="birthday" ng-model="$ctrl.form.birthday" placeholder="{{'MODALS.MY_ACCOUNT_PLACEHOLDER_BIRTHDAY' | translate}}" ng-class="{'error_input': $ctrl.errors.birthday}" maxlength="255">
+                            <input id="birthday" disabled ng-model="$ctrl.form.birthday" placeholder="{{'MODALS.MY_ACCOUNT_PLACEHOLDER_BIRTHDAY' | translate}}" ng-class="{'error_input': $ctrl.errors.birthday}" maxlength="255">
                             <label for="birthday" class="error_label" ng-if="$ctrl.errors.birthday">
                                 <div class="table_cell">
                                     <div class="sprite sprite-icon-inputfield-error2x"></div>
