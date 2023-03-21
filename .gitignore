@@ -39,6 +39,5 @@ back-end/logs/*.log*
 back-end/config/local.*
 back-end/config/emails/images/*
 back-end/files/**/
-back-end/public/uploads
 back-end/test/tmp/**
 !back-end/test/tmp/README.md
