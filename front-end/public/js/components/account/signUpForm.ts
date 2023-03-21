@@ -13,9 +13,7 @@ let signUpForm = {
             passwordConfirm: null,
             birthday: null,
             redirectSuccess: null,
-            preferences: {
-                showInSearch: false
-            },
+            preferences: { },
             settings: null
         };
 

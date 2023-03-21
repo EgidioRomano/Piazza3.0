@@ -90,50 +90,6 @@ suite('Search', function () {
                 agent = request.agent(app);
             });
 
-            test('Success - show only users with preference "showInSearch" set true', async () => {
-                const data = (await searchUsers(agent2, user2.id, {str: 'test_'})).body.data;
-                assert.equal(data.results.public.users.count, 0);
-
-                await User.update(
-                    {
-                        preferences: {
-                            showInSearch: true
-                        }
-                    },
-                    {
-                        where: {
-                            id: user.id
-                        }
-                    }
-                );
-
-                const data2 = (await searchUsers(agent2,user2.id, {str: 'test_'})).body.data;
-                assert.equal(data2.results.public.users.count, 1);
-                assert.equal(data2.results.public.users.rows[0].email, user.email);
-            });
-
-            test('Success - no results if string length under 5', async () => {
-                const data = (await searchUsers(agent2, user2.id, {str: 'test'})).body.data;
-                assert.equal(data.results.public.users.count, 0);
-
-                await User.update(
-                    {
-                        preferences: {
-                            showInSearch: true
-                        }
-                    },
-                    {
-                        where: {
-                            id: user.id
-                        }
-                    }
-                );
-
-                const data2 = (await searchUsers(agent2,user2.id, {str: 'test'})).body.data;
-                assert.equal(data2.results.public.users.count, 0);
-                assert.equal(data2.results.public.users.rows.length, 0);
-            });
-
             test('Fail - unauthorized', async () => {
                 const agent = request.agent(app);
                 const resBody = (await _searchUsers(agent, 'self', {str: 'test_'}, 401)).body;

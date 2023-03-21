@@ -150,7 +150,7 @@ module.exports = function (sequelize, DataTypes) {
                 comment: 'User preferences JSON object',
                 set (value) {
                     let final = {};
-                    const allowedFields = ['showInSearch'];
+                    const allowedFields = [''];
                     if (value) {
                         allowedFields.forEach((field) => {
                             final[field] = value[field];

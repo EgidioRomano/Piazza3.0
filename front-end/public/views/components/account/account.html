@@ -119,11 +119,6 @@
                         <div class="setting_title" translate="MODALS.MY_ACCOUNT_LBL_SHOW_IN_SEARCH">Make your topic private</div>
                         <div class="setting_description" translate="MODALS.MY_ACCOUNT_LBL_SHOW_IN_SEARCH_DESCRIPTION">ONLY PEOPLE YOU INVITE WILL BE ABLE TO JOIN THE TOPIC</div>
                     </div>
-
-                    <div class="settings_cell setting_toggle">
-                        <cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate" cos-toggle-text-off="'TOGGLE_OFF' | translate"
-                                model="$ctrl.form.preferences.showInSearch"></cos-toggle>
-                    </div>
                 </div>
             </div>
         </div-->
@@ -152,101 +147,6 @@
                         </tr>
                     </table>
                 </div>
-                <!--div class="settings_section">
-                    <table>
-                        <tr>
-                            <th></th>
-                            <th>
-                                <div class="title_item">Push</div>
-                            </th>
-                            <th>
-                                <div class="title_item">E-mail</div>
-                            </th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td class="setting_title">Topics</td>
-                            <td><div class="title_item" cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate" cos-toggle-text-off="'TOGGLE_OFF' | translate" ng-model="form.preferences.notifications.topic.push"></div></td>
-                            <td><div class="title_item" cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate" cos-toggle-text-off="'TOGGLE_OFF' | translate" ng-model="form.preferences.notifications.topic.email"></div></td>
-                            <td><input class="option_checkbox" type="checkbox"></td>
-                            <td><input class="option_checkbox" type="checkbox"></td>
-                        </tr>
-                        <tr>
-                            <td class="setting_title">Groups</td>
-                            <td><div class="title_item" cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate" cos-toggle-text-off="'TOGGLE_OFF' | translate" ng-model="form.preferences.notifications.groups.push"></div></td>
-                            <td><div class="title_item" cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate" cos-toggle-text-off="'TOGGLE_OFF' | translate" ng-model="form.preferences.notifications.groups.email"></div></td>
-                            <td><input class="option_checkbox" type="checkbox"></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                    <div class="settings_cell">
-                        <div class="table_setting_title">
-                            <span>All actions</span>
-                        </div>
-
-                        <div class="table_setting_title">
-                            <span>All actions</span>
-                        </div>
-                        <div class="table_setting_title">
-                            <span>All actions</span>
-                        </div>
-                        <div class="table_setting_title">
-                            <span>All actions</span>
-                        </div>
-                        <div class="table_setting_title">
-                            <span>All actions</span>
-                        </div>
-                    </div>
-                    <div class="settings_cell">
-                        <div class="setting_title" >Activity feed</div>
-                        <div cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate" cos-toggle-text-off="'TOGGLE_OFF' | translate"
-                                ng-model="form.preferences.showInSearch"></div>
-                    </div>
-                    <div class="profile_line v_line lightest_line"></div>
-                    <div class="settings_cell">
-                        <div cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate" cos-toggle-text-off="'TOGGLE_OFF' | translate"
-                                ng-model="form.preferences.showInSearch"></div>
-                        <div class="setting_title" translate="MODALS.MY_ACCOUNT_LBL_SHOW_IN_SEARCH">Make your topic private</div>
-                        <div class="table_setting_cell">
-                            <label class="checkcontainer">
-                                <input type="radio" class="vote_option_radio" ng-click="selectOption(option)">
-                                <span class="option_radio"></span>
-                            </label>
-                        </div>
-                        <div class="table_setting_cell">
-                            <input class="option_checkbox" type="checkbox">
-                        </div>
-                        <div class="table_setting_cell">
-                            <input class="option_checkbox" type="checkbox">
-                        </div>
-                        <div class="table_setting_cell">
-                            <input class="option_checkbox" type="checkbox">
-                        </div>
-                        <div class="table_setting_cell">
-                            <input class="option_checkbox" type="checkbox">
-                        </div>
-                    </div>
-                    <div class="profile_line v_line lightest_line"></div>
-                    <div class="settings_cell">
-                        <div cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate" cos-toggle-text-off="'TOGGLE_OFF' | translate"
-                                ng-model="form.preferences.showInSearch"></div>
-                        <div class="setting_title" translate="MODALS.MY_ACCOUNT_LBL_SHOW_IN_SEARCH">Make your topic private</div>
-                    </div>
-                    <div class="profile_line v_line lightest_line"></div>
-                    <div class="settings_cell">
-                        <div cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate" cos-toggle-text-off="'TOGGLE_OFF' | translate"
-                                ng-model="form.preferences.showInSearch"></div>
-                        <div class="setting_title" translate="MODALS.MY_ACCOUNT_LBL_SHOW_IN_SEARCH">Make your topic private</div>
-                    </div>
-                    <div class="profile_line v_line lightest_line"></div>
-                    <div class="settings_cell">
-                        <div cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate" cos-toggle-text-off="'TOGGLE_OFF' | translate"
-                                ng-model="form.preferences.showInSearch"></div>
-                        <div class="setting_title" translate="MODALS.MY_ACCOUNT_LBL_SHOW_IN_SEARCH">Make your topic private</div>
-                    </div>
-                </div-->
             </div>
         </div>
         <div class="content" ng-if="$ctrl.app.tabSelected === 'account'">

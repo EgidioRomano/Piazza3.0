@@ -16,7 +16,6 @@ let myAccount = {
             imageUrl: null,
             passwordConfirm: null,
             preferences: {
-                showInSearch: false,
                 notifications: {
                     topics: {},
                     groups: {}
