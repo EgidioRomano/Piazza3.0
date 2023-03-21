@@ -215,35 +215,12 @@
 
                 <!-- COLUMN 2 -->
                 <div class="content_column">
-
-
-                    <div class="content_item">
-                        <div class="item_description" translate="VIEWS.MY_TOPICS_TOPICID.LBL_VOTES_COUNTED">Votes
-                            counted</div>
-                        <div class="item_content">
-                            <div class="item_text">
-                                {{$ctrl.topic.vote.getVoteCountTotal()}}
-                                <!--<span class="separator">|</span>
-                                <span class="item_link blue_link">
-                                    view who voted TODO!
-                                </span-->
-                            </div>
-                        </div>
-                        <div class="clearer"></div>
-                    </div>
-
                     <div class="content_item">
                         <div class="item_description" translate="VIEWS.MY_TOPICS_TOPICID.LBL_VOTE_DEADLINE">Vote
                             deadline</div>
                         <div class="item_content">
                             <div class="item_text">
-                                <span
-                                    ng-bind=" ($ctrl.topic.vote.endsAt | amDateFormat : 'L LT Z') || ('VIEWS.MY_TOPICS_TOPICID.LBL_VOTE_DEADLINE_NONE' | translate)">12/12/2017</span>
-                                <span class="separator">|</span>
-                                <cos-modal-datepicker ng-model="$ctrl.topic.vote.endsAt"
-                                    cos-modal-title="'VIEWS.MY_TOPICS_TOPICID.LBL_VOTE_DEADLINE' | translate"
-                                    cos-modal-description="$ctrl.topic.title"
-                                    cos-modal-on-save="doSaveVoteEndsAt"></cos-modal-datepicker>
+                                <span ng-bind=" ($ctrl.topic.vote.endsAt | amDateFormat : 'L LT') || ('VIEWS.MY_TOPICS_TOPICID.LBL_VOTE_DEADLINE_NONE' | translate)">12/12/2023</span>
                             </div>
                         </div>
                     </div>
