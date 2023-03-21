@@ -163,20 +163,6 @@ import * as angular from 'angular';
                                                 }
                                             });
                                         }
-                                        /*if (sAuth.user.loggedIn) {
-                                            if (!sAuth.user.termsVersion || sAuth.user.termsVersion !== cosConfig.legal.version) {
-                                                return $state.go(
-                                                    'account/tos',
-                                                    {
-                                                        redirectSuccess: sLocation.getAbsoluteUrl($window.location.pathname) + $window.location.search,
-                                                        language: $stateParams.language
-                                                    },
-                                                    {
-                                                        location: false
-                                                    }
-                                                );
-                                            }
-                                        }*/
 
                                         return $q.resolve(true);
                                     },

@@ -16,14 +16,12 @@ let signUpForm = {
             preferences: {
                 showInSearch: false
             },
-            termsVersion: null,
             settings: null
         };
 
         private agreeToTerms = false;
         private errors;
         constructor (private $log, private $stateParams, private cosConfig, private $window, private ngDialog, private sAuth, private sNotification, private app) {
-            this.form.termsVersion = cosConfig.legal.version;
             this.form.email = $stateParams.email;
             this.form.name = $stateParams.name
             this.form.redirectSuccess = $stateParams.redirectSuccess;
@@ -58,7 +56,7 @@ let signUpForm = {
             } else {
                 this.$log.error('doSignUp NEW USER', this.form);
                 this.sAuth
-                    .signUp(this.form.email, this.form.password, this.form.name, this.form.birthday, this.form.redirectSuccess, this.form.settings, this.form.termsVersion)
+                    .signUp(this.form.email, this.form.password, this.form.name, this.form.birthday, this.form.redirectSuccess, this.form.settings)
                     .then(success, error);
             }
         };

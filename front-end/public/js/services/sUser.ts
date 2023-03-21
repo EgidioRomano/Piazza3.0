@@ -15,7 +15,7 @@ export class User {
 
     constructor (private $http, private $q, private sLocation) {}
 
-    update (name?, email?, password?, birthday?, imageUrl?, preferences?, language?, termsVersion?, newPassword?) {
+    update (name?, email?, password?, birthday?, imageUrl?, preferences?, language?, newPassword?) {
         const path = this.sLocation.getAbsoluteUrlApi('/api/users/self');
         const userData = {
             name: null,
@@ -25,7 +25,6 @@ export class User {
             imageUrl: imageUrl,
             language: language,
             preferences: preferences,
-            termsVersion: termsVersion,
             newPassword: newPassword
         };
 
@@ -35,10 +34,6 @@ export class User {
 
         if (password) {
             userData.password = password;
-        }
-
-        if (!termsVersion) {
-            delete userData.termsVersion;
         }
 
         if (!newPassword) {
@@ -52,12 +47,6 @@ export class User {
         const path = this.sLocation.getAbsoluteUrlApi('/api/users/self');
 
         return this.$http.put(path, {language: language});
-    };
-
-    updateTermsVersion (termsVersion) {
-        const path = this.sLocation.getAbsoluteUrlApi('/api/users/self');
-
-        return this.$http.put(path, {termsVersion: termsVersion});
     };
 
     deleteUser () {

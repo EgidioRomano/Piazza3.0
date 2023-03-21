@@ -37,7 +37,6 @@ module.exports = function (app) {
         const language = 'it';
         const redirectSuccess = req.body.redirectSuccess || urlLib.getFe();
         const preferences = req.body.preferences;
-        const termsVersion = req.body.termsVersion;
 
         let created = false;
 
@@ -72,7 +71,6 @@ module.exports = function (app) {
                             birthday,
                             source: User.SOURCES.citizenos,
                             language,
-                            termsVersion,
                             preferences
                         },
                         transaction: t

@@ -69,7 +69,7 @@ module.exports = function (app) {
      * Update User info
      */
     app.put('/api/users/:userId', loginCheck(), asyncMiddleware(async function (req, res) {
-        const fields = ['name', 'birthday', 'email', 'language', 'imageUrl', 'termsVersion', 'preferences'];
+        const fields = ['email', 'imageUrl', 'preferences'];
         const data = req.body;
         if (data.password && data.newPassword) {
             fields.push('password');
@@ -88,10 +88,6 @@ module.exports = function (app) {
             fields.push('emailVerificationCode');
             data.emailIsVerified = false;
             data.emailVerificationCode = uuid.v4(); // Generate new emailVerificationCode
-        }
-        if (data.termsVersion && data.termsVersion !== user.termsVersion) {
-            fields.push('termsAcceptedAt');
-            data.termsAcceptedAt = moment().format();
         }
 
         if ((user.email && updateEmail) || data.newPassword) {

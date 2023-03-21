@@ -1420,8 +1420,6 @@ CREATE TABLE public."Users" (
     source public."enum_Users_source" NOT NULL,
     "sourceId" character varying(255),
     "imageUrl" character varying(255),
-    "termsVersion" character varying(255),
-    "termsAcceptedAt" timestamp with time zone,
     "authorId" character varying(255),
     preferences jsonb,
     "createdAt" timestamp with time zone NOT NULL,
@@ -1498,20 +1496,6 @@ COMMENT ON COLUMN public."Users"."sourceId" IS 'User id in the source system. Fo
 --
 
 COMMENT ON COLUMN public."Users"."imageUrl" IS 'User profile image url.';
-
-
---
--- Name: COLUMN "Users"."termsVersion"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."Users"."termsVersion" IS 'Version identifier of user terms accepted by user';
-
-
---
--- Name: COLUMN "Users"."termsAcceptedAt"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."Users"."termsAcceptedAt" IS 'Time when the terms were accepted';
 
 
 --

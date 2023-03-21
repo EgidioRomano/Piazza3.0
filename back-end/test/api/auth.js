@@ -638,9 +638,7 @@ suite('Auth', function () {
                         language: 'en',
                         email: null,
                         imageUrl: null,
-                        preferences: null,
-                        termsVersion: null,
-                        termsAcceptedAt: null
+                        preferences: null
                     });
 
                 });
@@ -1101,8 +1099,7 @@ suite('Auth', function () {
             const user = await userLib.createUserAndLogin(agent, email, password, null);
             const userFromStatus = (await status(agent)).body.data;
             let expectedUser = user.toJSON();
-            expectedUser.termsVersion = user.termsVersion;
-            expectedUser.termsAcceptedAt = user.termsAcceptedAt;
+
             expectedUser.preferences = user.preferences;
 
             assert.deepEqual(expectedUser, userFromStatus);

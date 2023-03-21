@@ -18,15 +18,14 @@ export class Auth {
 
     constructor (private $http, private $q, private $log, private sLocation, private cosConfig) {}
 
-    signUp (email, password, name, birthday, redirectSuccess, preferences, termsVersion) {
+    signUp (email, password, name, birthday, redirectSuccess, preferences) {
         const data = {
             email: email,
             password: password,
             name: name,
             birthday: birthday,
             redirectSuccess: redirectSuccess,
-            preferences: preferences,
-            termsVersion: termsVersion
+            preferences: preferences
         };
 
         const path = this.sLocation.getAbsoluteUrlApi('/api/auth/signup');

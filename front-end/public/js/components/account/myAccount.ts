@@ -103,7 +103,7 @@ let myAccount = {
 
             } else {
                 this.sUser
-                    .update(this.form.name, this.form.email, this.form.password, this.form.birthday, this.form.imageUrl, this.form.preferences, null, this.sAuth.user.termsVersion, this.form.newPassword)
+                    .update(this.form.name, this.form.email, this.form.password, this.form.birthday, this.form.imageUrl, this.form.preferences, null, this.form.newPassword)
                     .then(success, error);
             }
         };
