@@ -22,7 +22,6 @@ const sanitizeFilename = require('sanitize-filename');
 const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
 const fastCsv = require('fast-csv');
-const Bdoc = require('./libs/bdoc');
 const cosHtmlToDocx = require('./libs/cosHtmlToDocx');
 const superagent = require('superagent');
 const CachemanMemory = require('cacheman-memory');
@@ -186,7 +185,6 @@ app.set('sanitizeFilename', sanitizeFilename);
 app.set('uuid', uuid);
 app.set('jwt', jwt);
 app.set('fastCsv', fastCsv);
-app.set('Bdoc', Bdoc);
 app.set('cosHtmlToDocx', cosHtmlToDocx);
 app.set('etherpadClient', etherpadClient);
 app.set('superagent', superagent);
@@ -234,7 +232,6 @@ mobileId.init({
     issuers: config.services.signature.certificates.issuers
 });
 app.set('mobileId', mobileId);
-app.set('cosSignature', require('./libs/cosSignature')(app));
 
 if (typeof config.email === 'string') {
     config.email = JSON.parse(config.email); // Support JSON string from ENV

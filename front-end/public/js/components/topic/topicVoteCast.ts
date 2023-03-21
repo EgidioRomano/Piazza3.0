@@ -55,16 +55,6 @@ let topicVoteCast = {
             return this.vote && this.vote.endsAt && new Date() > new Date(this.vote.endsAt);
         };
 
-        downloadContainer(includeCSV) {
-            let url = this.vote.downloads.bdocFinal;
-            if (!url) return;
-            if (includeCSV) {
-                url += '&include[]=csv';
-            }
-
-            window.location.href = url;
-        };
-
         sendToFollowUp(stateSuccess) {
             this.app.topicsSettings = false;
             this.Topic.changeState(this.app.topic, 'followUp', stateSuccess);
@@ -170,7 +160,6 @@ let topicVoteCast = {
                                                 }
                                             });
                                         });
-                                        this.vote.downloads = { bdocVote: data.bdocUri };
                                         this.userHasVoted = true;
                                     });
                                 return true;

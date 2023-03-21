@@ -6021,7 +6021,7 @@ suite('Users', function () {
                         const responseExpected = {
                             status: {
                                 code: 40001,
-                                message: 'The Vote has ended.'
+                                message: 'Le votazioni sono terminate.'
                             }
                         };
 
@@ -6480,7 +6480,7 @@ suite('Users', function () {
                         const voteResultExpected = {
                             status: {
                                 code: 40000,
-                                message: 'The Vote has ended.'
+                                message: 'Le votazioni sono terminate.'
                             }
                         };
 

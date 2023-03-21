@@ -17,7 +17,6 @@ module.exports = function (app) {
     const util = app.get('util');
     const urlLib = app.get('urlLib');
     const emailLib = app.get('email');
-    const cosSignature = app.get('cosSignature');
     const cosActivities = app.get('cosActivities');
     const Promise = app.get('Promise');
     const sanitizeFilename = app.get('sanitizeFilename');
@@ -536,82 +535,6 @@ module.exports = function (app) {
             );
     };
 
-    const getBdocURL = function (params) {
-        const userId = params.userId;
-        const topicId = params.topicId;
-        const voteId = params.voteId;
-        const type = params.type;
-
-        let path;
-        const tokenPayload = {};
-        const tokenOptions = {
-            expiresIn: '1d'
-        };
-
-        if (type === 'user') {
-            path = '/api/users/self/topics/:topicId/votes/:voteId/downloads/bdocs/user';
-        }
-
-        if (type === 'final') {
-            path = '/api/users/self/topics/:topicId/votes/:voteId/downloads/bdocs/final';
-        }
-
-        if (type === 'goverment') {
-            tokenOptions.expiresIn = '30d';
-            path = '/api/topics/:topicId/votes/:voteId/downloads/bdocs/final';
-        }
-
-        if (userId) {
-            tokenPayload.userId = userId;
-        }
-
-        path = path
-            .replace(':topicId', topicId)
-            .replace(':voteId', voteId);
-
-        const urlOptions = {
-            token: cosJwt.getTokenRestrictedUse(tokenPayload, 'GET ' + path, tokenOptions)
-        };
-
-        if (type === 'goverment') {
-            urlOptions.accept = 'application/x-7z-compressed';
-        }
-
-        return urlLib.getApi(path, null, urlOptions);
-    };
-
-    const getZipURL = function (params) {
-        const userId = params.userId;
-        const topicId = params.topicId;
-        const voteId = params.voteId;
-        const type = params.type;
-
-        let path;
-        const tokenPayload = {};
-        const tokenOptions = {
-            expiresIn: '1d'
-        };
-
-        if (type === 'final') {
-            path = '/api/users/self/topics/:topicId/votes/:voteId/downloads/zip/final';
-        }
-        if (userId) {
-            tokenPayload.userId = userId;
-        }
-
-        path = path
-            .replace(':topicId', topicId)
-            .replace(':voteId', voteId);
-
-        const urlOptions = {
-            token: cosJwt.getTokenRestrictedUse(tokenPayload, 'GET ' + path, tokenOptions)
-        };
-
-        urlOptions.accept = 'application/x-7z-compressed';
-
-        return urlLib.getApi(path, null, urlOptions);
-    };
-
     const _topicReadUnauth = async function (topicId, include) {
         await _syncTopicAuthors(topicId); // TODO: On every public topic read we sync authors with EP, can we do better?
 
@@ -1092,14 +1015,7 @@ module.exports = function (app) {
             }
 
             if (topic.vote.authType === Vote.AUTH_TYPES.hard && hasVoted) {
-                topic.vote.downloads = {
-                    bdocVote: getBdocURL({
-                        userId: user.id,
-                        topicId: topicId,
-                        voteId: topic.vote.id,
-                        type: 'user'
-                    })
-                };
+                topic.vote.downloads = { };
             }
 
             topic.vote.options = {
@@ -1719,8 +1635,6 @@ module.exports = function (app) {
                     promisesList.push(topic.save({ transaction: t }));
 
                     if (isBackToVoting) {
-                        promisesList.push(cosSignature.deleteFinalBdoc(topicId, vote.id));
-
                         promisesList.push(TopicEvent
                             .destroy({
                                 where: {
@@ -6034,7 +5948,6 @@ module.exports = function (app) {
                     vote.dataValues.VoteOptions.push(option.dataValues);
                 });
 
-                await cosSignature.createVoteFiles(resTopic, vote, voteOptionsCreated, t);
                 t.afterCommit(() => {
                     return res.created(vote.toJSON());
                 });
@@ -6101,14 +6014,7 @@ module.exports = function (app) {
 
         // TODO: Contains duplicate code with GET /status AND /sign
         if (hasVoted && voteInfo.authType === Vote.AUTH_TYPES.hard) {
-            voteInfo.dataValues.downloads = {
-                bdocVote: getBdocURL({
-                    userId: userId,
-                    topicId: topicId,
-                    voteId: voteId,
-                    type: 'user'
-                })
-            };
+            voteInfo.dataValues.downloads = { };
         }
 
         if (req.locals.topic.permissions.level === TopicMemberUser.LEVELS.admin && [Topic.STATUSES.followUp, Topic.STATUSES.closed].indexOf(req.locals.topic.status) > -1) {
@@ -6121,11 +6027,6 @@ module.exports = function (app) {
                 voteId: voteId,
                 type: 'final'
             };
-            if (voteInfo.authType === Vote.AUTH_TYPES.hard) {
-                voteInfo.dataValues.downloads.bdocFinal = getBdocURL(voteFinalURLParams);
-            } else {
-                voteInfo.dataValues.downloads.zipFinal = getZipURL(voteFinalURLParams);
-            }
         }
 
         return res.ok(voteInfo);
@@ -6257,11 +6158,11 @@ module.exports = function (app) {
         }
 
         if (vote.endsAt && new Date() > vote.endsAt) {
-            return res.badRequest('The Vote has ended.');
+            return res.badRequest('Le votazioni sono terminate.');
         }
 
         if (!vote.VoteOptions.length) {
-            return res.badRequest('Invalid option');
+            return res.badRequest('Opzioni di voto non valide.');
         }
         const singleOptions = _.filter(vote.VoteOptions, function (option) {
             const optVal = option.value.toLowerCase();
@@ -6450,178 +6351,6 @@ module.exports = function (app) {
         }
     };
 
-    const handleTopicVoteHard = async function (vote, req, res) {
-        try {
-            const voteId = vote.id;
-            let userId = req.user ? req.user.userId : null;
-
-            //idCard
-            const certificate = req.body.certificate;
-            //mID
-            const pid = req.body.pid;
-            const phoneNumber = req.body.phoneNumber;
-            //smart-ID
-            const countryCode = req.body.countryCode;
-            let personalInfo;
-            let signingMethod;
-
-            if (!certificate && !(pid && (phoneNumber || countryCode))) {
-                return res.badRequest('Vote with hard authentication requires users certificate when signing with ID card OR phoneNumber+pid when signing with mID', 9);
-            }
-            let certificateInfo;
-            let smartIdcertificate;
-            let mobileIdCertificate;
-            let certFormat = 'base64';
-            if (pid && countryCode) {
-                signingMethod = Vote.SIGNING_METHODS.smartId;
-                smartIdcertificate = await smartId.getUserCertificate(pid, countryCode);
-                certificateInfo = {
-                    certificate: smartIdcertificate,
-                    format: 'pem'
-                };
-            } else if (certificate) {
-                signingMethod = Vote.SIGNING_METHODS.idCard;
-                await mobileId.validateCert(certificate, 'hex');
-                certificateInfo = {
-                    certificate: certificate,
-                    format: 'der'
-                }
-                certFormat = 'hex';
-            } else {
-                signingMethod = Vote.SIGNING_METHODS.mid;
-                mobileIdCertificate = await mobileId.getUserCertificate(pid, phoneNumber);
-                if (mobileIdCertificate.data && mobileIdCertificate.data.result === 'NOT_FOUND') {
-                    return res.notFound();
-                }
-                certificateInfo = {
-                    certificate: mobileIdCertificate,
-                    format: 'pem'
-                };
-            }
-            if (signingMethod === Vote.SIGNING_METHODS.smartId) {
-                personalInfo = await smartId.getCertUserData(certificateInfo.certificate);
-                if (personalInfo.pid.indexOf(pid) - 1) {
-                    personalInfo.pid = pid;
-                }
-            } else {
-                personalInfo = await mobileId.getCertUserData(certificateInfo.certificate, certFormat);
-                if (signingMethod === Vote.SIGNING_METHODS.mid) {
-                    personalInfo.phoneNumber = phoneNumber;
-                }
-            }
-            let signInitResponse, token, sessionDataEncrypted;
-            await db.transaction(async function (t) { // One big transaction, we don't want created User data to lay around in DB if the process failed.
-                // Authenticated User
-                if (userId) {
-                    await _checkAuthenticatedUser(userId, personalInfo, t);
-                } else { // Un-authenticated User, find or create one.
-                    const user = (await authUser.getUserByPersonalId(personalInfo, UserConnection.CONNECTION_IDS.esteid, req, t))[0];
-                    userId = user.id;
-                }
-
-                switch (signingMethod) {
-                    case Vote.SIGNING_METHODS.idCard:
-                        signInitResponse = await cosSignature.signInitIdCard(voteId, userId, vote.VoteOptions, certificate, t);
-                        break;
-                    case Vote.SIGNING_METHODS.smartId:
-                        signInitResponse = await cosSignature.signInitSmartId(voteId, userId, vote.VoteOptions, personalInfo.pid, countryCode, smartIdcertificate, t);
-                        break;
-                    case Vote.SIGNING_METHODS.mid:
-                        signInitResponse = await cosSignature.signInitMobile(voteId, userId, vote.VoteOptions, personalInfo.pid, personalInfo.phoneNumber, mobileIdCertificate, t);
-                        break;
-                    default:
-                        throw new Error('Invalid signing method ' + signingMethod);
-                }
-                // Check that the personal ID is not related to another User account. We don't want Users signing Votes from different accounts.
-                t.afterCommit(() => {
-
-                    let sessionData = {
-                        voteOptions: vote.VoteOptions,
-                        signingMethod,
-                        userId: userId, // Required for un-authenticated signing.
-                        voteId: voteId // saves one run of "handleTopicVotePreconditions" in the /sign
-                    }
-
-                    if (signInitResponse.sessionId) {
-                        sessionData.sessionId = signInitResponse.sessionId,
-                            sessionData.sessionHash = signInitResponse.sessionHash,
-                            sessionData.personalInfo = signInitResponse.personalInfo,
-                            sessionData.signatureId = signInitResponse.signatureId;
-                    } else {
-                        switch (signInitResponse.statusCode) {
-                            case 0:
-                                // Common to MID and ID-card signing
-                                sessionData.personalInfo = personalInfo;
-                                sessionData.signableHash = signInitResponse.signableHash;
-                                sessionData.signatureId = signInitResponse.signatureId;
-                                break;
-                            case 101:
-                                return res.badRequest('Invalid input parameters.', 20);
-                            case 301:
-                                return res.badRequest('User is not a Mobile-ID client. Please double check phone number and/or id code.', 21);
-                            case 302:
-                                return res.badRequest('User certificates are revoked or suspended.', 22);
-                            case 303:
-                                return res.badRequest('User certificate is not activated.', 23);
-                            case 304:
-                                return res.badRequest('User certificate is suspended.', 24);
-                            case 305:
-                                return res.badRequest('User certificate is expired.', 25);
-                            default:
-                                logger.error('Unhandled DDS status code', signInitResponse.statusCode);
-                                return res.internalServerError();
-                        }
-                    }
-
-                    // Send JWT with state and expect it back in /sign /status - https://trello.com/c/ZDN2WomW/287-bug-id-card-signing-does-not-work-for-some-users
-                    // Wrapping sessionDataEncrypted in object, otherwise jwt.sign "expiresIn" will not work - https://github.com/auth0/node-jsonwebtoken/issues/166
-                    sessionDataEncrypted = { sessionDataEncrypted: cryptoLib.encrypt(config.session.secret, sessionData) };
-                    token = jwt.sign(sessionDataEncrypted, config.session.privateKey, {
-                        expiresIn: '5m',
-                        algorithm: config.session.algorithm
-                    });
-
-                    if (signingMethod === Vote.SIGNING_METHODS.idCard) {
-                        return res.ok({
-                            signedInfoDigest: signInitResponse.signableHash,
-                            signedInfoHashType: cryptoLib.getHashType(signInitResponse.signableHash),
-                            token: token
-                        }, 1);
-                    } else {
-                        return res.ok({
-                            challengeID: signInitResponse.challengeID,
-                            token: token
-                        }, 1);
-                    }
-                });
-            });
-        } catch (error) {
-            switch (error.message) {
-                case 'Personal ID already connected to another user account.':
-                    return res.badRequest(error.message, 30)
-                case 'User account already connected to another PID.':
-                    return res.badRequest(error.message, 31);
-                case 'Invalid signature':
-                    return res.badRequest(error.message, 32);
-                case 'Invalid certificate issuer':
-                    return res.badRequest(error.message, 33);
-                case 'Certificate not active':
-                    return res.badRequest(error.message, 34);
-                case 'phoneNumber must contain of + and numbers(8-30)':
-                    return res.badRequest(error.message, 21);
-                case 'nationalIdentityNumber must contain of 11 digits':
-                    return res.badRequest(error.message, 22);
-                case 'Bad Request':
-                    return res.badRequest();
-                case 'Not Found':
-                    return res.notFound();
-                default:
-                    logger.error(error)
-                    return res.badRequest(error.message);
-            }
-        }
-    };
-
     /**
      * Vote
      *
@@ -6633,11 +6362,7 @@ module.exports = function (app) {
     app.post('/api/users/:userId/topics/:topicId/votes/:voteId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.voting]), async function (req, res, next) {
         try {
             const vote = await handleTopicVotePreconditions(req, res);
-            if (vote.authType === Vote.AUTH_TYPES.soft) {
-                return handleTopicVoteSoft(vote, req, res, next);
-            }
-            await handleTopicVoteHard(vote, req, res);
-
+            return handleTopicVoteSoft(vote, req, res, next);
         } catch (err) {
             return next(err);
         }
@@ -6685,188 +6410,6 @@ module.exports = function (app) {
     };
 
     /**
-     * Vote (Un-authenticated)
-     *
-     * Un-authenticated, which means only authType===hard is supported.
-     * Vote authType===hard then starts Vote signing process. Vote won't be counted before signing is finalized by calling POST /api/topics/:topicId/votes/:voteId/sign or Mobiil-ID signing is completed (GET /api/topics/:topicId/votes/:voteId/status)
-     */
-    app.post('/api/topics/:topicId/votes/:voteId', async function (req, res, next) {
-        try {
-            const vote = await handleTopicVotePreconditions(req, res);
-            // Deny calling for non-public Topics
-            if (vote.Topics[0].visibility !== Topic.VISIBILITY.public) {
-                return res.unauthorised();
-            }
-
-            if (vote.authType === Vote.AUTH_TYPES.soft) {
-                logger.warn('Un-authenticated Voting is not supported for Votes with authType === soft.');
-
-                return res.badRequest('Un-authenticated Voting is not supported for Votes with authType === soft.');
-            } else {
-                await handleTopicVoteHard(vote, req, res);
-            }
-        } catch (e) {
-            next(e);
-        }
-    });
-
-    /**
-     * Download Users vote BDOC container
-     *
-     * TODO: Deprecate /api/users/:userId/topics/:topicId/votes/:voteId/downloads/bdocs/user
-     */
-    app.get(['/api/users/:userId/topics/:topicId/votes/:voteId/downloads/bdocs/user', '/api/topics/:topicId/votes/:voteId/downloads/bdocs/user'], authTokenRestrictedUse, async function (req, res, next) {
-        const voteId = req.params.voteId;
-        const downloadTokenData = req.locals.tokenDecoded;
-        const userId = downloadTokenData.userId;
-
-        //TODO: Make use of streaming once Sequelize supports it - https://github.com/sequelize/sequelize/issues/2454
-        try {
-            const voteUserContainer = await VoteUserContainer
-                .findOne({
-                    where: {
-                        userId: userId,
-                        voteId: voteId
-                    }
-                });
-
-            if (!voteUserContainer) {
-                return res.notFound();
-            }
-
-            const container = voteUserContainer.container;
-
-            res.set('Content-disposition', 'attachment; filename=vote.bdoc');
-            res.set('Content-type', 'application/vnd.etsi.asic-e+zip');
-
-            return res.send(container);
-
-        } catch (err) {
-            return next(err);
-        }
-    });
-
-    const topicDownloadBdocFinal = async function (req, res, next) {
-        const topicId = req.params.topicId;
-        const voteId = req.params.voteId;
-        const include = req.query.include;
-        let finalDocStream;
-        try {
-            const topic = await Topic
-                .findOne({
-                    where: {
-                        id: topicId
-                    },
-                    include: [
-                        {
-                            model: Vote,
-                            where: {
-                                id: voteId,
-                                authType: Vote.AUTH_TYPES.hard
-                            }
-                        }
-                    ]
-                });
-            const vote = topic.Votes[0];
-
-            // TODO: Once we implement the the "endDate>now -> followUp" we can remove Topic.STATUSES.voting check
-            if ((vote.endsAt && vote.endsAt.getTime() > new Date().getTime() && topic.status === Topic.STATUSES.voting) || topic.status === Topic.STATUSES.voting) {
-                return res.badRequest('The Vote has not ended.');
-            }
-
-            let userId = '';
-            if (req.user) {
-                userId = req.user.userId
-            }
-
-            await cosActivities
-                .downloadFinalContainerActivity({
-                    voteId,
-                    topicId
-                }, {
-                    type: 'User',
-                    id: userId,
-                    ip: req.ip
-                },
-                    req.method + ' ' + req.path
-                );
-
-            if (req.query.accept === 'application/x-7z-compressed') {
-                res.set('Content-disposition', 'attachment; filename=final.7z');
-                res.set('Content-type', 'application/x-7z-compressed');
-                finalDocStream = await cosSignature.getFinalBdoc(topicId, voteId, include, true);
-            } else {
-                res.set('Content-disposition', 'attachment; filename=final.bdoc');
-                res.set('Content-type', 'application/vnd.etsi.asic-e+zip');
-                finalDocStream = await cosSignature.getFinalBdoc(topicId, voteId, include);
-            }
-
-            return finalDocStream.pipe(res);
-        } catch (e) {
-            return next(e);
-        }
-    };
-
-    /**
-     * Download final vote Zip container
-     */
-
-    const topicDownloadZipFinal = async function (req, res, next) {
-        const topicId = req.params.topicId;
-        const voteId = req.params.voteId;
-        try {
-            const topic = await Topic.findOne({
-                where: {
-                    id: topicId
-                },
-                include: [
-                    {
-                        model: Vote,
-                        where: {
-                            id: voteId,
-                            authType: Vote.AUTH_TYPES.soft
-                        }
-                    }
-                ]
-            });
-
-            const vote = topic.Votes[0];
-
-            // TODO: Once we implement the the "endDate>now -> followUp" we can remove Topic.STATUSES.voting check
-            if ((vote.endsAt && vote.endsAt.getTime() > new Date().getTime() && topic.status === Topic.STATUSES.voting) || topic.status === Topic.STATUSES.voting) {
-                return res.badRequest('The Vote has not ended.');
-            }
-
-            res.set('Content-disposition', 'attachment; filename=final.zip');
-            res.set('Content-type', 'application/zip');
-
-            const finalDocStream = await cosSignature.getFinalZip(topicId, voteId, true);
-
-            return finalDocStream.pipe(res);
-        } catch (err) {
-            return next(err);
-        }
-    };
-
-    /**
-     * Download final vote BDOC container
-     *
-     * TODO: Get rid of this endpoint usage in favor of the one below
-     *
-     * @deprecated Use GET /api/topics/:topicId/votes/:voteId/downloads/bdocs/final instead
-     */
-    app.get('/api/users/:userId/topics/:topicId/votes/:voteId/downloads/bdocs/final', authTokenRestrictedUse, topicDownloadBdocFinal);
-    app.get('/api/users/:userId/topics/:topicId/votes/:voteId/downloads/zip/final', authTokenRestrictedUse, topicDownloadZipFinal);
-
-
-    /**
-     * Download final vote BDOC container
-     */
-    app.get('/api/topics/:topicId/votes/:voteId/downloads/bdocs/final', authTokenRestrictedUse, topicDownloadBdocFinal);
-    app.get('/api/topics/:topicId/votes/:voteId/downloads/zip/final', authTokenRestrictedUse, topicDownloadZipFinal);
-
-
-    /**
      * Delegate a Vote
      */
     app.post('/api/users/:userId/topics/:topicId/votes/:voteId/delegations', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, null, [Topic.STATUSES.voting]), async function (req, res, next) {
@@ -6903,7 +6446,7 @@ module.exports = function (app) {
             return res.badRequest();
         }
         if (vote.endsAt && new Date() > vote.endsAt) {
-            return res.badRequest('The Vote has ended.');
+            return res.badRequest('Le votazioni sono terminate.');
         }
 
         try {
@@ -7025,7 +6568,7 @@ module.exports = function (app) {
             }
 
             if (vote.endsAt && new Date() > vote.endsAt) {
-                return res.badRequest('The Vote has ended.', 1);
+                return res.badRequest('Le votazioni sono terminate.', 1);
             }
 
             const voteDelegation = await VoteDelegation

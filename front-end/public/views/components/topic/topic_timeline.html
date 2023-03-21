@@ -72,7 +72,7 @@
 
     </div>
 
-    <div class="additional_info signing_deadline" ng-if="$ctrl.voteEndsAt">
+    <div class="additional_info signing_deadline" ng-if="($ctrl.voteEndsAt && $ctrl.STATUSES.voting === $ctrl.status)">
         <span translate="VIEWS.TOPICS_TOPICID.BAR_SIGNING_DEADLINE">Signing deadline</span> <span class="bold">{{$ctrl.voteEndsAt | amDateFormat:'L LT'}}</span>
     </div>
 
