@@ -28,6 +28,3 @@ import './topicVote';
 import './topicVoteCast';
 import './topicVoteCreate';
 import './topicVoteDelegate';
-import './topicVoteSign';
-import './topicVoteSignEsteid';
-import './topicVoteSignSmartId';

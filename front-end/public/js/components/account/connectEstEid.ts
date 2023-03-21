@@ -5,7 +5,7 @@ let connectEstEid = {
     selector: 'connectEstEid',
     templateUrl: '/views/components/account/login_esteid.html',
     bindings: {},
-    controller: ['$log', '$state', '$window', 'cosConfig', '$timeout', 'hwcrypto', 'ngDialog', 'sLocation', 'sAuth', 'sUser', 'AppService', class ConnectEstEIdController {
+    controller: ['$log', '$state', '$window', 'cosConfig', '$timeout', 'ngDialog', 'sLocation', 'sAuth', 'sUser', 'AppService', class ConnectEstEIdController {
         private pid;
         private phoneNumber;
         private challengeID;
@@ -14,7 +14,7 @@ let connectEstEid = {
         private authMethodsAvailable;
 
         private errors;
-        constructor (private $log, private $state, private $window, cosConfig, private $timeout, private hwcrypto, private ngDialog,  private sLocation, private sAuth, private sUser, private app) {
+        constructor (private $log, private $state, private $window, cosConfig, private $timeout, private ngDialog,  private sLocation, private sAuth, private sUser, private app) {
             this.authMethodsAvailable = angular.extend({}, cosConfig.features.authentication);
         }
 

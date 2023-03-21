@@ -3,7 +3,7 @@ import * as angular from 'angular';
 
 (function () {
 
-    var module = angular.module('citizenos', ['ui.router', 'pascalprecht.translate', 'ngSanitize', 'ngResource', 'ngTouch', 'ngDialog', 'angularMoment', 'focus-if', 'angular-loading-bar', 'ngCookies', 'angularHwcrypto', 'typeahead', 'datePicker', '720kb.tooltips', '720kb.socialshare', 'angularLoad', 'cosmarkdown', 'monospaced.qrcode']);
+    var module = angular.module('citizenos', ['ui.router', 'pascalprecht.translate', 'ngSanitize', 'ngResource', 'ngTouch', 'ngDialog', 'angularMoment', 'focus-if', 'angular-loading-bar', 'ngCookies', 'typeahead', 'datePicker', '720kb.tooltips', '720kb.socialshare', 'angularLoad', 'cosmarkdown', 'monospaced.qrcode']);
 
     module
         .constant('cosConfig', window.__config || {});
