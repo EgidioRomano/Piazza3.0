@@ -201,15 +201,11 @@
     }
   },
   "storage": {
-    "type": "s3",
-    "accessKeyId": "AKIAJZJDXAAXKKKVGN7A",
-    "secretAccessKey": "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",
-    "region": "eu-west-1",
-    "bucket": "costestbucket",
+    "type": "local",
     "allowedFileTypes": ["txt", "pdf", "doc", "docx", "ddoc", "bdoc", "odf", "odt", "jpg", "jpeg", "png", "rtf", "xls", "xlsx", "ppt", "pptx", "pps", "xlt"],
-    "maxFileSize": 50000,
+    "maxFileSize": 500000,
     "baseFolder": null,
-    "baseURL": null
+    "baseURL": "https://dev.api.citizenos.com:3003/uploads/"
   },
   "encryption": {
     "salt": "superSecretSalt"
