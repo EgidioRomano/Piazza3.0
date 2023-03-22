@@ -8,7 +8,6 @@ export class AppService {
     private showNav = false;
     private showSearchFiltersMobile = false;
     private showTestingEnvNotification;
-    private showHelp = false;
     private isLoading = true;
     private unreadActivitiesCount = 0;
     private currentUrlAbs;
@@ -18,7 +17,6 @@ export class AppService {
     private topicsSettings = false;
     private group;
     private notifications;
-    private helptooltip;
     private isShowActivityModal = false;
     private language;
     private tabSelected;
@@ -42,15 +40,6 @@ export class AppService {
         this.currentUrlAbs = $location.absUrl();
         this.user = sAuth.user;
         this.notifications = sNotification;
-
-        /*if (!$cookies.getObject('helptooltip') && config.showHelpTooltip) {
-            var exp =  new Date();
-            exp.setMonth(exp.getMonth()+6)
-            $cookies.putObject('helptooltip', true, {
-                expires: exp
-            });
-            this.toggleHelpTooltip();
-        }*/
 
         sTranslate
             .getCurrentLanguage()
@@ -94,22 +83,6 @@ export class AppService {
             return false;
         };
     }
-
-    toggleHelp () {
-        this.showHelp = !this.showHelp;
-    };
-
-    toggleHelpTooltip () {
-        this.helptooltip = true;
-    };
-
-    helpBubbleAnimate () {
-        const bubble = angular.element( document.querySelector( '#help_bubble' ) );
-        bubble.addClass('animate');
-        this.$timeout(() => {
-            bubble.removeClass('animate');
-        }, 2000);
-    };
 
     setDefaultMetaInfo () {
         angular.extend(this.metainfo, {

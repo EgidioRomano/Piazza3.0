@@ -271,58 +271,6 @@ module.exports = function (app) {
     };
 
     /**
-     * Send help request email
-     */
-
-    const _sendHelpRequest = async (debugData) => {
-        const template = resolveTemplate('helpRequest');
-        const emailOptions = Object.assign(
-            _.cloneDeep(EMAIL_OPTIONS_DEFAULT), // Deep clone to guarantee no funky business messing with the class level defaults, cant use Object.assign({}.. as this is not a deep clone.
-            {
-                subject: 'Help request',
-                to: ['support@citizenos.com'],
-                replyTo: debugData.email,
-                from: "no-reply@citizenos.com",
-                linkedData: {
-                    translations: template.translations,
-                },
-                provider: EMAIL_OPTIONS_DEFAULT.provider,
-            }
-        );
-
-        Object.keys(debugData).forEach(function (key) {
-            emailOptions[key] = debugData[key];
-        });
-
-        // https://github.com/bevacqua/campaign#email-sending-option
-        return emailClient.sendString(template.body, emailOptions);
-    }
-
-    /**
-     * Send help request email
-     */
-
-    const _sendFeedback = async (data) => {
-        const template = resolveTemplate('feedback');
-        const emailOptions = Object.assign(
-            _.cloneDeep(EMAIL_OPTIONS_DEFAULT), // Deep clone to guarantee no funky business messing with the class level defaults, cant use Object.assign({}.. as this is not a deep clone.
-            {
-                subject: 'Feedback',
-                to: ['support@citizenos.com'],
-                from: "no-reply@citizenos.com",
-                linkedData: {
-                    translations: template.translations,
-                },
-                provider: EMAIL_OPTIONS_DEFAULT.provider,
-                message: data.message,
-                userId: data.userId
-            }
-        );
-
-        // https://github.com/bevacqua/campaign#email-sending-option
-        return emailClient.sendString(template.body, emailOptions);
-    }
-    /**
      * Send e-mail verification email.
      *
      * @param {string|Array} to To e-mail(s)
@@ -1662,9 +1610,7 @@ module.exports = function (app) {
         sendGroupMemberUserCreate: _sendGroupMemberUserCreate,
         sendCommentReport: _sendCommentReport,
         sendToParliament: _sendToParliament,
-        sendHelpRequest: _sendHelpRequest,
         sendVoteReminder: _sendVoteReminder,
-        sendTopicNotification: _sendTopicNotification,
-        sendFeedback: _sendFeedback
+        sendTopicNotification: _sendTopicNotification
     };
 };

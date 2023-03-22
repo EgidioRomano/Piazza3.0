@@ -55,11 +55,11 @@ if (config.rateLimit && config.rateLimit.storageType === 'redis') {
 }
 
 const rateLimiter = function (allowedRequests, blockTime, skipSuccess) {
-    /*if (app.get('env') === 'test') {
+    if (app.get('env') === 'test') {
         return function (req, res, next) {
             return next();
         }
-    }*/
+    }
     return rateLimit({
         store: rateLimitStore,
         windowMs: blockTime || (15 * 60 * 1000), // default 15 minutes

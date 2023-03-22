@@ -3,7 +3,6 @@ import './default';
 import './group';
 import './my';
 import './topic';
-
 import './activities';
 import './activitiesWidget';
 import './activity';
@@ -13,6 +12,4 @@ import './cosInput';
 import './cosModalDatepicker';
 import './cosPagination';
 import './cosToggle';
-import './feedback';
-import './help';
 import './home';
