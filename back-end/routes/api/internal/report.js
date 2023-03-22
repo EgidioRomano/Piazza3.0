@@ -5,9 +5,11 @@
  */
 
 module.exports = function (app) {
-    var logger = app.get('logger');
+    const logger = app.get('logger');
+    const rateLimiter = app.get('rateLimiter');
+    const speedLimiter = app.get('speedLimiter');
 
-    app.post('/api/internal/report', function (req, res) {
+    app.post('/api/internal/report', rateLimiter(50), speedLimiter(15), function (req, res) {
 
         const cspReport = req.body['csp-report'];
         const headers = req.headers;
