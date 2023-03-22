@@ -1344,131 +1344,6 @@ module.exports = function (app) {
         return await handleAllPromises(sendEmailPromises);
     };
 
-    /**
-     * Send e-mail to Parliament to process new initiative
-     *
-     * TODO: This logic is specific to Rahvaalgatus.ee, with next Partner we have to make it more generic - https://trello.com/c/Sj3XRF5V/353-raa-ee-followup-email-to-riigikogu-and-token-access-to-events-api
-     *
-     * @param {object} topic Topic Sequelize instance
-     * @param {object} contact Contact info {name, email, phone}
-     * @param {string} linkDownloadBdocFinal Absolute uri to for BDOC download
-     * @param {Date} linkDownloadBdocFinalExpiryDate Download link expiry date
-     * @param {string} linkAddEvent Absolute uri to a site that enables adding Events.
-     *
-     * @returns {Promise} Parliament email sending result
-     *
-     * @private
-     */
-    const _sendToParliament = function (topic, contact, linkDownloadBdocFinal, linkDownloadBdocFinalExpiryDate, linkAddEvent) {
-        if (!topic || !contact || !linkDownloadBdocFinal || !linkDownloadBdocFinalExpiryDate || !linkAddEvent) {
-            return Promise.reject(new Error('Missing one or more required parameters'));
-        }
-
-        const template = resolveTemplate('toParliament', 'et'); // Estonian Gov only accepts et
-        const linkToApplication = config.features.sendToParliament.urlPrefix;
-
-        const from = config.features.sendToParliament.from;
-        const to = config.features.sendToParliament.to;
-        const subject = template.translations.TO_PARLIAMENT.SUBJECT.replace('{{topic.title}}', util.escapeHtml(topic.title));
-        const linkViewTopic = linkToApplication + '/initiatives/:topicId'.replace(':topicId', topic.id);
-        const logoFile = templateRoot + '/images/logo-email_rahvaalgatus.ee.png';
-
-        const promisesToResolve = [];
-        const customStyles = {
-            headerBackgroundColor: '#004892',
-            logoWidth: 360,
-            logoHeight: 51
-        };
-
-        // Email to Parliament
-        let linkedData = EMAIL_OPTIONS_DEFAULT.linkedData;
-        linkedData.translations = template.translations;
-
-        const emailToParliamentPromise = emailClient
-            .sendString(
-                template.body,
-                {
-                    from: from,
-                    subject: subject,
-                    to: to,
-                    images: [
-                        {
-                            name: emailHeaderLogoName,
-                            file: logoFile
-                        },
-                        {
-                            name: emailFooterLogoName,
-                            file: emailFooterLogo
-                        }
-                    ],
-                    //Placeholders..
-                    linkViewTopic: linkViewTopic,
-                    linkDownloadBdocFinal: linkDownloadBdocFinal,
-                    linkDownloadBdocFinalExpiryDate: moment(linkDownloadBdocFinalExpiryDate).locale('et').format('LL'),
-                    linkAddEvent: linkAddEvent,
-                    linkToApplication: linkToApplication,
-                    topic: topic,
-                    contact: contact,
-                    provider: EMAIL_OPTIONS_DEFAULT.provider,
-                    styles: customStyles,
-                    linkedData
-                }
-            )
-            .then(function () {
-                logger.info('Sending Parliament e-mail succeeded', topic.id);
-            })
-            .catch(function (err) {
-                logger.error('Sending Parliament e-mail failed', topic.id, err);
-
-                return Promise.reject(err);
-            });
-
-        promisesToResolve.push(emailToParliamentPromise);
-
-        // Email to Topic creator
-        const emailToTopicCreatorPromise = emailClient
-            .sendString(
-                template.body,
-                {
-                    from: from,
-                    subject: subject,
-                    to: contact.email,
-                    images: [
-                        {
-                            name: emailHeaderLogoName,
-                            file: logoFile
-                        },
-                        {
-                            name: emailFooterLogoName,
-                            file: emailFooterLogo
-                        }
-                    ],
-                    //Placeholders..
-                    linkViewTopic: linkViewTopic,
-                    linkDownloadBdocFinal: config.features.sendToParliament.sendContainerDownloadLinkToCreator ? linkDownloadBdocFinal : null,
-                    linkDownloadBdocFinalExpiryDate: config.features.sendToParliament.sendContainerDownloadLinkToCreator ? moment(linkDownloadBdocFinalExpiryDate).locale('et').format('LL') : null,
-                    linkAddEvent: null,
-                    linkToApplication: linkToApplication,
-                    topic: topic,
-                    contact: contact,
-                    provider: EMAIL_OPTIONS_DEFAULT.provider,
-                    styles: customStyles,
-                    linkedData
-                }
-            )
-            .then(function () {
-                logger.info('Sending Parliament e-mail to creator succeeded', topic.id);
-            })
-            .catch(function (err) {
-                logger.error('Sending Parliament e-mail to creator failed', topic.id, err);
-
-                return Promise.reject(err);
-            });
-
-        promisesToResolve.push(emailToTopicCreatorPromise);
-
-        return handleAllPromises(promisesToResolve);
-    };
     const flattenObj = (obj, parent, res = {}) => {
         for (const key of Object.keys(obj)) {
           const propName = parent ? parent + '.' + key : key;
@@ -1609,7 +1484,6 @@ module.exports = function (app) {
         sendTopicReportResolve: _sendTopicReportResolve,
         sendGroupMemberUserCreate: _sendGroupMemberUserCreate,
         sendCommentReport: _sendCommentReport,
-        sendToParliament: _sendToParliament,
         sendVoteReminder: _sendVoteReminder,
         sendTopicNotification: _sendTopicNotification
     };

@@ -189,17 +189,6 @@
       }
     }
   },
-  "features": {
-    "sendToParliament": {
-      "voteCountMin": 2,
-      "urlPrefix": "http://next.rahvaalgatus.ee",
-      "from": "Rahvaalgatus TEST <test_info@rahvaalgatus.ee>",
-      "to": [
-        "riigikogu_@riigikogu.test.ee"
-      ],
-      "sendContainerDownloadLinkToCreator": true
-    }
-  },
   "storage": {
     "type": "local",
     "allowedFileTypes": ["txt", "pdf", "doc", "docx", "ddoc", "bdoc", "odf", "odt", "jpg", "jpeg", "png", "rtf", "xls", "xlsx", "ppt", "pptx", "pps", "xlt"],

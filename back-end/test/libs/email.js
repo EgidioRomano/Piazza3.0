@@ -174,40 +174,6 @@ suite('Email', function () {
             });
         });
 
-        suite('sendToParliament', function () {
-
-            test('Success', async function () {
-                const topic = {
-                    id: 'eb4344db-7c8e-4abd-9a60-c0e84dc22492',
-                    title: 'TEST TOPIC'
-                };
-
-                const contact = {
-                    name: 'Test Full Name',
-                    phone: '+372510000000',
-                    email: 'citizenos.est.dev@mailinator.com'
-                };
-
-                const linkDownloadBdocFinal = 'https://test.citizenos.com/here/is/the/final/bdoc';
-                const linkAddEvent = 'https://test.rahvaalgatus.ee/here/is/the/url/to/add/events';
-
-                const result = await emailLib.sendToParliament(topic, contact, linkDownloadBdocFinal, new Date(), linkAddEvent);
-                if (result.errors.length) {
-                    throw new Error('Failed with errors' + JSON.stringify(result.errors, 2));
-                }
-            });
-
-
-            test('Fail - missing or invalid parameters', async function () {
-                try {
-                    await emailLib.sendToParliament(null, null, null, null, null);
-                } catch (err) {
-                    assert.equal(err.message, 'Missing one or more required parameters');
-                }
-            });
-
-        });
-
         suite('Help', function () {
             test('Send Help Request - Success', async function () {
                 const result = await emailLib.sendHelpRequest({email: 'test_'+Date.now()+'@test.ee', 'browser': 'random'});

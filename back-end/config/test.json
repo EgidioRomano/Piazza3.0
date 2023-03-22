@@ -148,19 +148,6 @@
       }
     }
   },
-  "features": {
-    "sendToParliament": {
-      "voteCountMin": 2,
-      "urlPrefix": "http://next.rahvaalgatus.ee",
-      "from": "CitizeOS Test <test-no-reply@sandbox47712213e9284dc8bc56953e3333e458.mailgun.org>",
-      "to": [
-        "riigikogu@riigikogu_test.ee",
-        "info@rahvaalgatus_test.ee",
-        "citizenos@citizenos_test.com"
-      ],
-      "sendContainerDownloadLinkToCreator": true
-    }
-  },
   "storage": {
     "type": "local",
     "allowedFileTypes": ["txt", "pdf", "doc", "docx", "ddoc", "bdoc", "odf", "odt", "jpg", "jpeg", "png", "rtf", "xls", "xlsx", "ppt", "pptx", "pps", "xlt"],
