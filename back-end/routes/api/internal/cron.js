@@ -105,8 +105,4 @@ module.exports = function (app) {
         sendVoteReminder();
     });
 
-    app.get('/api/test', async (req, res) => {
-        sendVoteReminder();
-        res.ok();
-    });
 };
