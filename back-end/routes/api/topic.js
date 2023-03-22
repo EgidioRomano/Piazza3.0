@@ -2632,10 +2632,7 @@ module.exports = function (app) {
 
         let dataForModeratorAndAdmin = '';
         if ((req.user && req.user.moderator) || req.locals.topic.permissions.level === TopicMemberUser.LEVELS.admin) {
-            dataForModeratorAndAdmin = `
-            tm.email,
-            uc."connectionData"::jsonb->>'phoneNumber' AS "phoneNumber",
-            `;
+            dataForModeratorAndAdmin = `uc."connectionData"::jsonb->>'phoneNumber' AS "phoneNumber",`;
         }
 
         try {
@@ -2662,8 +2659,7 @@ module.exports = function (app) {
                         tm."level",
                         u.name,
                         u.birthday,
-                        u."imageUrl",
-                        u.email
+                        u."imageUrl"
                     FROM "Topics" t
                     JOIN (
                         SELECT
@@ -2700,7 +2696,7 @@ module.exports = function (app) {
                 LEFT JOIN "GroupMemberUsers" gmu ON (gmu."groupId" = tmg."groupId" AND gmu."userId" = :userId)
                 LEFT JOIN "UserConnections" uc ON (uc."userId" = tm.id AND uc."connectionId" = 'esteid')
                 ${where}
-                GROUP BY tm.id, tm.level, tmu.level, tm.name, tm.birthday, tm."imageUrl", tm.email, uc."connectionData"::jsonb
+                GROUP BY tm.id, tm.level, tmu.level, tm.name, tm.birthday, tm."imageUrl", uc."connectionData"::jsonb
                 ${sortSql}
                 LIMIT :limit
                 OFFSET :offset
