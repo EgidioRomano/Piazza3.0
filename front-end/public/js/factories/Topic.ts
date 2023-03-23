@@ -19,32 +19,20 @@ export class Topic {
     };
 
     private CATEGORIES = {
-        biotoopia: "biotoopia",
-        citizenos: "citizenos",
-        eestijazziarengusuunad: 'eestijazziarengusuunad', // Special project with http://www.jazz.ee/ - https://github.com/citizenos/citizenos-api/issues/73
-        eurochangemakers: 'eurochangemakers',
-        hacktivistcommunity: 'hacktivistcommunity',
-        opinionfestival: 'opinionfestival',
-        pyln: 'pyln',
-        thetwelvemovie: 'thetwelvemovie',
-        thirtyfourislandproject: 'thirtyfourislandproject',
-        business: 'business', // Business and industry
-        transport: 'transport', // Public transport and road safety
-        taxes: 'taxes', // Taxes and budgeting
-        agriculture: 'agriculture', // Agriculture
-        environment: 'environment', // Environment, animal protection
-        culture: 'culture', // Culture, media and sports
-        health: 'health', // Health care and social care
-        work: 'work', // Work and employment
-        education: 'education', // Education
-        politics: 'politics', // Politics and public administration
-        communities: 'communities', // Communities and urban development
-        defense: 'defense', //  Defense and security
-        integration: 'integration', // Integration and human rights
-        youth: 'youth', //Youth
-        science: 'science', //Science and Technology
-        society: 'society', //Democracy and civil society
-        varia: 'varia' // Varia
+        territory: 'territory',
+        culture: 'culture',
+        economy: 'economy',
+        family: 'family',
+        socialinclusion: 'socialinclusion',
+        urbandecorum: 'urbandecorum',
+        health: 'health',
+        school: 'school',
+        security: 'security',
+        sport: 'sport',
+        mobility: 'mobility',
+        technology: 'technology',
+        tourism: 'tourism',
+        other: 'other'
     };
 
     private REPORT_TYPES = {

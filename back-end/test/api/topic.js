@@ -1655,7 +1655,7 @@ suite('Users', function () {
             const agent = request.agent(app);
             const email = 'test_topicr_' + new Date().getTime() + '@test.ee';
             const password = 'testPassword123';
-            const topicCategories = [Topic.CATEGORIES.agriculture, Topic.CATEGORIES.communities];
+            const topicCategories = [Topic.CATEGORIES.sport, Topic.CATEGORIES.other];
 
             let user;
             let topic;
@@ -1821,7 +1821,7 @@ suite('Users', function () {
 
                     const voteEmail = 'test_topicr_vote_' + new Date().getTime() + '@test.ee';
                     const votePassword = 'testPassword123';
-                    const voteTopicCategories = [Topic.CATEGORIES.agriculture, Topic.CATEGORIES.communities];
+                    const voteTopicCategories = [Topic.CATEGORIES.sport, Topic.CATEGORIES.other];
 
                     const options = [
                         {
@@ -2061,7 +2061,7 @@ suite('Users', function () {
                         creator = await userLib.createUserAndLogin(agentCreator, null, null, null);
                         user = await userLib.createUserAndLogin(agentUser, null, null, null);
 
-                        topic = (await topicCreate(agentCreator, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.taxes, Topic.CATEGORIES.transport], null, null, null)).body.data;
+                        topic = (await topicCreate(agentCreator, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.technology, Topic.CATEGORIES.transport], null, null, null)).body.data;
                     });
 
                     test('Success - User can read public Topic', async function () {
@@ -2229,7 +2229,7 @@ suite('Users', function () {
             });
 
             test('Fail - Bad Request - too many categories', async function () {
-                const categories = [Topic.CATEGORIES.culture, Topic.CATEGORIES.agriculture, Topic.CATEGORIES.education, Topic.CATEGORIES.varia];
+                const categories = [Topic.CATEGORIES.culture, Topic.CATEGORIES.sport, Topic.CATEGORIES.education, Topic.CATEGORIES.varia];
 
                 const errors = (await _topicUpdate(agent, user.id, topic.id, topicStatusNew, Topic.VISIBILITY.private, categories, null, null, 400)).body.errors;
 
@@ -9526,7 +9526,7 @@ suite('Topics', function () {
         });
 
         setup(async function () {
-            topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.agriculture, Topic.CATEGORIES.business], null, null, null)).body.data;
+            topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.sport, Topic.CATEGORIES.mobility], null, null, null)).body.data;
         });
 
         test('Success', async function () {
@@ -9976,7 +9976,7 @@ suite('Topics', function () {
 
             suiteSetup(async function () {
                 creator = await userLib.createUserAndLogin(creatorAgent, null, null, null);
-                topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.communities, Topic.CATEGORIES.culture], null, null, null)).body.data;
+                topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.other, Topic.CATEGORIES.culture], null, null, null)).body.data;
                 comment1 = (await topicCommentCreate(creatorAgent, creator.id, topic.id, null, null, commentType1, commentSubj1, commentText1)).body.data;
                 comment2 = (await topicCommentCreate(creatorAgent, creator.id, topic.id, null, null, commentType2, commentSubj2, commentText2)).body.data;
                 comment3 = (await topicCommentCreate(creatorAgent, creator.id, topic.id, null, null, commentType1, commentSubj3, commentText3)).body.data;
@@ -10079,7 +10079,7 @@ suite('Topics', function () {
             });
 
             test('Success', async function () {
-                const topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.communities, Topic.CATEGORIES.culture], null, null, null)).body.data;
+                const topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.other, Topic.CATEGORIES.culture], null, null, null)).body.data;
 
                 await topicCommentCreate(creatorAgent, creator.id, topic.id, null, null, Comment.TYPES.pro, 'Subject', 'WOHOO! This is my comment.');
                 // Verify that the comments output is the same for unauthenticated and authenticated comment list API
@@ -10090,7 +10090,7 @@ suite('Topics', function () {
             });
 
             test('Success - public Topic without comments', async function () {
-                const topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.defense, Topic.CATEGORIES.education], null, null, null)).body.data;
+                const topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.tourism, Topic.CATEGORIES.education], null, null, null)).body.data;
                 // Verify that the comments output is the same for unauthenticated and authenticated comment list API
                 const creatorCommentList = (await topicCommentList(creatorAgent, creator.id, topic.id, null)).body;
                 const userCommentList = (await topicCommentListUnauth(userAgent, topic.id, null)).body;
@@ -10401,7 +10401,7 @@ suite('Topics', function () {
                 });
 
                 setup(async function () {
-                    topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.agriculture, Topic.CATEGORIES.business], null, null, null)).body.data;
+                    topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.sport, Topic.CATEGORIES.mobility], null, null, null)).body.data;
                     comment = (await topicCommentCreate(creatorAgent, creator.id, topic.id, null, null, Comment.TYPES.pro, 'Subj', 'Text')).body.data;
                 });
 
@@ -10533,7 +10533,7 @@ suite('Topics', function () {
                 });
 
                 setup(async function () {
-                    topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.agriculture, Topic.CATEGORIES.business], null, null, null)).body.data;
+                    topic = (await topicCreate(creatorAgent, creator.id, Topic.VISIBILITY.public, [Topic.CATEGORIES.sport, Topic.CATEGORIES.mobility], null, null, null)).body.data;
                     comment = (await topicCommentCreate(creatorAgent, creator.id, topic.id, null, null, Comment.TYPES.pro, 'Subj', 'Text')).body.data
                 });
 

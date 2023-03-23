@@ -1,7 +1,7 @@
 {
   "name": "citizenos-fe",
   "version": "0.1.5",
-  "description": "Citizen OS is an e-decisionmaking platform for communities.",
+  "description": "Citizen OS is an e-decisionmaking platform for other.",
   "homepage": "https://citizenos.com",
   "license": "Apache-2.0",
   "main": "index.js",

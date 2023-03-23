@@ -31,25 +31,22 @@ module.exports = function (sequelize, DataTypes) {
         private: 'private' // No-one can see except collaborators
     };
 
-    // Categories - https://trello.com/c/CydUreyf/69-topics-category-support
+    // Categories
     const CATEGORIES = {
-        business: 'business', // Business and industry
-        transport: 'transport', // Public transport and road safety
-        taxes: 'taxes', // Taxes and budgeting
-        agriculture: 'agriculture', // Agriculture
-        environment: 'environment', // Environment, animal protection
-        culture: 'culture', // Culture, media and sports
-        health: 'health', // Health care and social care
-        work: 'work', // Work and employment
-        education: 'education', // Education
-        politics: 'politics', // Politics and public administration
-        communities: 'communities', // Communities and urban development
-        defense: 'defense', //  Defense and security
-        integration: 'integration', // Integration and human rights
-        varia: 'varia', // Varia,
-        youth: 'youth', //Youth
-        science: 'science', //Science and Technology
-        society: 'society' //Democracy and civil society
+        territory: 'territory',
+        culture: 'culture',
+        economy: 'economy',
+        family: 'family',
+        socialinclusion: 'socialinclusion',
+        urbandecorum: 'urbandecorum',
+        health: 'health',
+        school: 'school',
+        security: 'security',
+        sport: 'sport',
+        mobility: 'mobility',
+        technology: 'technology',
+        tourism: 'tourism',
+        other: 'other'
     };
 
     const CATEGORIES_COUNT_MAX = 3; // Maximum of 3 categories allowed at the time.

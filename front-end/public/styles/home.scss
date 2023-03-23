@@ -550,27 +550,27 @@
                 }
             }
 
-            &.eurochangemakers {
-                background: vars.$eurochangemakers_background;
+            &.economy {
+                background: vars.$economy_background;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$eurochangemakers_background, 0), vars.$eurochangemakers_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$economy_background, 0), vars.$economy_background);
                 }
             }
 
-            &.opinionfestival {
-                background: vars.$opinionfestival_background;
+            &.family {
+                background: vars.$family_background;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$opinionfestival_background, 0), vars.$opinionfestival_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$family_background, 0), vars.$family_background);
                 }
             }
 
-            &.biotoopia {
-                background: vars.$biotoopia_background;
+            &.territory {
+                background: vars.$territory_background;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$biotoopia_background, 0), vars.$biotoopia_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$territory_background, 0), vars.$territory_background);
                 }
             }
 
@@ -582,37 +582,37 @@
                 }
             }
 
-            &.taxes {
-                background: vars.$category_taxes;
+            &.technology {
+                background: vars.$category_technology;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$category_taxes, 0), vars.$category_taxes);
+                    background-image: linear-gradient(to bottom, rgba(vars.$category_technology, 0), vars.$category_technology);
                 }
             }
 
-            &.defense {
-                background: vars.$category_defense;
+            &.tourism {
+                background: vars.$category_tourism;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$category_defense, 0), vars.$category_defense);
+                    background-image: linear-gradient(to bottom, rgba(vars.$category_tourism, 0), vars.$category_tourism);
                 }
             }
 
-            &.environment, &.keepitcleanplan, &.thirtyfourislandproject {
+            &.environment, &.keepitcleanplan, &.security {
                 background: vars.$category_environment; // #00b23b
                 .line::before {
                     background-image: linear-gradient(to bottom, rgba(vars.$category_environment, 0), vars.$category_environment);
                 }
             }
 
-            &.thirtyfourislandproject {
-                background: vars.$thirtyfourislandproject_background;
+            &.security {
+                background: vars.$security_background;
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$thirtyfourislandproject_background, 0), vars.$thirtyfourislandproject_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$security_background, 0), vars.$security_background);
                 }
             }
 
-            &.hacktivistcommunity {
+            &.socialinclusion {
                 background: vars.$hacktivist_community_background;
 
                 .line::before {
@@ -620,19 +620,19 @@
                 }
             }
 
-            &.thetwelvemovie {
-                background: vars.$thetwelvemovie_background;
+            &.school {
+                background: vars.$school_background;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$thetwelvemovie_background, 0), vars.$thetwelvemovie_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$school_background, 0), vars.$school_background);
                 }
             }
 
-            &.agriculture {
-                background: vars.$category_agriculture;
+            &.sport {
+                background: vars.$category_sport;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$category_agriculture, 0), vars.$category_agriculture);
+                    background-image: linear-gradient(to bottom, rgba(vars.$category_sport, 0), vars.$category_sport);
                 }
             }
 
@@ -644,11 +644,11 @@
                 }
             }
 
-            &.communities {
-                background: vars.$category_communities;
+            &.other {
+                background: vars.$category_other;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$category_communities, 0), vars.$category_communities);
+                    background-image: linear-gradient(to bottom, rgba(vars.$category_other, 0), vars.$category_other);
                 }
             }
 
@@ -661,16 +661,16 @@
             }
 
             &.politics,
-            &.taxes,
-            &.defense,
+            &.technology,
+            &.tourism,
             &.environment,
             &.keepitcleanplan,
-            &.agriculture,
+            &.sport,
             &.culture,
-            &.communities,
-            &.thetwelvemovie,
-            &.eurochangemakers,
-            &.biotoopia,
+            &.other,
+            &.school,
+            &.economy,
+            &.territory,
             &.integration {
                 color: vars.$white;
 
@@ -679,11 +679,11 @@
                 }
             }
 
-            &.business {
-                background: vars.$category_business;
+            &.mobility {
+                background: vars.$category_mobility;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$category_business, 0), vars.$category_business);
+                    background-image: linear-gradient(to bottom, rgba(vars.$category_mobility, 0), vars.$category_mobility);
                 }
             }
 
@@ -735,24 +735,24 @@
                 }
             }
 
-            &.eestijazziarengusuunad {
-                background: vars.$eestijazziarengusuunad_background;
+            &.culture {
+                background: vars.$culture_background;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$eestijazziarengusuunad_background, 0), vars.$eestijazziarengusuunad_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$culture_background, 0), vars.$culture_background);
                 }
             }
 
-            &.business,
+            &.mobility,
             &.work,
             &.transport,
             &.health,
             &.education,
             &.society,
             &.varia,
-            &.eestijazziarengusuunad,
+            &.culture,
             &.citizenos,
-            &.hacktivistcommunity {
+            &.socialinclusion {
                 color: vars.$black;
 
                 .line {
@@ -847,46 +847,46 @@
                 background-repeat: no-repeat;
                 background-position: right -50px bottom 0px;
                 background-size: 300px;
-                background-color: vars.$thirtyfourislandproject_background;
+                background-color: vars.$security_background;
 
                 @media (max-width: 667px) {
                     background-image: none;
                 }
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$thirtyfourislandproject_background, 0), vars.$thirtyfourislandproject_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$security_background, 0), vars.$security_background);
                 }
             }
 
-            &.opinionfestival {
-                background-image: url('../imgs/img_partner_opinionfestival.png');
+            &.family {
+                background-image: url('../imgs/img_partner_family.png');
                 background-repeat: no-repeat;
                 background-position: right -50px bottom 0px;
                 background-size: 300px;
-                background-color: vars.$opinionfestival_background;
+                background-color: vars.$family_background;
 
                 @media (max-width: 667px) {
                     background-image: none;
                 }
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$opinionfestival_background, 0), vars.$opinionfestival_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$family_background, 0), vars.$family_background);
                 }
             }
 
-            &.pyln {
+            &.urbandecorum {
                 background-image: url('../imgs/img_partner_indiaYouthParticipationNetwork.png');
                 background-repeat: no-repeat;
                 background-position: right -50px bottom 0px;
                 background-size: 300px;
-                background-color: vars.$pyln_background;
+                background-color: vars.$urbandecorum_background;
 
                 @media (max-width: 667px) {
                     background-image: none;
                 }
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$pyln_background, 0), vars.$pyln_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$urbandecorum_background, 0), vars.$urbandecorum_background);
                 }
             }
 
@@ -895,18 +895,18 @@
                 background-repeat: no-repeat;
                 background-position: right -50px bottom 0px;
                 background-size: 300px;
-                background-color: vars.$eestijazziarengusuunad_background;
+                background-color: vars.$culture_background;
 
                 @media (max-width: 667px) {
                     background-image: none;
                 }
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$eestijazziarengusuunad_background, 0), vars.$eestijazziarengusuunad_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$culture_background, 0), vars.$culture_background);
                 }
             }
 
-            &.eurochangemakers {
+            &.economy {
                 background-image: url('../imgs/GEYC.png');
                 background-repeat: no-repeat;
                 background-position: right -50px bottom 0px;
@@ -926,12 +926,12 @@
                 }
             }
 
-            &.biotoopia {
-                background-image: url('../imgs/biotoopia_white.png');
+            &.territory {
+                background-image: url('../imgs/territory_white.png');
                 background-repeat: no-repeat;
                 background-position: right -50px bottom 0px;
                 background-size: 300px;
-                background-color: vars.$biotoopia_background;
+                background-color: vars.$territory_background;
 
                 @media (max-width: 667px) {
                     background-image: none;
@@ -945,7 +945,7 @@
                 }
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$biotoopia_background, 0), vars.$biotoopia_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$territory_background, 0), vars.$territory_background);
                 }
             }
 

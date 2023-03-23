@@ -242,43 +242,43 @@ import * as angular from 'angular';
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
-                .state('opinionfestival', {
-                    url: '/opinionfestival',
+                .state('family', {
+                    url: '/family',
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
-                .state('hacktivistcommunity', {
-                    url: '/hacktivistcommunity?topicStatus',
+                .state('socialinclusion', {
+                    url: '/socialinclusion?topicStatus',
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
-                .state('pyln', {
-                    url: '/pyln?topicStatus',
+                .state('urbandecorum', {
+                    url: '/urbandecorum?topicStatus',
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
-                .state('thirtyfourislandproject', {
-                    url: '/thirtyfourislandproject?topicStatus',
+                .state('security', {
+                    url: '/security?topicStatus',
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
-                .state('eestijazziarengusuunad', {
-                    url: '/eestijazziarengusuunad?topicStatus',
+                .state('culture', {
+                    url: '/culture?topicStatus',
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
-                .state('thetwelvemovie', {
-                    url: '/thetwelvemovie?topicStatus',
+                .state('school', {
+                    url: '/school?topicStatus',
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
-                .state('eurochangemakers', {
-                    url: '/eurochangemakers?topicStatus',
+                .state('economy', {
+                    url: '/economy?topicStatus',
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
-                .state('biotoopia', {
-                    url: '/biotoopia?topicStatus',
+                .state('territory', {
+                    url: '/territory?topicStatus',
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
