@@ -1285,7 +1285,7 @@
   "MSG_ERROR_POST_API_AUTH_SIGNUP_40000_NAME": "Il nome non può essere più lungo di 255 caratteri.",
   "MSG_ERROR_POST_API_AUTH_LOGIN_40002_EMAIL": "Un account con questo indirizzo e-mail non esiste.",
   "MSG_ERROR_POST_API_AUTH_LOGIN_42900": "Spiacente, il login è al momento disabilitato per questo utente. Si prega di riprovare più tardi. Se il problema persiste, si prega di contattare gli amministratori del sito.",
-  "MSG_ERROR_POST_API_AUTH_SIGNUP_40000_PASSWORD": "La password deve essere lunga almeno 8 caratteri, contenere almeno un numero, un carattere minuscolo e un carattere maiuscolo.",
+  "MSG_ERROR_POST_API_AUTH_SIGNUP_40000_PASSWORD": "La password deve essere lunga almeno 10 caratteri, contenere almeno un numero, un carattere minuscolo e un carattere maiuscolo.",
   "MSG_ERROR_POST_API_AUTH_LOGIN_40003_PASSWORD": "Password errata.",
   "MSG_ERROR_POST_API_AUTH_LOGIN_40002": "La verifica dell'account non è stata ancora completata. Si prega di controllare la casella di posta elettronica.",
   "MSG_ERROR_POST_API_AUTH_PASSWORD_RESET_40000": "Invalid email, password or password reset code.",
