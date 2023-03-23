@@ -277,8 +277,8 @@ import * as angular from 'angular';
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
-                .state('territory', {
-                    url: '/territory?topicStatus',
+                .state('environment', {
+                    url: '/environment?topicStatus',
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })

@@ -566,11 +566,11 @@
                 }
             }
 
-            &.territory {
-                background: vars.$territory_background;
+            &.environment {
+                background: vars.$environment_background;
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$territory_background, 0), vars.$territory_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$environment_background, 0), vars.$environment_background);
                 }
             }
 
@@ -670,7 +670,7 @@
             &.other,
             &.school,
             &.economy,
-            &.territory,
+            &.environment,
             &.integration {
                 color: vars.$white;
 
@@ -926,12 +926,12 @@
                 }
             }
 
-            &.territory {
-                background-image: url('../imgs/territory_white.png');
+            &.environment {
+                background-image: url('../imgs/environment_white.png');
                 background-repeat: no-repeat;
                 background-position: right -50px bottom 0px;
                 background-size: 300px;
-                background-color: vars.$territory_background;
+                background-color: vars.$environment_background;
 
                 @media (max-width: 667px) {
                     background-image: none;
@@ -945,7 +945,7 @@
                 }
 
                 .line::before {
-                    background-image: linear-gradient(to bottom, rgba(vars.$territory_background, 0), vars.$territory_background);
+                    background-image: linear-gradient(to bottom, rgba(vars.$environment_background, 0), vars.$environment_background);
                 }
             }
 

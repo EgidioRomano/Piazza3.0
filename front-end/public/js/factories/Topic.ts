@@ -19,7 +19,7 @@ export class Topic {
     };
 
     private CATEGORIES = {
-        territory: 'territory',
+        environment: 'environment',
         culture: 'culture',
         economy: 'economy',
         family: 'family',

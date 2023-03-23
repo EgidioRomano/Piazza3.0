@@ -33,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
 
     // Categories
     const CATEGORIES = {
-        territory: 'territory',
+        environment: 'environment',
         culture: 'culture',
         economy: 'economy',
         family: 'family',
