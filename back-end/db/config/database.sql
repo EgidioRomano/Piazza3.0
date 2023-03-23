@@ -1513,50 +1513,6 @@ COMMENT ON COLUMN public."Users".preferences IS 'User preferences JSON object';
 
 
 --
--- Name: VoteContainerFiles; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public."VoteContainerFiles" (
-    id uuid NOT NULL,
-    "voteId" uuid NOT NULL,
-    "fileName" character varying(255) NOT NULL,
-    "mimeType" character varying(255) NOT NULL,
-    content bytea NOT NULL,
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL,
-    "deletedAt" timestamp with time zone
-);
-
-
---
--- Name: COLUMN "VoteContainerFiles"."voteId"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."VoteContainerFiles"."voteId" IS 'To what Vote these files belong to.';
-
-
---
--- Name: COLUMN "VoteContainerFiles"."fileName"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."VoteContainerFiles"."fileName" IS 'File name as it will appear in the BDOC container.';
-
-
---
--- Name: COLUMN "VoteContainerFiles"."mimeType"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."VoteContainerFiles"."mimeType" IS 'Mime type of the file.';
-
-
---
--- Name: COLUMN "VoteContainerFiles".content; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."VoteContainerFiles".content IS 'File content.';
-
-
---
 -- Name: VoteDelegations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2126,14 +2082,6 @@ ALTER TABLE ONLY public."Users"
 
 
 --
--- Name: VoteContainerFiles VoteContainerFiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."VoteContainerFiles"
-    ADD CONSTRAINT "VoteContainerFiles_pkey" PRIMARY KEY (id);
-
-
---
 -- Name: VoteDelegations VoteDelegations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2657,14 +2605,6 @@ ALTER TABLE ONLY public."UserNotificationSettings"
 
 ALTER TABLE ONLY public."UserNotificationSettings"
     ADD CONSTRAINT "UserNotificationSettings_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."Users"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: VoteContainerFiles VoteContainerFiles_voteId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."VoteContainerFiles"
-    ADD CONSTRAINT "VoteContainerFiles_voteId_fkey" FOREIGN KEY ("voteId") REFERENCES public."Votes"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
