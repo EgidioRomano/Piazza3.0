@@ -422,7 +422,7 @@ export class Activity {
 
     private getActivityTopicTitle = (activity) => {
         const dataobject = this.getActivityObject(activity);
-        if (['Topic', 'VoteFinalContainer'].indexOf(dataobject['@type']) > -1) {
+        if (['Topic'].indexOf(dataobject['@type']) > -1) {
             return dataobject.title;
         } else if (dataobject.topicTitle) {
             return dataobject.topicTitle;
@@ -446,7 +446,7 @@ export class Activity {
             return 'topic';
         } else if (['Group'].indexOf(dataobject['@type']) > -1 || dataobject.groupName) {
             return 'group';
-        } else if (['Vote', 'VoteList', 'VoteFinalContainer', 'VoteOption', 'VoteDelegation'].indexOf(dataobject['@type']) > -1) {
+        } else if (['Vote', 'VoteList', 'VoteOption', 'VoteDelegation'].indexOf(dataobject['@type']) > -1) {
             return 'vote';
         } else if (['Comment', 'CommentVote'].indexOf(dataobject['@type']) > -1) {
             return 'comment';
@@ -681,7 +681,7 @@ export class Activity {
         } else if (object['@type'] === 'Group' || object['@type'] === 'TopicMemberGroup') {
             stateName = 'my/groups/groupId';
             params['groupId'] = object.id || object.groupId;
-        } else if (object['@type'] === 'Vote' || object['@type'] === 'VoteFinalContainer' ) {
+        } else if (object['@type'] === 'Vote') {
             stateName = 'topics/view/votes/view';
             params['topicId'] = object.topicId || object.id;
             params['voteId'] = object.voteId || object.id;

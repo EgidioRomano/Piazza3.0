@@ -897,38 +897,6 @@ module.exports = function (app) {
         return _saveActivity(activity, transaction);
     };
 
-    const _downloadFinalContainerActivity = function (instance, actor, context, transaction) {
-        // {
-        // "@context": "https://www.w3.org/ns/activitystreams",
-        // "summary": "Sally read an article",
-        // "type": "View",
-        // "actor": {
-        // "type": "Person",
-        // "name": "Sally"
-        // },
-        // "object": {
-        // "type": "Article",
-        // "name": "What You Should Know About Activity Streams"
-        // }
-        // }
-
-        const object = instance.toJSON ? instance.toJSON() : instance;
-        _setExtraProperties(instance, object);
-        object['@type'] = 'VoteFinalContainer';
-
-        const activity = {
-            type: Activity.TYPES.view,
-            object: object,
-            actor: actor
-        };
-
-        if (context) {
-            activity.context = context;
-        }
-
-        return _saveActivity(activity, transaction);
-    };
-
     return {
         getInstanceChangeSet: _getInstanceChangeSet,
         createActivity: _createActivity,
@@ -942,7 +910,6 @@ module.exports = function (app) {
         viewActivity: _viewActivity,
         viewActivityFeedActivity: _viewActivityFeedActivity,
         joinActivity: _joinActivity,
-        replyActivity: _replyActivity,
-        downloadFinalContainerActivity: _downloadFinalContainerActivity,
+        replyActivity: _replyActivity
     };
 };

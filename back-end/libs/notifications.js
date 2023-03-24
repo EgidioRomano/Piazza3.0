@@ -65,7 +65,7 @@ module.exports = function (app) {
     const getActivityTopicTitle = async function (dataobject, data) {
         const target = data.target;
         const origin = data.origin;
-        if (['Topic', 'VoteFinalContainer'].indexOf(dataobject['@type']) > -1) {
+        if (['Topic'].indexOf(dataobject['@type']) > -1) {
             return dataobject.title;
         }
         if (dataobject['@type'] === 'CommentVote') {

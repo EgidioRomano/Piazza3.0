@@ -280,19 +280,6 @@ module.exports = function (app) {
                             delete object.imageUrl;
                             delete object.language;
                             break;
-                        case 'VoteFinalContainer':
-                            delete returnActivity.data[field].creator;
-                            delete returnActivity.data[field].description;
-                            if (field === 'origin' && activity.data.type === 'Update') break;
-                            topic = _.find(activity.topics, function (t) {
-                                return t.id === activity.data[field].topicId
-                            });
-                            object = Topic.build(topic).toJSON();
-                            object['@type'] = activity.data[field]['@type'];
-                            object.creatorId = topic.creatorId;
-                            delete object.creator;
-                            delete object.description;
-                            break;
                         case 'TopicMemberUser':
                             object = TopicMemberUser.build(activity.data[field]).toJSON();
                             object['@type'] = activity.data[field]['@type'];
