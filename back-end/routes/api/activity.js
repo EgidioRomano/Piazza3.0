@@ -22,7 +22,6 @@ module.exports = function (app) {
     const GroupMemberUser = models.GroupMemberUser;
     const TopicMemberUser = models.TopicMemberUser;
     const TopicMemberGroup = models.TopicMemberGroup;
-    const VoteUserContainer = models.VoteUserContainer;
 
     /**
      * Read (List) public Topic Activities
@@ -280,10 +279,6 @@ module.exports = function (app) {
                             delete object.email;
                             delete object.imageUrl;
                             delete object.language;
-                            break;
-                        case 'VoteUserContainer':
-                            object = VoteUserContainer.build(activity.data[field]).toJSON();
-                            object['@type'] = activity.data[field]['@type'];
                             break;
                         case 'VoteFinalContainer':
                             delete returnActivity.data[field].creator;

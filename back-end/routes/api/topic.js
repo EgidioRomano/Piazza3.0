@@ -60,7 +60,6 @@ module.exports = function (app) {
 
     const Vote = models.Vote;
     const VoteOption = models.VoteOption;
-    const VoteUserContainer = models.VoteUserContainer;
     const VoteList = models.VoteList;
     const VoteDelegation = models.VoteDelegation;
 

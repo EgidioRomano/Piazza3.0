@@ -446,7 +446,7 @@ export class Activity {
             return 'topic';
         } else if (['Group'].indexOf(dataobject['@type']) > -1 || dataobject.groupName) {
             return 'group';
-        } else if (['Vote', 'VoteList', 'VoteUserContainer', 'VoteFinalContainer', 'VoteOption', 'VoteDelegation'].indexOf(dataobject['@type']) > -1) {
+        } else if (['Vote', 'VoteList', 'VoteFinalContainer', 'VoteOption', 'VoteDelegation'].indexOf(dataobject['@type']) > -1) {
             return 'vote';
         } else if (['Comment', 'CommentVote'].indexOf(dataobject['@type']) > -1) {
             return 'comment';

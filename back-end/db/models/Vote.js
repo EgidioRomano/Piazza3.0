@@ -149,10 +149,6 @@ module.exports = function (sequelize, DataTypes) {
             foreignKey: 'voteId'
         });
 
-        Vote.hasMany(models.VoteUserContainer, {
-            foreignKey: 'voteId'
-        });
-
         Vote.hasMany(models.VoteDelegation, {
             foreignKey: 'voteId'
         });

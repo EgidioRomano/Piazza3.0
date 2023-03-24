@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.5 (Ubuntu 14.5-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.5 (Ubuntu 14.5-0ubuntu0.22.04.1)
+-- Dumped from database version 12.14 (Ubuntu 12.14-1.pgdg22.04+1)
+-- Dumped by pg_dump version 12.14 (Ubuntu 12.14-1.pgdg22.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1282,6 +1282,7 @@ COMMENT ON COLUMN public."Topics".status IS 'Topic statuses.';
 
 COMMENT ON COLUMN public."Topics".visibility IS 'Who can see (read) the Topic apart from the Members.';
 
+
 --
 -- Name: COLUMN "Topics"."creatorId"; Type: COMMENT; Schema: public; Owner: -
 --
@@ -1351,6 +1352,7 @@ COMMENT ON COLUMN public."UserConnections"."connectionUserId" IS 'User id in the
 --
 
 COMMENT ON COLUMN public."UserConnections"."connectionData" IS 'Connection specific data you want to store.';
+
 
 --
 -- Name: UserNotificationSettings; Type: TABLE; Schema: public; Owner: -
@@ -1666,49 +1668,6 @@ COMMENT ON COLUMN public."VoteOptions"."voteId" IS 'To what Vote this option bel
 --
 
 COMMENT ON COLUMN public."VoteOptions".value IS 'Option value shown to the voter.';
-
-
---
--- Name: VoteUserContainers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public."VoteUserContainers" (
-    "userId" uuid NOT NULL,
-    "voteId" uuid NOT NULL,
-    container bytea NOT NULL,
-    "PID" text NOT NULL,
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL,
-    "deletedAt" timestamp with time zone
-);
-
-
---
--- Name: COLUMN "VoteUserContainers"."userId"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."VoteUserContainers"."userId" IS 'Id of the User Who cast the Vote.';
-
-
---
--- Name: COLUMN "VoteUserContainers"."voteId"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."VoteUserContainers"."voteId" IS 'To what Vote this signed container belongs to.';
-
-
---
--- Name: COLUMN "VoteUserContainers".container; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."VoteUserContainers".container IS 'BDOC containing the signed vote.';
-
-
---
--- Name: COLUMN "VoteUserContainers"."PID"; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public."VoteUserContainers"."PID" IS 'User personal ID';
 
 
 --
@@ -2114,14 +2073,6 @@ ALTER TABLE ONLY public."VoteOptions"
 
 
 --
--- Name: VoteUserContainers VoteUserContainers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."VoteUserContainers"
-    ADD CONSTRAINT "VoteUserContainers_pkey" PRIMARY KEY ("voteId", "PID");
-
-
---
 -- Name: Votes Votes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2168,7 +2119,7 @@ CREATE INDEX activities_user_ids ON public."Activities" USING gin ("userIds");
 -- Name: moderators_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX moderators_user_id ON public."Moderators" USING btree ("userId") WHERE (1=1);
+CREATE UNIQUE INDEX moderators_user_id ON public."Moderators" USING btree ("userId") WHERE (1 = 1);
 
 
 --
@@ -2661,22 +2612,6 @@ ALTER TABLE ONLY public."VoteLists"
 
 ALTER TABLE ONLY public."VoteOptions"
     ADD CONSTRAINT "VoteOptions_voteId_fkey" FOREIGN KEY ("voteId") REFERENCES public."Votes"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: VoteUserContainers VoteUserContainers_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."VoteUserContainers"
-    ADD CONSTRAINT "VoteUserContainers_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."Users"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: VoteUserContainers VoteUserContainers_voteId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public."VoteUserContainers"
-    ADD CONSTRAINT "VoteUserContainers_voteId_fkey" FOREIGN KEY ("voteId") REFERENCES public."Votes"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
