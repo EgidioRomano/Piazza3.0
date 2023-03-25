@@ -20,6 +20,7 @@
   "TXT_TOPIC_LEVELS_EDIT": "editor",
   "TXT_TOPIC_LEVELS_READ": "partecipante",
   "TXT_TOPIC_LEVELS_NONE": "nessuno",
+  "TXT_TOPIC_LEVELS_NULL": "nessuno",
   "TXT_GROUP_LEVELS_ADMIN": "@:TXT_TOPIC_LEVELS_ADMIN",
   "TXT_GROUP_LEVELS_READ": "membri",
   "TXT_TOPIC_VISIBILITY_PUBLIC": "Topic pubblico",
@@ -664,7 +665,6 @@
   "VIEWS": {
     "401": {
       "HEADING_INSUFFICIENT_PERMISSIONS": "Spiacente, non hai i permessi necessari per accedere a questa risorsa",
-      "DESCRIPTION_INSUFFICIENT_PERMISSIONS": "Se hai ricevuto un invito a partecipare ad un gruppo o un topic, devi prima accettarlo. Si prega di controllare la casella di posta elettronica o il registro delle notifiche.",
       "HEADING_YOU_MAY_RECOVER": "Tuttavia, puoi provare con le seguenti opzioni:",
       "BTN_LOGIN": "Accedi",
       "BTN_REQUEST_ACCESS": "Richiedi accesso a questa risorsa"
