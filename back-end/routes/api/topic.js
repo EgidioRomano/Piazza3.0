@@ -3678,14 +3678,6 @@ module.exports = function (app) {
             sortSql += ` u.name ASC `;
         }
 
-        let dataForTopicAdmin = '';
-        if (permissions && permissions.topic.permissions.level === TopicMemberUser.LEVELS.admin) {
-            dataForTopicAdmin = `
-            u.email as "user.email",
-            uc."connectionData"::jsonb->>'phoneNumber' AS "user.phoneNumber",
-            `;
-        }
-
         // User is not member and can only get own result
         if (!permissions) {
             where = ` AND tiu."userId" = :userId `;
@@ -3705,7 +3697,6 @@ module.exports = function (app) {
                         u.id as "user.id",
                         u.name as "user.name",
                         u."imageUrl" as "user.imageUrl",
-                        ${dataForTopicAdmin}
                         count(*) OVER()::integer AS "countTotal"
                     FROM "TopicInviteUsers" tiu
                     JOIN "Users" u ON u.id = tiu."userId"
@@ -3779,7 +3770,7 @@ module.exports = function (app) {
                     },
                     {
                         model: User,
-                        attributes: ['id', 'email', 'password', 'source'],
+                        attributes: ['id', 'password', 'source'],
                         as: 'user',
                         required: true,
                         include: [UserConnection]
@@ -3826,7 +3817,7 @@ module.exports = function (app) {
                         },
                         {
                             model: User,
-                            attributes: ['id', 'email', 'password', 'source'],
+                            attributes: ['id', 'password', 'source'],
                             as: 'user',
                             required: true,
                             include: [UserConnection]
