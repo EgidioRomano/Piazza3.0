@@ -423,7 +423,7 @@ export class AppService {
                 }, 30000);
                 authStatusWatcher = this.$interval(() => {
                     this.sAuth.status();
-                }, 10000);
+                }, 60000);
             } else if (newActivitiesWatcher) {
                 this.$interval.cancel(newActivitiesWatcher);
                 this.$interval.cancel(authStatusWatcher);
