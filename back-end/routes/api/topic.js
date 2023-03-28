@@ -5791,40 +5791,16 @@ module.exports = function (app) {
         const voteOptions = req.body.options;
 
         if (!voteOptions || !Array.isArray(voteOptions) || voteOptions.length < 2) {
-            return res.badRequest('At least 2 vote options are required', 1);
+            return res.badRequest('Sono necessarie almeno 2 opzioni di voto.', 1);
         }
 
-        const authType = req.body.authType || Vote.AUTH_TYPES.soft;
-        const delegationIsAllowed = req.body.delegationIsAllowed || false;
-
-        // We cannot allow too similar options, otherwise the options are not distinguishable in the signed file
-        if (authType === Vote.AUTH_TYPES.hard) {
-            const voteOptionValues = _.map(voteOptions, 'value').map(function (value) {
-                return sanitizeFilename(value).toLowerCase();
-            });
-
-            const uniqueValues = _.uniq(voteOptionValues);
-            if (uniqueValues.length !== voteOptions.length) {
-                return res.badRequest('Vote options are too similar', 2);
-            }
-
-            const reservedPrefix = VoteOption.RESERVED_PREFIX;
-            uniqueValues.forEach(function (value) {
-                if (value.substr(0, 2) === reservedPrefix) {
-                    return res.badRequest('Vote option not allowed due to usage of reserved prefix "' + reservedPrefix + '"', 4);
-                }
-            });
-        }
-
-
-        if (authType === Vote.AUTH_TYPES.hard && delegationIsAllowed) {
-            return res.badRequest('Delegation is not allowed for authType "' + authType + '"', 3);
-        }
+        const authType = Vote.AUTH_TYPES.soft;
+        const delegationIsAllowed = true;
 
         const vote = Vote.build({
             minChoices: req.body.minChoices || 1,
             maxChoices: req.body.maxChoices || 1,
-            delegationIsAllowed: req.body.delegationIsAllowed || false,
+            delegationIsAllowed: delegationIsAllowed,
             endsAt: req.body.endsAt,
             description: req.body.description,
             type: req.body.type || Vote.TYPES.regular,
@@ -5832,7 +5808,6 @@ module.exports = function (app) {
             autoClose: req.body.autoClose,
             reminderTime: req.body.reminderTime
         });
-
 
         // TODO: Some of these queries can be done in parallel
         const topic = await Topic.findOne({
@@ -6405,7 +6380,7 @@ module.exports = function (app) {
         const toUserId = req.body.userId;
 
         if (req.user.userId === toUserId) {
-            return res.badRequest('Cannot delegate to self.', 1);
+            return res.badRequest('Non puoi delegare te stesso.', 1);
         }
 
         const hasAccess = await _hasPermission(topicId, toUserId, TopicMemberUser.LEVELS.read, false, null, null);
@@ -6429,10 +6404,10 @@ module.exports = function (app) {
             return res.notFound();
         }
         if (!vote.delegationIsAllowed) {
-            return res.badRequest();
+            return res.badRequest('La delega non è permessa per questo topic.', 2);
         }
         if (vote.endsAt && new Date() > vote.endsAt) {
-            return res.badRequest('Le votazioni sono terminate.');
+            return res.badRequest('Le votazioni sono terminate.', 3);
         }
 
         try {
@@ -6516,7 +6491,7 @@ module.exports = function (app) {
                     // HACK: Forcing division by zero when cyclic delegation is detected. Cannot use result check as both update and cyclic return [].
                     if (err.parent.code === '22012') {
                         // Cyclic delegation detected.
-                        return res.badRequest('Sorry, you cannot delegate your vote to this person.');
+                        return res.badRequest('Spiacente, non puoi delegare il tuo voto a questo utente.', 4);
                     }
 
                     // Don't hide other errors
