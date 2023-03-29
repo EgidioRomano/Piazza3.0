@@ -52,7 +52,7 @@ module.exports = function (sequelize, DataTypes) {
             language: {
                 type: DataTypes.STRING(5),
                 comment: 'Language code.',
-                defaultValue: 'en',
+                defaultValue: 'it',
                 validate: {
                     is: /[a-z]{2}/i
                 },

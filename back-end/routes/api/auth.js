@@ -2,141 +2,23 @@
 
 module.exports = function (app) {
 
-    const logger = app.get('logger');
     const cryptoLib = app.get('cryptoLib');
     const loginCheck = app.get('middleware.loginCheck');
-    const isSuperAdmin = app.get('middleware.isSuperAdmin');
     const asyncMiddleware = app.get('middleware.asyncMiddleware');
     const emailLib = app.get('email');
     const validator = app.get('validator');
-    const util = app.get('util');
     const config = app.get('config');
     const models = app.get('models');
     const db = models.sequelize;
     const Op = db.Sequelize.Op;
-    const cosActivities = app.get('cosActivities');
     const jwt = app.get('jwt');
-    const querystring = app.get('querystring');
-    const urlLib = app.get('urlLib');
-    const url = app.get('url');
 
     const speedLimiter = app.get('speedLimiter');
     const rateLimiter = app.get('rateLimiter');
     const expressRateLimitInput = app.get('middleware.expressRateLimitInput');
 
     const User = models.User;
-    const UserConnection = models.UserConnection;
     const TokenRevocation = models.TokenRevocation;
-
-
-    app.post('/api/auth/signup', isSuperAdmin(), asyncMiddleware(async function (req, res) {
-        const email = req.body.email || ''; // HACK: Sequelize validate() is not run if value is "null". Also cannot use allowNull: false as I don' want constraint in DB. https://github.com/sequelize/sequelize/issues/2643
-        const password = req.body.password || ''; // HACK: Sequelize validate() is not run if value is "null". Also cannot use allowNull: false as I don' want constraint in DB. https://github.com/sequelize/sequelize/issues/2643
-        const name = req.body.name || util.emailToDisplayName(req.body.email);
-        const birthday = req.body.birthday;
-        const language = 'it';
-        const redirectSuccess = req.body.redirectSuccess || urlLib.getFe();
-        const preferences = req.body.preferences;
-
-        let created = false;
-
-        let user = await User
-            .findOne({
-                where: db.where(db.fn('lower', db.col('email')), db.fn('lower', email)),
-                include: [UserConnection]
-            });
-
-        if (user) {
-            // IF password is null, the User was created through an invite. We allow an User to claim the account.
-            // Check the source so that User cannot claim accounts created with Google/FB etc - https://github.com/citizenos/citizenos-fe/issues/773
-            if (!user.password && user.source === User.SOURCES.citizenos && !user.UserConnections.length) {
-                user.password = password;
-                user.name = name || user.name;
-                user.birthday = birthday || user.birthday;
-                user.language = 'it';
-                await user.save({fields: ['password', 'name', 'birthday', 'language']});
-            } else {
-                // Email address is already in use.
-                return res.ok(`Check your email ${email} to verify your account.`);
-            }
-        } else {
-            await db.transaction(async function (t) {
-                [user, created] = await User
-                    .findOrCreate({
-                        where: db.where(db.fn('lower', db.col('email')), db.fn('lower', email)), // Well, this will allow user to log in either using User and pass or just Google.. I think it's ok..
-                        defaults: {
-                            name,
-                            email,
-                            password,
-                            birthday,
-                            source: User.SOURCES.citizenos,
-                            language,
-                            preferences
-                        },
-                        transaction: t
-                    });
-
-                if (created) {
-                    logger.info('Created a new user', user.id);
-                    await cosActivities.createActivity(
-                        user,
-                        null,
-                        {
-                            type: 'User',
-                            id: user.id,
-                            ip: req.ip
-                        },
-                        req.method + ' ' + req.path,
-                        t
-                    );
-                }
-
-                const uc = await UserConnection
-                    .create({
-                        userId: user.id,
-                        connectionId: UserConnection.CONNECTION_IDS.citizenos,
-                        connectionUserId: user.id,
-                        connectionData: user
-                    }, {
-                        transaction: t
-                    });
-
-                return cosActivities.addActivity(
-                    uc,
-                    {
-                        type: 'User',
-                        id: user.id,
-                        ip: req.ip
-                    },
-                    null,
-                    user,
-                    req.method + ' ' + req.path,
-                    t
-                );
-            });
-        }
-
-        if (user) {
-            if (user.emailIsVerified) {
-                setAuthCookie(req, res, user.id);
-
-                return res.ok({redirectSuccess});
-            } else {
-                // Store redirect url in the token so that /api/auth/verify/:code could redirect to the url late
-                const tokenData = {
-                    redirectSuccess // TODO: Misleading naming, would like to use "redirectUri" (OpenID convention) instead, but needs RAA.ee to update codebase.
-                };
-
-                const token = jwt.sign(tokenData, config.session.privateKey, {algorithm: config.session.algorithm});
-                await emailLib.sendAccountVerification(user.email, user.emailVerificationCode, token);
-
-                return res.ok(`Check your email ${user.email} to verify your account.`, user.toJSON());
-            }
-        } else {
-            return res.ok(`Check your email ${user.email} to verify your account.`);
-        }
-    }));
-
 
     const setAuthCookie = function (req, res, userId) {
         const token = TokenRevocation.build();
@@ -183,7 +65,7 @@ module.exports = function (app) {
             return;
         }
         else if (!validator.isEmail(email)) {
-            return res.badRequest("L'indirizzo e-mail non è valido.", 40001);
+            return res.badRequest("L'indirizzo e-mail non è valido.", 1);
         }
         
         await new Promise(r => setTimeout(r, Math.floor(Math.random() * 1000))); // to prevent time-based user enumeration
@@ -196,14 +78,14 @@ module.exports = function (app) {
             if (!user.emailIsVerified) {
                 await emailLib.sendAccountVerification(user.email, user.emailVerificationCode);
 
-                return res.badRequest("La verifica dell'account non è stata ancora completata. Si prega di controllare la casella di posta elettronica.");
+                return res.badRequest("La verifica dell'indirizzo e-mail non è stata ancora completata. Si prega di controllare la casella di posta elettronica.");
             }
 
             setAuthCookie(req, res, user.id);
 
             return res.ok(userData);
         } else {
-            return res.badRequest("Credenziali non valide.", 40001);
+            return res.badRequest("Credenziali non valide.", 2);
         }        
     });
 

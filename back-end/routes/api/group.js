@@ -114,6 +114,84 @@ module.exports = function (app) {
     };
 
     /**
+     * Create a new User and add it to a Group
+     */
+    app.post('/api/groups/createuser', isSuperAdmin(), asyncMiddleware(async function (req, res) {
+        const email = req.body.email;
+        const name = req.body.name;
+        const birthday = req.body.birthday;
+        const groupId = req.body.groupId;
+
+        if (!email || !name || !birthday || !groupId) {
+            return res.badRequest('I seguenti parametri sono necessari: email, name, birthday e groupId.', 1);
+        }
+
+        if (!validator.isEmail(email)) {
+            return res.badRequest("L'indirizzo e-mail fornito non è valido.", 2);
+        }
+
+        let user = await User.findOne({
+            where: db.where(db.fn('lower', db.col('email')), db.fn('lower', email))
+        });
+
+        if (user) {
+            return res.badRequest('Un utente con questo indirizzo e-mail esista già.', 3);
+        }
+
+        if (!validator.isUUID(groupId, 4)) {
+            return res.badRequest('Il parametro "groupId" fornito non è valido.', 4);
+        }
+
+        const group = await Group.findOne({
+            where: {id: groupId}
+        });
+
+        if (!group) {
+            return res.badRequest('Un gruppo con questo ID non è presente nel sistema.', 5);
+        }
+
+        const password = 'Piazza3.0:' + util.randomString(10);
+        logger.info("PASSWORD: " + password);
+
+        user = await User.create({
+            email: email,
+            password: password,
+            name: name,
+            birthday: birthday,
+            emailIsVerified: true,
+            source: User.SOURCES.citizenos
+        });
+
+        if (!user) {
+            return res.internalServerError("Errore di sistema, l'utente non è stato creato.");
+        }
+
+        const groupUser = await GroupMemberUser.create({
+            groupId: group.id,
+            userId: user.id,
+            level: GroupMemberUser.LEVELS.read
+        });
+
+        if (!groupUser) {
+            await db.query(
+                `DELETE FROM "Users" WHERE "id" = :userId`,
+                {
+                    replacements: {
+                        userId: user.id
+                    },
+                    type: db.QueryTypes.DELETE,
+                    raw: true
+                }
+            );
+            return res.internalServerError("Errore di sistema, l'utente non è stato creato.");
+        }
+
+        // TODO: invio email di benvenuto
+
+        return res.created(user);
+    }));
+
+    /**
      * Create a new Group
      */
     app.post('/api/users/:userId/groups', isSuperAdmin(), asyncMiddleware(async function (req, res) {
