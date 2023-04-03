@@ -55,7 +55,7 @@ function ExpressRateLimitInput (app) {
                 // NOTE: We assume that ANY property in the "properties" array is REQUIRED. If the value does not exist, we consider it as a bad request!
                 if (!propValue) {
                     logger.error('expressRateLimitInput', `No value for property "${prop}" found in Express request object (req)!`);
-                    return res.status(400).end();
+                    return res.status(400);
                 }
                 propsAndValues.push(`${prop}=${propValue}`);
             });
@@ -68,7 +68,7 @@ function ExpressRateLimitInput (app) {
                     return (next());
                 })
                 .catch(() => {
-                    logger.warn('express-rate-limit-input', 'RATE LIMIT HIT!', `Key: ${key} - Conf: windowMs=${windowMs}, max=${max}.`);
+                    logger.warn('express-rate-limit-input', 'RATE LIMIT HIT!', `Key: ${key} - Conf: windowMs=${windowMs}, max=${max}, IP=${req.ip}`);
                     res.status(429).json({
                         status: {
                             code: 42900,

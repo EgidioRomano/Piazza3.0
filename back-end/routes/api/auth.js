@@ -61,10 +61,7 @@ module.exports = function (app) {
         const email = (req.body.email || '').toString();
         const password = (req.body.password || '').toString();
 
-        if (email.length === 0) {
-            return;
-        }
-        else if (!validator.isEmail(email)) {
+        if (!email.length || !validator.isEmail(email)) {
             return res.badRequest("L'indirizzo e-mail fornito non è valido.", 1);
         }
         
@@ -123,10 +120,7 @@ module.exports = function (app) {
     app.post('/api/auth/password/reset/send', rateLimiter(50), speedLimiter(15), expressRateLimitInput(['body.email'], 15 * 60 * 1000, 5), asyncMiddleware(async function (req, res) {
         const email = (req.body.email || '').toString();
 
-        if (email.length === 0) {
-            return;
-        }
-        else if (!validator.isEmail(email)) {
+        if (!email.length || !validator.isEmail(email)) {
             return res.badRequest({email: "L'indirizzo e-mail fornito non è valido."});
         }
 
@@ -146,10 +140,17 @@ module.exports = function (app) {
     }));
 
 
-    app.post('/api/auth/password/reset', asyncMiddleware(async function (req, res) {
-        const email = req.body.email;
-        const password = req.body.password;
-        const passwordResetCode = req.body.passwordResetCode;
+    app.post('/api/auth/password/reset', rateLimiter(50), speedLimiter(15), expressRateLimitInput(['body.email'], 15 * 60 * 1000, 5), asyncMiddleware(async function (req, res) {
+        const email = (req.body.email || '').toString();
+        const password = (req.body.password || '').toString();
+        const passwordResetCode = (req.body.passwordResetCode || '').toString();
+
+        if (!email.length || !validator.isEmail(email)) {
+            return res.badRequest("L'indirizzo e-mail fornito non è valido.", 1);
+        }
+        else if (!validator.isUUID(passwordResetCode)) {
+            return res.badRequest("Il codice di reset fornito non è valido.", 2);
+        }
 
         await new Promise(r => setTimeout(r, Math.floor(Math.random() * 1000))); // to prevent time-based user enumeration
 
@@ -162,9 +163,8 @@ module.exports = function (app) {
             }
         });
 
-        // !user.passwordResetCode avoids the situation where passwordResetCode has not been sent (null), but user posts null to API
-        if (!user || !user.passwordResetCode) {
-            return res.badRequest("L'indirizzo e-mail, la password o il codice di reset non sono validi.");
+        if (!user) {
+            return res.badRequest("L'indirizzo e-mail o il codice di reset non sono validi.", 3);
         }
 
         user.password = password; // Hash is created by the model hooks
