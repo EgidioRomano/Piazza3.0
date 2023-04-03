@@ -133,7 +133,7 @@ let loginFormComponent = {
                 console.log('ERROR', status);
 
                 switch (status.code) {
-                    case 40001: // Account does not exist
+                    case 40003: // Account does not exist
                         this.sNotification.removeAll();
                         this.errors = { accoundDoesNotExist: true };
                         break;

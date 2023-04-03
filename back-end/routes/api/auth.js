@@ -61,11 +61,11 @@ module.exports = function (app) {
         const email = (req.body.email || '').toString();
         const password = (req.body.password || '').toString();
 
-        if (email === '') {
+        if (email.length === 0) {
             return;
         }
         else if (!validator.isEmail(email)) {
-            return res.badRequest("L'indirizzo e-mail non è valido.", 1);
+            return res.badRequest("L'indirizzo e-mail fornito non è valido.", 1);
         }
         
         await new Promise(r => setTimeout(r, Math.floor(Math.random() * 1000))); // to prevent time-based user enumeration
@@ -78,14 +78,14 @@ module.exports = function (app) {
             if (!user.emailIsVerified) {
                 await emailLib.sendAccountVerification(user.email, user.emailVerificationCode);
 
-                return res.badRequest("La verifica dell'indirizzo e-mail non è stata ancora completata. Si prega di controllare la casella di posta elettronica.");
+                return res.badRequest("La verifica dell'indirizzo e-mail non è stata ancora completata. Si prega di controllare la casella di posta elettronica.", 2);
             }
 
             setAuthCookie(req, res, user.id);
 
             return res.ok(userData);
         } else {
-            return res.badRequest("Credenziali non valide.", 2);
+            return res.badRequest("Credenziali non valide.", 3);
         }        
     });
 
@@ -121,25 +121,26 @@ module.exports = function (app) {
 
 
     app.post('/api/auth/password/reset/send', rateLimiter(50), speedLimiter(15), expressRateLimitInput(['body.email'], 15 * 60 * 1000, 5), asyncMiddleware(async function (req, res) {
-        const email = req.body.email;
+        const email = (req.body.email || '').toString();
 
-        if (!email || !validator.isEmail(email.toString())) {
-            return res.badRequest({email: "L'indirizzo e-mail non è valido."});
+        if (email.length === 0) {
+            return;
+        }
+        else if (!validator.isEmail(email)) {
+            return res.badRequest({email: "L'indirizzo e-mail fornito non è valido."});
         }
 
         await new Promise(r => setTimeout(r, Math.floor(Math.random() * 1000))); // to prevent time-based user enumeration
 
         const user = await User.findOne({where: db.where(db.fn('lower', db.col('email')), db.fn('lower', email))});
 
-        if (!user) {
-            return res.ok('Controlla la tua casella di posta elettronica per completare il reset della password.');
+        if (user) {
+            user.passwordResetCode = true; // Model will generate new code
+
+            await user.save({fields: ['passwordResetCode']});
+    
+            await emailLib.sendPasswordReset(user.email, user.passwordResetCode);
         }
-
-        user.passwordResetCode = true; // Model will generate new code
-
-        await user.save({fields: ['passwordResetCode']});
-
-        await emailLib.sendPasswordReset(user.email, user.passwordResetCode);
 
         return res.ok('Controlla la tua casella di posta elettronica per completare il reset della password.');
     }));
