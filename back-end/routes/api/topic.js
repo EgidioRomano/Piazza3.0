@@ -5795,12 +5795,11 @@ module.exports = function (app) {
         }
 
         const authType = Vote.AUTH_TYPES.soft;
-        const delegationIsAllowed = true;
 
         const vote = Vote.build({
             minChoices: req.body.minChoices || 1,
             maxChoices: req.body.maxChoices || 1,
-            delegationIsAllowed: delegationIsAllowed,
+            delegationIsAllowed: false,
             endsAt: req.body.endsAt,
             description: req.body.description,
             type: req.body.type || Vote.TYPES.regular,
