@@ -148,28 +148,6 @@ let loginFormComponent = {
         };
 
         /**
-         * Login with Estonian ID-Card
-         */
-        doLoginEsteId() {
-            this.ngDialog
-                .open({
-                    template: '<login-est-eid></login-est-eid>',
-                    plain: true
-                });
-        };
-
-        /**
-         * Login with Smart-ID
-         */
-        doLoginSmartId() {
-            this.ngDialog
-                .open({
-                    template: '<login-smart-id></login-smart-id>',
-                    plain: true
-                });
-        };
-
-        /**
          * Password reset
          */
         doResetPassword() {

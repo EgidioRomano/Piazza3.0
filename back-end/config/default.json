@@ -185,16 +185,6 @@
       "timemarkUrl": "http://demo.sk.ee/ocsp",
 	    "timestampUrl": "http://demo.sk.ee/tsa"
     },
-    "smartId": {
-      "hostname": "smartid.citizenos.com:8001",
-      "authorizeToken": "m3EvIdswsiIpeOXqXb185fgoS9h0zpu5jrweZWLVGeVR5FoQpE",
-      "apiPath": "/v1"
-    },
-    "mobileId": {
-      "hostname": "mobiilid.citizenos.com:8001",
-      "authorizeToken": "m3EvIdswsiIpeOXqXb185fgoS9h0zpu5jrweZWLVGeVR5FoQpE",
-      "apiPath": "/mid-api"
-    },
     "twitter": {
       "consumer_key": null,
       "consumer_secret": null,

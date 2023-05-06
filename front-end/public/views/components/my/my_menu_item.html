@@ -15,19 +15,6 @@
             </div>
             <div class="small_topic_small_text">{{'TXT_TOPIC_STATUS_' + $ctrl.item.status | uppercase | translate}}</div>
         </div>
-
-        <div class="small_topic_right_cont" ng-if="$ctrl.item.members.groups.count > 0">
-            <div class="small_topic_icon">
-                <div ></div>
-            </div>
-            <div class="small_topic_small_text" translate="VIEWS.MY.LBL_GROUPS_COUNT" translate-values="{count: $ctrl.item.members.groups.count}">0 groups</div>
-        </div>
-        <div class="small_topic_right_cont" ng-if="$ctrl.item.members.topics.count > 0">
-            <div class="small_topic_icon">
-                <div ></div>
-            </div>
-            <div class="small_topic_small_text" translate="VIEWS.MY.LBL_TOPICS_COUNT" translate-values="{count: $ctrl.item.members.topics.count}">0 groups</div>
-        </div>
         <div class="clearer"></div>
     </div>
 
