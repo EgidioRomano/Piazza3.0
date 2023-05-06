@@ -210,29 +210,6 @@ app.set('cosEtherpad', require('./libs/cosEtherpad')(app));
 app.set('cosJwt', require('./libs/cosJwt')(app));
 app.set('cosUpload', require('./libs/cosUpload')(app));
 
-//Config smartId
-const smartId = require('smart-id-rest')();
-smartId.init({
-    hostname: config.services.smartId.hostname,
-    apiPath: config.services.smartId.apiPath,
-    authorizeToken: config.services.smartId.authorizeToken,
-    relyingPartyUUID: config.services.smartId.relyingPartyUUID,
-    replyingPartyName: config.services.smartId.replyingPartyName,
-    issuers: config.services.signature.certificates.issuers
-});
-app.set('smartId', smartId);
-//Config mobiilId
-const mobileId = require('mobiil-id-rest')();
-mobileId.init({
-    hostname: config.services.mobileId.hostname,
-    apiPath: config.services.mobileId.apiPath,
-    authorizeToken: config.services.mobileId.authorizeToken,
-    relyingPartyUUID: config.services.mobileId.relyingPartyUUID,
-    replyingPartyName: config.services.mobileId.replyingPartyName,
-    issuers: config.services.signature.certificates.issuers
-});
-app.set('mobileId', mobileId);
-
 if (typeof config.email === 'string') {
     config.email = JSON.parse(config.email); // Support JSON string from ENV
 }
