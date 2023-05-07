@@ -78,7 +78,7 @@ module.exports = function (app) {
      * @private
      */
     const resolveTemplate = function (template, language) {
-        const lang = language ? language.toLowerCase() : 'en';
+        const lang = 'it';
 
         const pathTemplate = ':templateRoot/build/:template_:language.html'
             .replace(':templateRoot', templateRoot)
