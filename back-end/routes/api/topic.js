@@ -43,6 +43,7 @@ module.exports = function (app) {
     const User = models.User;
     const UserConnection = models.UserConnection;
     const Group = models.Group;
+    const GroupMemberUser = models.GroupMemberUser;
     const Topic = models.Topic;
     const TopicMemberUser = models.TopicMemberUser;
     const TopicMemberGroup = models.TopicMemberGroup;
@@ -1571,6 +1572,25 @@ module.exports = function (app) {
                 }
                 else if (topic.visibility === 'private' && visibility !== 'private' && visibility !== 'public') {
                     return res.badRequest('Il campo "visibilità" è malformato.');
+                }
+                else if (topic.visibility === 'private' && visibility === 'public') {
+                    const userGroup = await GroupMemberUser.findOne({where: {userId: req.user.id}});
+                    if (!userGroup) {
+                        return res.internalServerError("Errore di sistema, il topic non può essere pubblicato.");
+                    }
+                    const userTopic = await TopicMemberGroup
+                            .findOrCreate({
+                                where: {
+                                    topicId: topicId,
+                                    groupId: userGroup.groupId
+                                },
+                                defaults: {
+                                    level: TopicMemberUser.LEVELS.read
+                                }
+                            });
+                    if (!userTopic) {
+                        return res.internalServerError("Errore di sistema, il topic non può essere pubblicato.");
+                    }
                 }
             }
 
