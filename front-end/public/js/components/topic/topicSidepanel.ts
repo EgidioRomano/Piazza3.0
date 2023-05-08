@@ -49,14 +49,6 @@ let topicSidepanel = {
                         });
                 }, angular.noop);
         };
-
-        openFeedback () {
-            const dialog = this.ngDialog
-                .open({
-                    template: '<feedback></feedback>',
-                    plain: true
-                });
-        };
     }]
 };
 

@@ -18,6 +18,7 @@
         <div ng-if="($ctrl.topic.vote.id && $ctrl.topic.status===$ctrl.STATUSES.voting && $ctrl.Topic.canSendToFollowUp($ctrl.topic))" class="blue_link" ng-click="$ctrl.sendToFollowUp()"
                 translate="VIEWS.TOPICS_TOPICID.NAV_LNK_SEND_TO_FOLLOW_UP">Send to follow up
         </div>
+        <div class="blue_link" ng-if="($ctrl.Topic.canUpdate($ctrl.topic) && $ctrl.topic.visibility === 'private')" ng-click="$ctrl.Topic.publishTopic($ctrl.topic)">Pubblica topic</div>
         <div class="blue_link" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)" ng-click="$ctrl.closeTopic()" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC">Close topic</div>
         <div class="line lightest_line" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)"></div>
         <div class="blue_link" ng-if="$ctrl.Topic.canDelete($ctrl.topic) || $ctrl.topic.canLeave()" ui-sref="topics/view/settings({topicId: $ctrl.topic.id, tab: 'categories'})" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_ACTIONS">Actions</div>

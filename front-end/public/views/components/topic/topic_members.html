@@ -28,12 +28,6 @@
                                 <div class="blue_bottom_line"></div>
                             </div>
                         </div>
-                        <div class="tab_button" ng-click="$ctrl.app.selectTab('groups')" ng-class="$ctrl.app.tabSelected === 'groups' ? 'active' : ''">
-                            <div class="tab_buttom_wrap">
-                                <div class="tab_button_text" translate="MODALS.TOPIC_MEMBERS_TAB_GROUPS">GROUPS</div>
-                                <div class="blue_bottom_line"></div>
-                            </div>
-                        </div>
                         <div class="tab_button" ng-click="$ctrl.app.selectTab('invited')" ng-class="$ctrl.app.tabSelected === 'invited' ? 'active' : ''">
                             <div class="tab_buttom_wrap">
                                 <div class="tab_button_text" translate="MODALS.TOPIC_MEMBERS_TAB_INVITED">INVITED</div>
@@ -94,12 +88,8 @@
                                         <div ng-bind="user.name" tooltips tooltip-hidden="{{(!user.email && !user.pid && !user.phoneNumber)}}" tooltip-class="tooltip_author"
                                             tooltip-template="<span class='creator_data_tooltip_row'>{{user.email}}</span><span class='creator_data_tooltip_row'>{{user.phoneNumber}}</span><span class='creator_data_tooltip_row'>{{user.pid}}</span>"
                                             tooltip-smart="true">user.name</div>
-                                        <div class="via" ng-if="user.email">
-                                            <span ng-bind="user.email"></span>
-                                        </div>
-                                        <div class="via" ng-if="user.groups.rows.length && !user.levelUser">
-                                            <span translate="MODALS.TOPIC_MEMBERS_LBL_VIA">via</span> <span ng-repeat="group in user.groups.rows"><span ng-if="!$first">, </span><span ng-if="group.name" class="blue_link" ui-sref="my/groups/groupId({groupId: group.id, filter: 'grouped'})">{{group.name}} ({{'TXT_TOPIC_LEVELS_' + group.level | uppercase | translate}})</span><i
-                                            ng-if="!group.name" class="disabled" translate="MODALS.TOPIC_MEMBERS_LBL_INACCESSIBLE_GROUP" translate-values="{level: ('TXT_TOPIC_LEVELS_' + group.level | uppercase | translate)}">Inaccessible Group</i> <i class="disabled">(<span  translate="{{'TXT_TOPIC_LEVELS_' + group.level | uppercase }}">admin</span>)</i></span>
+                                        <div class="via" ng-if="user.birthday">
+                                            <span ng-bind="user.birthday"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -124,16 +114,6 @@
                                     </div>
                                 </div>
                                 <span ng-if="!$ctrl.Topic.canUpdate($ctrl.topic)" class="user_level_text">{{'TXT_TOPIC_LEVELS_' + user.level | uppercase | translate}}</span>
-                            </td>
-                            <td class="recycle_bin_wrap" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)">
-                                <div class="btn_wrap recycle_bin" ng-if="user.levelUser">
-                                    <div class="btn" ng-click="$ctrl.doDeleteMemberUser(user)">
-                                        <div class="table_cell">
-                                            <div class="sprite desktop_fix sprite-mytopics-icon-deletetopic2x"></div>
-                                            <div class="sprite mobile_fix sprite-mytopics-icon-deletetopic2x"></div>
-                                        </div>
-                                    </div>
-                                </div>
                             </td>
                         </tr>
                     </table>

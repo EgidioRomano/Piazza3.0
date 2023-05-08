@@ -53,25 +53,6 @@
 
                 <div class="lightbox_section">
 
-
-                    <div class="settings_section" ng-if="$ctrl.form.topic.visibility === 'private'">
-                        <div class="settings_cell">
-                            <div class="setting_title" translate="MODALS.TOPIC_SETTINGS_LBL_MAKE_PRIVATE">Make your
-                                topic private</div>
-                            <div class="setting_description" translate="MODALS.TOPIC_SETTINGS_LBL_MAKE_PRIVATE_EXT">ONLY
-                                PEOPLE YOU INVITE WILL BE ABLE TO JOIN THE TOPIC</div>
-                        </div>
-
-                        <div class="settings_cell">
-                            <cos-toggle cos-toggle-text-on="'TOGGLE_ON' | translate"
-                                cos-toggle-text-off="'TOGGLE_OFF' | translate" value="$ctrl.Topic.VISIBILITY.private"
-                                off-value="$ctrl.Topic.VISIBILITY.public"
-                                model="$ctrl.form.topic.visibility"></cos-toggle>
-                        </div>
-                    </div>
-
-                    <div class="line lightest_line" ng-if="$ctrl.form.topic.visibility === 'private'"></div>
-
                     <div class="settings_section"
                         ng-if="$ctrl.Topic.canSendToFollowUp($ctrl.topic) && $ctrl.Topic.canEdit($ctrl.topic)">
                         <div class="settings_cell">

@@ -293,11 +293,6 @@
                                 ng-if="$ctrl.TopicMemberGroupService.orderBy === 'members.users.count'"></div>
                         </div>
                     </div>
-                    <div class="pretend_th not_sortable">
-                        <div class="th_text">
-                            <span translate="VIEWS.MY_TOPICS_TOPICID.LBL_REMOVE_FROM_TOPIC">Remove from topic</span>
-                        </div>
-                    </div>
                 </div>
                 <div class="pretend_tr" ng-repeat="group in $ctrl.TopicMemberGroupService.groups">
                     <div class="pretend_td">
@@ -404,11 +399,6 @@
                             <span translate="VIEWS.MY_TOPICS_TOPICID.LNK_ROLES">Roles</span>
                             <div ng-class="{'sprite sprite-icon-list-ordering2x': $ctrl.TopicMemberUserService.order === 'ASC', 'sprite sprite-icon-list-ordering-down-black2x': $ctrl.TopicMemberUserService.order === 'DESC' }"
                                 ng-if="$ctrl.TopicMemberUserService.orderBy === 'level'"></div>
-                        </div>
-                    </div>
-                    <div class="pretend_th not_sortable" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)">
-                        <div class="th_text">
-                            <span translate="VIEWS.MY_TOPICS_TOPICID.LBL_REMOVE_FROM_TOPIC">Remove from topic</span>
                         </div>
                     </div>
                 </div>

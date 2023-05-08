@@ -236,6 +236,32 @@ export class Topic {
             });
     }
 
+    publishTopic (topic) {
+        this.ngDialog
+            .openConfirm({
+                template: '/views/modals/topic_publish_confirm.html'
+            })
+            .then(() => {
+                return this.update({
+                    id: topic.id,
+                    visibility: 'public'
+                });
+            })
+            .then(() => {
+                const stateParams = angular.extend({}, this.$stateParams, {
+                    topicId: topic.id,
+                    commentId: null
+                });
+                this.$state.go(
+                    'topics/view',
+                    stateParams,
+                    {
+                        reload: true
+                    }
+                );
+            }, angular.noop);
+    }
+
     changeState (topic, state, stateSuccess) {
         const templates = {
             followUp: '/views/modals/topic_send_to_followUp_confirm.html',

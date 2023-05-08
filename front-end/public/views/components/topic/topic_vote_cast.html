@@ -25,7 +25,7 @@
 
     </div>
 
-    <div class="vote_casting_message" ng-if="$ctrl.vote.type === 'multiple' && $ctrl.vote.maxChoices > 1">
+    <div class="vote_casting_message" ng-if="$ctrl.vote.type === 'multiple' && $ctrl.vote.maxChoices > 1 && !$ctrl.hasVoteEnded()">
         <div class="message_content" translate="VIEWS.TOPICS_TOPICID.TXT_YOU_CAN_CHOOSE_OPTIONS" translate-values="{maxChoices: $ctrl.vote.maxChoices}">This is a multiple choice vote. You can choose max 2 options that align with your view.</div>
     </div>
     <div class="vote_casting_overlay" ng-if="$ctrl.vote.authType === $ctrl.VOTE_AUTH_TYPES.soft && !$ctrl.hasVoteEnded() && !$ctrl.app.user.loggedIn">
