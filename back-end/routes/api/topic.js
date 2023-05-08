@@ -215,7 +215,7 @@ module.exports = function (app) {
                     return next(null, req, res);
                 }
 
-                return res.forbidden('Insufficient permissions');
+                return res.forbidden('Non disponi dei permessi necessari a completare questa operazione.');
             } catch (err) {
                 if (err) {
                     return next(err);
@@ -357,7 +357,7 @@ module.exports = function (app) {
                 if (comment) {
                     return next('route');
                 } else {
-                    return res.forbidden('Insufficient permissions');
+                    return res.forbidden('Non disponi dei permessi necessari a completare questa operazione.');
                 }
             } catch (err) {
                 return next(err);
@@ -3748,7 +3748,7 @@ module.exports = function (app) {
         if (invites.length) {
             countTotal = invites[0].countTotal;
         } else if (!permissions) {
-            return res.forbidden('Insufficient permissions');
+            return res.forbidden('Non disponi dei permessi necessari a completare questa operazione.');
         }
 
         invites.forEach(function (invite) {
@@ -6161,7 +6161,7 @@ module.exports = function (app) {
         }
 
         if (!isSingelOption && (!voteOptions || !Array.isArray(voteOptions) || voteOptions.length > vote.maxChoices || voteOptions.length < vote.minChoices)) {
-            return res.badRequest('The options must be an array of minimum :minChoices and maximum :maxChoices options.'
+            return res.badRequest('Le opzioni devono essere un array di minimo :minChoices e massimo :maxChoices elementi.'
                 .replace(':minChoices', vote.minChoices)
                 .replace(':maxChoices', vote.maxChoices));
         }
