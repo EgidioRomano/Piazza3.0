@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="dropdown" ng-if="$ctrl.canUpdate()">
-            <div class="dropdown_item" ng-repeat="(key, level) in $ctrl.GroupMemberUser.LEVELS">
+            <div class="dropdown_item" ng-repeat="(key, level) in $ctrl.Topic.LEVELS"">
                 <div class="item_name" ng-click="$ctrl.doUpdateMemberUser(level)">{{'TXT_TOPIC_LEVELS_' + level | uppercase | translate}}</div>
             </div>
         </div>

@@ -44,10 +44,11 @@
             <div class="lightbox_content settings_section_wrap padding_bottom_zero" ng-if="$ctrl.tabSelected === 'invite'">
 
                 <div class="lightbox_section">
-                    <div class="input_text_margin_bottom" translate="MODALS.TOPIC_INVITE_LBL_OPTIONAL_MESSAGE">Add an optional invitation message</div>
+                    <!--div class="input_text_margin_bottom" translate="MODALS.TOPIC_INVITE_LBL_OPTIONAL_MESSAGE">Add an optional invitation message</div>
                     <textarea id="invite_body" translate translate-attr-placeholder="MODALS.TOPIC_INVITE_PLACHOLDER_OPTIONAL_MESSAGE" class="gray_borders"
                               placeholder="Insert your invitation message here..." ng-model="$ctrl.form.inviteMessage" maxlength="{{::$ctrl.inviteMessageMaxLength}}"></textarea>
 
+                    <p></p-->
                     <div class="input_text_margin_bottom" translate="MODALS.TOPIC_INVITE_TXT_INVITE_USERS_AND_GROUPS">Invite users and groups via name or e-mail address</div>
 
                     <div class="searchbox_with_icon_and_text only_text">
@@ -62,7 +63,7 @@
                                         </div>
                                         <div class="search_dropdown_item" typeahead-item="user" ng-repeat="user in $ctrl.searchResults.users">
                                             <div class="table_cell search_item_text">
-                                                <b>{{user.name}}</b> {{user.email}}
+                                                <b>{{user.name}}</b> {{user.birthday}}
                                             </div>
                                             <div class="table_cell blue_link">
                                                 <span class="submit_link" ng-click="$ctrl.addTopicMemberUser(user)" translate="MODALS.TOPIC_SETTINGS_TXT_PRESS_ENTER_OR_CLICK_TO_ADD">Press enter or click to add</span>
