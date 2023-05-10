@@ -6112,6 +6112,10 @@ module.exports = function (app) {
         const topicId = req.params.topicId;
         const voteId = req.params.voteId;
 
+        if (!Array.isArray(req.body.options)) {
+            return res.badRequest('Il parametro opzioni deve essere un array.');
+        }
+
         let voteOptions = [...new Map(req.body.options.map(item => [item['optionId'], item])).values()];
         let isSingelOption = false;
 
@@ -6160,7 +6164,7 @@ module.exports = function (app) {
             }
         }
 
-        if (!isSingelOption && (!voteOptions || !Array.isArray(voteOptions) || voteOptions.length > vote.maxChoices || voteOptions.length < vote.minChoices)) {
+        if (!isSingelOption && (voteOptions.length > vote.maxChoices || voteOptions.length < vote.minChoices)) {
             return res.badRequest('Le opzioni devono essere un array di minimo :minChoices e massimo :maxChoices elementi.'
                 .replace(':minChoices', vote.minChoices)
                 .replace(':maxChoices', vote.maxChoices));
@@ -6262,6 +6266,10 @@ module.exports = function (app) {
             const voteId = vote.id;
             const userId = req.user.userId;
             const topicId = req.params.topicId;
+
+            if (!Array.isArray(req.body.options)) {
+                return res.badRequest('Il parametro opzioni deve essere un array.');
+            }
 
             const voteOptions = [...new Map(req.body.options.map(item => [item['optionId'], item])).values()];
 
