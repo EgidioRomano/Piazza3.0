@@ -6112,7 +6112,7 @@ module.exports = function (app) {
         const topicId = req.params.topicId;
         const voteId = req.params.voteId;
 
-        let voteOptions = req.body.options;
+        let voteOptions = [...new Map(req.body.options.map(item => [item['optionId'], item])).values()];
         let isSingelOption = false;
 
         const vote = await Vote
@@ -6263,7 +6263,7 @@ module.exports = function (app) {
             const userId = req.user.userId;
             const topicId = req.params.topicId;
 
-            const voteOptions = req.body.options;
+            const voteOptions = [...new Map(req.body.options.map(item => [item['optionId'], item])).values()];
 
             await db
                 .transaction(async function (t) {
