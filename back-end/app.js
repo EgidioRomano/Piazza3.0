@@ -145,19 +145,16 @@ app.use(reqLogger);
 
 const etherpadClient = require('etherpad-lite-client').connect(config.services.etherpad);
 
-const twitter = require('twit')(config.services.twitter);
 const options = {
     ttl: '-1',
     engine: new CachemanMemory({count: 50})
 };
-const hashtagCache = new Cacheman('hashtagCache', options);
 
 // Promisifications
 Promise.promisifyAll(fs);
 Promise.promisifyAll(fsExtra);
 Promise.promisifyAll(mu);
 Promise.promisifyAll(etherpadClient);
-Promise.promisifyAll(twitter);
 
 // Check Etherpad availability, warn if Etherpad is not running, but continue.
 etherpadClient.checkTokenAsync()
@@ -189,8 +186,6 @@ app.set('cosHtmlToDocx', cosHtmlToDocx);
 app.set('etherpadClient', etherpadClient);
 app.set('superagent', superagent);
 app.set('moment', moment);
-app.set('twitter', twitter);
-app.set('hashtagCache', hashtagCache);
 app.set('striptags', striptags);
 app.set('SevenZip', SevenZip);
 app.set('busboy', Busboy);
