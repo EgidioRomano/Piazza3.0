@@ -84,21 +84,6 @@ suite('Email', function () {
                     throw new Error('Failed with errors' + JSON.stringify(result.errors, 2));
                 }
             });
-
-            test('Send topic member group invite', async function () {
-                await GroupMemberUser.create(
-                    {
-                        groupId: group.id,
-                        userId: user2.id,
-                        level: GroupMemberUser.LEVELS['read']
-                    }
-                );
-                const result = await emailLib.sendTopicMemberGroupCreate([group.id], user.id, topic.id);
-
-                if (result.errors.length) {
-                    throw new Error('Failed with errors' + JSON.stringify(result.errors, 2));
-                }
-            });
         });
 
         suite('Report', function () {

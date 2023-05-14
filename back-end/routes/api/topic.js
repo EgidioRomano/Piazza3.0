@@ -3015,10 +3015,6 @@ module.exports = function (app) {
                             }
                         });
                     await Promise.all(memberGroupActivities);
-                    const emailResult = await emailLib.sendTopicMemberGroupCreate(groupIdsToInvite, req.user.userId, topicId);
-                    if (emailResult && emailResult.errors) {
-                        logger.error('ERRORS', emailResult.errors);
-                    }
 
                     t.afterCommit(() => {
                         return res.created();

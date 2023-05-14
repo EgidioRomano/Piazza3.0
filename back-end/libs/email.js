@@ -420,7 +420,7 @@ module.exports = function (app) {
             const subject = template.translations.INVITE_TOPIC.SUBJECT
                 .replace('{{fromUser.name}}', util.escapeHtml(fromUser.name));
             const invite = invites.find((i) => {return i.userId === toUser.id});
-            const linkViewInvite = urlLib.getFe('/topics/:topicId/invites/users/:inviteId', { // FIXME: Do we want to go through /api/invite/view?
+            const linkViewInvite = urlLib.getFe('/topics/:topicId/invites/users/:inviteId', {
                 inviteId: invite.id,
                 topicId: topic.id
             });
@@ -461,120 +461,6 @@ module.exports = function (app) {
 
         return handleAllPromises(emailsSendPromises);
     };
-
-    /**
-     * Send Topic invite e-mail all members of the Groups
-     *
-     * @param {(string|Array)} toGroupIds Group ID-s for which Members the invite will be sent.
-     * @param {string} fromUserId From User ID
-     * @param {string} topicId Topic ID
-     *
-     * @returns {Promise} Promise
-     *
-     * @private
-     */
-    const _sendTopicMemberGroupCreate = function (toGroupIds, fromUserId, topicId) {
-        if (!toGroupIds || !fromUserId || !topicId) {
-            return Promise.reject(new Error('Missing one or more required parameters'));
-        }
-
-        if (!Array.isArray(toGroupIds)) {
-            toGroupIds = [toGroupIds];
-        }
-
-        if (!toGroupIds.length) {
-            logger.info('Got empty receivers list, no emails will be sent.');
-
-            return Promise.resolve();
-        }
-
-        const toUsersPromise = db
-            .query(
-                '\
-                     SELECT DISTINCT ON (gm."userId") \
-                        gm."userId", \
-                        u."email", \
-                        u."language", \
-                        u.name \
-                     FROM "GroupMemberUsers" gm \
-                     LEFT JOIN "Users" u ON (gm."userId" = u.id) \
-                     WHERE gm."groupId"::text IN (:toGroupIds) \
-                     AND gm."userId" != :fromUserId \
-                ;',
-                {
-                    replacements: {
-                        toGroupIds: toGroupIds,
-                        fromUserId: fromUserId
-                    },
-                    type: db.QueryTypes.SELECT,
-                    raw: true,
-                    nest: true
-                }
-            );
-
-        const fromUserPromise = User.findOne({
-            where: {
-                id: fromUserId
-            }
-        });
-
-        const topicPromise = Topic.findOne({
-            where: {
-                id: topicId
-            }
-        });
-
-        return Promise
-            .all([toUsersPromise, fromUserPromise, topicPromise])
-            .then(function (results) {
-                const toUsers = results[0];
-                const fromUser = results[1].toJSON();
-                const topic = results[2].toJSON();
-
-                if (toUsers && toUsers.length) {
-                    const promisesToResolve = [];
-
-                    toUsers.forEach((user) => {
-                        if (user.email) {
-                            const template = resolveTemplate('inviteTopic', user.language);
-                            // TODO: Could use Mu here....
-                            const subject = template.translations.INVITE_TOPIC.SUBJECT
-                                .replace('{{fromUser.name}}', util.escapeHtml(fromUser.name));
-
-                            const linkViewTopic = urlLib.getApi('/api/invite/view', null, {
-                                email: user.email,
-                                topicId: topic.id
-                            });
-
-                            // In case Topic has no title, just show the full url.
-                            topic.title = topic.title ? topic.title : linkViewTopic;
-
-                            const emailOptions = Object.assign(
-                                _.cloneDeep(EMAIL_OPTIONS_DEFAULT),
-                                {
-                                    subject: subject,
-                                    to: user.email,
-                                    toUser: user,
-                                    fromUser: fromUser,
-                                    topic: topic,
-                                    linkViewTopic: linkViewTopic
-                                }
-                            );
-                            emailOptions.linkedData.translations = template.translations;
-                            const sendEmailPromise = emailClient.sendString(template.body, emailOptions);
-
-                            promisesToResolve.push(sendEmailPromise);
-                        }
-                    });
-
-                    return handleAllPromises(promisesToResolve);
-                } else {
-                    logger.info('No Topic Group member User invite emails to be sent as filtering resulted in empty e-mail address list.');
-                }
-            });
-
-    };
-
 
     /**
      * Send Group invite e-mail
@@ -680,106 +566,6 @@ module.exports = function (app) {
         });
 
         return handleAllPromises(emailsSendPromises);
-    };
-
-    /**
-     * Send Group invite e-mail
-     *
-     * @param {(string|Array)} toUserIds User ID-s
-     * @param {string} fromUserId From User ID
-     * @param {string} groupId Group ID
-     *
-     * @returns {Promise} Promise
-     *
-     * @private
-     */
-    const _sendGroupMemberUserCreate = function (toUserIds, fromUserId, groupId) {
-        if (!toUserIds || !fromUserId || !groupId) {
-            return Promise.reject(new Error('Missing one or more required parameters'));
-        }
-
-        if (!Array.isArray(toUserIds)) {
-            toUserIds = [toUserIds];
-        }
-
-        if (!toUserIds.length) {
-            logger.info('Got empty receivers list, no emails will be sent.');
-
-            return;
-        }
-
-        const toUsersPromise = User.findAll({
-            where: {
-                id: toUserIds
-            },
-            attributes: ['email', 'language', 'name'],
-            raw: true
-        });
-
-        const fromUserPromise = User.findOne({
-            where: {
-                id: fromUserId
-            }
-        });
-
-        const groupPromise = Group.findOne({
-            where: {
-                id: groupId
-            }
-        });
-
-        return Promise
-            .all([toUsersPromise, fromUserPromise, groupPromise])
-            .then(function (results) {
-                const toUsers = results[0];
-                const fromUser = results[1].toJSON();
-                const group = results[2].toJSON();
-
-                if (toUsers && toUsers.length) {
-                    const promisesToResolve = [];
-
-                    toUsers.forEach((user) => {
-                        if (user.email) {
-                            const template = resolveTemplate('inviteGroup', user.language);
-
-                            // TODO: could use Mu here...
-                            const subject = template.translations.INVITE_GROUP.SUBJECT
-                                .replace('{{fromUser.name}}', util.escapeHtml(fromUser.name))
-                                .replace('{{group.name}}', util.escapeHtml(group.name));
-
-                            const emailOptions = Object.assign(
-                                _.cloneDeep(EMAIL_OPTIONS_DEFAULT),
-                                {
-                                    subject: subject,
-                                    to: user.email,
-                                    //Placeholders..
-                                    toUser: user,
-                                    fromUser: fromUser,
-                                    group: group,
-                                    linkViewGroup: urlLib.getApi(
-                                        '/api/invite/view',
-                                        null,
-                                        {
-                                            email: user.email,
-                                            groupId: group.id
-                                        }
-                                    )
-                                }
-                            );
-                            emailOptions.linkedData.translations = template.translations;
-                            const userEmailPromise = emailClient.sendString(template.body, emailOptions);
-
-                            promisesToResolve.push(userEmailPromise);
-                        }
-                    });
-
-                    return handleAllPromises(promisesToResolve);
-                } else {
-                    logger.info('No Group member User invite emails to be sent as filtering resulted in empty e-mail address list.');
-
-                    return Promise.resolve();
-                }
-            });
     };
 
     /**
@@ -1476,13 +1262,11 @@ module.exports = function (app) {
         sendAccountVerification: _sendAccountVerification,
         sendPasswordReset: _sendPasswordReset,
         sendTopicMemberUserInviteCreate: _sendTopicMemberUserInviteCreate,
-        sendTopicMemberGroupCreate: _sendTopicMemberGroupCreate,
         sendGroupMemberUserInviteCreate: _sendGroupMemberUserInviteCreate,
         sendTopicReport: _sendTopicReport,
         sendTopicReportModerate: _sendTopicReportModerate,
         sendTopicReportReview: _sendTopicReportReview,
         sendTopicReportResolve: _sendTopicReportResolve,
-        sendGroupMemberUserCreate: _sendGroupMemberUserCreate,
         sendCommentReport: _sendCommentReport,
         sendVoteReminder: _sendVoteReminder,
         sendTopicNotification: _sendTopicNotification
