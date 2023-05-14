@@ -23,10 +23,10 @@
         "config": "3.3.8",
         "cookie-parser": "1.4.6",
         "cors": "2.8.5",
-        "etherpad-lite-client": "git+https://github.com/citizenos/etherpad-lite-client-js#86e06b78f159f1abc7916ee5c817adb096a951f5",
+        "etherpad-lite-client": "git+https://github.com/EgidioRomano/etherpad-lite-client-js#86e06b78f159f1abc7916ee5c817adb096a951f5",
         "express": "4.18.2",
         "express-device": "0.4.2",
-        "express-rate-limit": "git+https://github.com/ilmartyrk/express-rate-limit#824644466bb9d0b5103d02c4b987d6708c03b546",
+        "express-rate-limit": "git+https://github.com/EgidioRomano/express-rate-limit#824644466bb9d0b5103d02c4b987d6708c03b546",
         "express-session": "^1.17.3",
         "express-slow-down": "1.5.0",
         "fast-json-patch": "^3.1.1",
@@ -2822,7 +2822,7 @@
     },
     "node_modules/etherpad-lite-client": {
       "version": "0.9.0",
-      "resolved": "git+ssh://git@github.com/citizenos/etherpad-lite-client-js.git#86e06b78f159f1abc7916ee5c817adb096a951f5",
+      "resolved": "git+ssh://git@github.com/EgidioRomano/etherpad-lite-client-js.git#86e06b78f159f1abc7916ee5c817adb096a951f5",
       "integrity": "sha512-985HKw4Yzc6o2rM50vbt7I6snYqwNcfGdoSnE4avDVK29lGPqXMAAvPJFzxyxMx4QOcREPyFjpQCiEKNg2Kmww==",
       "license": "MIT",
       "dependencies": {
@@ -2959,7 +2959,7 @@
     },
     "node_modules/express-rate-limit": {
       "version": "6.6.0",
-      "resolved": "git+ssh://git@github.com/ilmartyrk/express-rate-limit.git#824644466bb9d0b5103d02c4b987d6708c03b546",
+      "resolved": "git+ssh://git@github.com/EgidioRomano/express-rate-limit.git#824644466bb9d0b5103d02c4b987d6708c03b546",
       "integrity": "sha512-vJ2/DBhFRg0ElrRTGi2Dh+b2AJSctwxVXIPJz/fsUO6a6dPYjeGdn8eRtICHz5lXOaNNbFv0uQPxMuAgWWGdkg==",
       "license": "MIT",
       "engines": {
@@ -11729,9 +11729,9 @@
       "integrity": "sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg=="
     },
     "etherpad-lite-client": {
-      "version": "git+ssh://git@github.com/citizenos/etherpad-lite-client-js.git#86e06b78f159f1abc7916ee5c817adb096a951f5",
+      "version": "git+ssh://git@github.com/EgidioRomano/etherpad-lite-client-js.git#86e06b78f159f1abc7916ee5c817adb096a951f5",
       "integrity": "sha512-985HKw4Yzc6o2rM50vbt7I6snYqwNcfGdoSnE4avDVK29lGPqXMAAvPJFzxyxMx4QOcREPyFjpQCiEKNg2Kmww==",
-      "from": "etherpad-lite-client@git+https://github.com/citizenos/etherpad-lite-client-js#86e06b78f159f1abc7916ee5c817adb096a951f5",
+      "from": "etherpad-lite-client@git+https://github.com/EgidioRomano/etherpad-lite-client-js#86e06b78f159f1abc7916ee5c817adb096a951f5",
       "requires": {
         "underscore": "1.13.1"
       }
@@ -11903,9 +11903,9 @@
       "integrity": "sha1-iLnEAWSv2aVSeGKbKUjmrOe/9F8="
     },
     "express-rate-limit": {
-      "version": "git+ssh://git@github.com/ilmartyrk/express-rate-limit.git#824644466bb9d0b5103d02c4b987d6708c03b546",
+      "version": "git+ssh://git@github.com/EgidioRomano/express-rate-limit.git#824644466bb9d0b5103d02c4b987d6708c03b546",
       "integrity": "sha512-vJ2/DBhFRg0ElrRTGi2Dh+b2AJSctwxVXIPJz/fsUO6a6dPYjeGdn8eRtICHz5lXOaNNbFv0uQPxMuAgWWGdkg==",
-      "from": "express-rate-limit@git+https://github.com/ilmartyrk/express-rate-limit#824644466bb9d0b5103d02c4b987d6708c03b546",
+      "from": "express-rate-limit@git+https://github.com/EgidioRomano/express-rate-limit#824644466bb9d0b5103d02c4b987d6708c03b546",
       "requires": {}
     },
     "express-session": {
