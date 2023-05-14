@@ -24,8 +24,6 @@ const jwt = require('jsonwebtoken');
 const fastCsv = require('fast-csv');
 const cosHtmlToDocx = require('./libs/cosHtmlToDocx');
 const superagent = require('superagent');
-const CachemanMemory = require('cacheman-memory');
-const Cacheman = require('cacheman');
 const striptags = require('striptags');
 const device = require('express-device');
 const SevenZip = require('node-7z');
@@ -144,11 +142,6 @@ const reqLogger = morgan(config.logging.morgan.format, { // HTTP request logger 
 app.use(reqLogger);
 
 const etherpadClient = require('etherpad-lite-client').connect(config.services.etherpad);
-
-const options = {
-    ttl: '-1',
-    engine: new CachemanMemory({count: 50})
-};
 
 // Promisifications
 Promise.promisifyAll(fs);

@@ -15,8 +15,6 @@
         "bluebird": "3.7.2",
         "body-parser": "1.20.1",
         "busboy": "1.6.0",
-        "cacheman": "2.2.1",
-        "cacheman-memory": "1.1.0",
         "campaign": "git+https://github.com/citizenos/campaign#9904ac1e3628ffa3a49beb87914679c7b61a0e06",
         "campaign-mailgun": "git+https://github.com/citizenos/campaign-mailgun.git#7551766491c2a6ad6cbd0367f1d6740aae9fa353",
         "campaign-mustache": "git+https://github.com/citizenos/campaign-mustache#0e6021098a3104011ced756e6409501cd0651f90",
@@ -1118,23 +1116,6 @@
       "resolved": "https://registry.npmjs.org/bytes/-/bytes-1.0.0.tgz",
       "integrity": "sha1-NWnt6Lo0MV+rmcPpLLBMciDeH6g=",
       "dev": true
-    },
-    "node_modules/cacheman": {
-      "version": "2.2.1",
-      "resolved": "https://registry.npmjs.org/cacheman/-/cacheman-2.2.1.tgz",
-      "integrity": "sha1-NRDA3vEkKdYbeAEo/xj50oS7Arg=",
-      "dependencies": {
-        "cacheman-memory": "^1.0.2",
-        "ms": "^0.7.1"
-      }
-    },
-    "node_modules/cacheman-memory": {
-      "version": "1.1.0",
-      "resolved": "https://registry.npmjs.org/cacheman-memory/-/cacheman-memory-1.1.0.tgz",
-      "integrity": "sha512-jZ/Sg/LdgkN+T3G0BV3ekYzCAswKwZRBOvOmZ/VYwdhSTtMz6irMOt1JppBGZ7zVdjcBeku9tfOzb49KbXIT2w==",
-      "dependencies": {
-        "lru-cache": "~4.1.x"
-      }
     },
     "node_modules/call-bind": {
       "version": "1.0.2",
@@ -6652,11 +6633,6 @@
       "version": "2.0.0",
       "resolved": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz",
       "integrity": "sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g="
-    },
-    "node_modules/ms": {
-      "version": "0.7.3",
-      "resolved": "https://registry.npmjs.org/ms/-/ms-0.7.3.tgz",
-      "integrity": "sha1-cIFVpeROM/X9D8U+gdDUCpG+H/8="
     },
     "node_modules/mu2": {
       "version": "0.5.21",
@@ -12244,23 +12220,6 @@
       "integrity": "sha1-NWnt6Lo0MV+rmcPpLLBMciDeH6g=",
       "dev": true
     },
-    "cacheman": {
-      "version": "2.2.1",
-      "resolved": "https://registry.npmjs.org/cacheman/-/cacheman-2.2.1.tgz",
-      "integrity": "sha1-NRDA3vEkKdYbeAEo/xj50oS7Arg=",
-      "requires": {
-        "cacheman-memory": "^1.0.2",
-        "ms": "^0.7.1"
-      }
-    },
-    "cacheman-memory": {
-      "version": "1.1.0",
-      "resolved": "https://registry.npmjs.org/cacheman-memory/-/cacheman-memory-1.1.0.tgz",
-      "integrity": "sha512-jZ/Sg/LdgkN+T3G0BV3ekYzCAswKwZRBOvOmZ/VYwdhSTtMz6irMOt1JppBGZ7zVdjcBeku9tfOzb49KbXIT2w==",
-      "requires": {
-        "lru-cache": "~4.1.x"
-      }
-    },
     "call-bind": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/call-bind/-/call-bind-1.0.2.tgz",
@@ -16522,11 +16481,6 @@
           "integrity": "sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g="
         }
       }
-    },
-    "ms": {
-      "version": "0.7.3",
-      "resolved": "https://registry.npmjs.org/ms/-/ms-0.7.3.tgz",
-      "integrity": "sha1-cIFVpeROM/X9D8U+gdDUCpG+H/8="
     },
     "mu2": {
       "version": "0.5.21",

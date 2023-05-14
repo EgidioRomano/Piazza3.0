@@ -24,8 +24,6 @@
     "bluebird": "3.7.2",
     "body-parser": "1.20.1",
     "busboy": "1.6.0",
-    "cacheman": "2.2.1",
-    "cacheman-memory": "1.1.0",
     "campaign": "git+https://github.com/citizenos/campaign#9904ac1e3628ffa3a49beb87914679c7b61a0e06",
     "campaign-mailgun": "git+https://github.com/citizenos/campaign-mailgun.git#7551766491c2a6ad6cbd0367f1d6740aae9fa353",
     "campaign-mustache": "git+https://github.com/citizenos/campaign-mustache#0e6021098a3104011ced756e6409501cd0651f90",
