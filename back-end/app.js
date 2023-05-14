@@ -16,12 +16,8 @@ const Promise = require('bluebird');
 const moment = require('moment');
 const mu = require('mu2');
 const fs = require('fs');
-const querystring = require('querystring');
-const fsExtra = require('fs-extra');
 const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
-const superagent = require('superagent');
-const striptags = require('striptags');
 const device = require('express-device');
 const SevenZip = require('node-7z');
 const Busboy = require('busboy');
@@ -142,7 +138,6 @@ const etherpadClient = require('etherpad-lite-client').connect(config.services.e
 
 // Promisifications
 Promise.promisifyAll(fs);
-Promise.promisifyAll(fsExtra);
 Promise.promisifyAll(mu);
 Promise.promisifyAll(etherpadClient);
 
@@ -166,14 +161,10 @@ app.set('validator', require('validator'));
 app.set('Promise', Promise);
 app.set('fs', fs);
 app.set('crypto', require('crypto'));
-app.set('querystring', querystring);
-app.set('fsExtra', fsExtra);
 app.set('uuid', uuid);
 app.set('jwt', jwt);
 app.set('etherpadClient', etherpadClient);
-app.set('superagent', superagent);
 app.set('moment', moment);
-app.set('striptags', striptags);
 app.set('SevenZip', SevenZip);
 app.set('busboy', Busboy);
 app.set('stream_upload', StreamUpload);

@@ -26,7 +26,7 @@ const request = require('supertest');
 const app = require('../../app');
 const config = app.get('config');
 const https = require('https');
-const fs = require('fs-extra');
+const fs = require('fs');
 const path = require('path');
 
 const shared = require('../utils/shared');
