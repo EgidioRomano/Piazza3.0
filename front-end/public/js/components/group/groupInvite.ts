@@ -23,7 +23,10 @@ let groupSettings = {
                 level: null,
                 token: null
             },
-            joinUrl: null
+            joinUrl: null,
+            email: null,
+            name: null,
+            birthday: null
         };
 
         public memberGroups = ['users', 'emails'];
@@ -327,6 +330,17 @@ let groupSettings = {
             const time = new Date();
             time.setDate(time.getDate() + 14);
             return time;
+        }
+
+        createUser() {
+            const userData = {
+                email: this.form.email,
+                name: this.form.name,
+                birthday: this.form.birthday,
+                groupId: this.group.id
+            };
+
+            this.Group.createUser(userData);
         }
     }]
 }

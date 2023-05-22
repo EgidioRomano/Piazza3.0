@@ -106,6 +106,15 @@ export class Group {
             });
     }
 
+    createUser (data: any) {
+        const path = this.sLocation.getAbsoluteUrlApi('/api/groups/createuser');
+
+        return this.$http.post(path, data)
+            .then((res) => {
+                return res.data.data
+            });
+    }
+
     canUpdate (group) {
         return group && ((group.permission && group.permission.level === this.GroupMemberUser.LEVELS.admin) || (group.userLevel && group.userLevel === this.GroupMemberUser.LEVELS.admin));
     };
