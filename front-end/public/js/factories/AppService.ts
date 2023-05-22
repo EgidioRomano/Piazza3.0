@@ -155,43 +155,6 @@ export class AppService {
         }
     };
 
-    doShowLanguageSelect () {
-        this.$log.debug('AppService.doShowLanguageSelect()');
-        this.languagesArray = [];
-        angular.forEach(this.config.language.list, (val, key) => {
-            this.languagesArray.push({
-                key: key,
-                val: val
-            });
-        });
-
-        this.ngDialog.open({
-            template: '/views/modals/languages.html'
-        });
-    };
-
-    doSwitchLanguage (language) {
-        this.$log.debug('AppService.doSwitchLanguage()', language);
-        if (language === this.language) {
-            return;
-        }
-
-        if (this.user.loggedIn && this.sTranslate.checkLanguageIsValid(language) && this.user.language !== language) {
-            this.sUser
-                .updateLanguage(language)
-                .then(() => {
-                    this.user.language = language;
-                    this.sTranslate.switchLanguage(language);
-                });
-        } else {
-            if (this.sTranslate.checkLanguageIsValid(language)) {
-                this.$cookies.putObject('language', language);
-                this.$log.debug('langCookie', this.$cookies.getObject('language'));
-            }
-            this.sTranslate.switchLanguage(language);
-        }
-    };
-
     doLogout () {
         this.sAuth
             .logout()
