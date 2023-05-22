@@ -150,7 +150,7 @@ module.exports = function (app) {
             return res.badRequest('Un gruppo con questo ID non è presente nel sistema.', 5);
         }
 
-        const password = 'Piazza3.0:' + util.randomString(10);
+        const password = 'Piazza3.0:' + util.randomString(15);
         logger.info("PASSWORD: " + password);
 
         user = await User.create({

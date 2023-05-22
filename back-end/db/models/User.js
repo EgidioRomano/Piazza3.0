@@ -88,9 +88,9 @@ module.exports = function (sequelize, DataTypes) {
                 comment: 'Password hash. NULL if User was created on invitation OR with another method like ESTEID, FB, Google.',
                 validate: {
                     isValidPassword: function (v) {
-                        const passwordRegexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}$/;
+                        const passwordRegexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{13,}$/;
                         if (!passwordRegexp.test(v)) {
-                            throw Error('La password deve essere lunga almeno 10 caratteri, contenere almeno un numero, un carattere minuscolo e un carattere maiuscolo.');
+                            throw Error('La password deve essere lunga almeno 13 caratteri, contenere almeno un numero, un carattere minuscolo e un carattere maiuscolo.');
                         }
                     }
                 }
