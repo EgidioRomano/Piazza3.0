@@ -13,13 +13,13 @@ module.exports = function (app) {
     const db = models.sequelize;
     const Op = db.Sequelize.Op;
 
-    const User = models.User;
     const Group = models.Group;
+    const GroupMemberUser = models.GroupMemberUser;
     const Topic = models.Topic;
 
     app.get('/api/search', async (req, res, next) => {
         try {
-            const str = req.query.str.split('%').join(''); // Search string
+            const str = req.query.str.toString().split('%').join(''); // Search string
             const limitMax = 100;
             const limitDefault = 10;
             let userId = null;
@@ -353,38 +353,49 @@ module.exports = function (app) {
     });
 
     app.get('/api/users/:userId/search/users', loginCheck(), async (req, res, next) => {
-        const str = req.query.str.split('%').join(''); // Search string
+        const str = req.query.str.toString().split('%').join(''); // Search string
         let userResult;
 
         try {
             if (str.length >= 3) {
-                userResult = await User
-                    .findAndCountAll({
-                        where: {
-                            [Op.or]: [
-                                {
-                                    name: {
-                                        [Op.iLike]: '%' + str + '%'
-                                    }
-                                }
-                            ]
+                const groupId = (await GroupMemberUser.findOne({where:{userId: req.user.userId}})).groupId;
+                userResult = await db.query(
+                        `SELECT
+                            u.id,
+                            u.name,
+                            u.birthday,
+                            u."imageUrl"
+                        FROM "GroupMemberUsers" gm
+                            JOIN "Users" u ON (u.id = gm."userId")
+                        WHERE gm."groupId" = :groupId
+                        AND gm."deletedAt" IS NULL
+                        AND u.id <> :userId
+                        AND u.name ILIKE :search
+                        LIMIT 100;
+                        `,
+                    {
+                        replacements: {
+                            groupId,
+                            userId: req.user.userId,
+                            search: `%${str}%`
                         },
-                        attributes: ['id', 'name', 'birthday', 'imageUrl'],
-                        limit: 5
-                    });
+                        type: db.QueryTypes.SELECT,
+                        raw: true
+                    }
+                );
             }
 
             if (!userResult) {
-                userResult = {
-                    rows: [],
-                    count: 0
-                }
+                userResult = [];
             }
 
             return res.ok({
                 results: {
                     public: {
-                        users: userResult
+                        users: {
+                            count: userResult.length,
+                            rows: userResult
+                        }
                     }
                 }
             });
