@@ -3412,7 +3412,6 @@ module.exports = function (app) {
      * @see /api/users/:userId/topics/:topicId/members/users "Auto accept" - Adds a Member to the Topic instantly and sends a notification to the User.
      */
     app.post('/api/users/:userId/topics/:topicId/invites/users', loginCheck(), hasPermission(TopicMemberUser.LEVELS.admin, false, [Topic.STATUSES.inProgress, Topic.STATUSES.voting, Topic.STATUSES.followUp]), rateLimiter(5, false), speedLimiter(1, false), asyncMiddleware(async function (req, res) {
-        //NOTE: userId can be actual UUID or e-mail - it is comfort for the API user, but confusing in the BE code.
         const topicId = req.params.topicId;
         const userId = req.user.userId;
         let members = req.body;
@@ -3426,105 +3425,34 @@ module.exports = function (app) {
             return res.badRequest("Maximum user limit reached");
         }
 
-        const inviteMessage = members[0].inviteMessage;
-        const validEmailMembers = [];
         let validUserIdMembers = [];
 
-        // userId can be actual UUID or e-mail, sort to relevant buckets
         _(members).forEach(function (m) {
             if (m.userId) {
                 m.userId = m.userId.trim();
 
-                // Is it an e-mail?
-                if (validator.isEmail(m.userId)) {
-                    m.userId = m.userId.toLowerCase(); // https://github.com/citizenos/citizenos-api/issues/234
-                    validEmailMembers.push(m); // The whole member object with level
-                } else if (validator.isUUID(m.userId, 4)) {
+                if (validator.isUUID(m.userId, 4)) {
                     validUserIdMembers.push(m);
                 } else {
-                    logger.warn('Invalid member ID, is not UUID or email thus ignoring', req.method, req.path, m, req.body);
+                    logger.warn('Invalid member ID, is not UUID thus ignoring', req.method, req.path, m, req.body);
                 }
             } else {
                 logger.warn('Missing member id, ignoring', req.method, req.path, m, req.body);
             }
         });
 
-        const validEmails = _.map(validEmailMembers, 'userId');
-        if (validEmails.length) {
-            // Find out which e-mails already exist
-            const usersExistingEmail = await User
-                .findAll({
-                    where: {
-                        email: {
-                            [Op.iLike]: {
-                                [Op.any]: validEmails
-                            }
-                        }
-                    },
-                    attributes: ['id', 'email']
-                });
+        const userGroupId = (await GroupMemberUser.findOne({where:{userId: userId}})).groupId;
 
-
-            _(usersExistingEmail).forEach(function (u) {
-                const member = _.find(validEmailMembers, { userId: u.email });
-                if (member) {
-                    member.userId = u.id;
-                    validUserIdMembers.push(member);
-                    _.remove(validEmailMembers, member); // Remove the e-mail, so that by the end of the day only e-mails that did not exist remain.
-                }
-            });
+        for (var i = 0; i < validUserIdMembers.length; i++) {
+            const group = await GroupMemberUser.findOne({where:{userId: validUserIdMembers[i].userId}});
+            const groupId = group ? group.groupId : false;
+            if (groupId !== userGroupId) {
+                return res.badRequest('Non puoi aggiungere utenti al di fuori del tuo gruppo.');
+            }
         }
 
         await db.transaction(async function (t) {
             let createdUsers;
-
-            // The leftovers are e-mails for which User did not exist
-            if (validEmailMembers.length) {
-                const usersToCreate = [];
-                _(validEmailMembers).forEach(function (m) {
-                    usersToCreate.push({
-                        email: m.userId,
-                        language: m.language,
-                        password: null,
-                        name: util.emailToDisplayName(m.userId),
-                        source: User.SOURCES.citizenos
-                    });
-                });
-
-                createdUsers = await User.bulkCreate(usersToCreate, { transaction: t });
-
-                const createdUsersActivitiesCreatePromises = createdUsers.map(async function (user) {
-                    return cosActivities.createActivity(
-                        user,
-                        null,
-                        {
-                            type: 'System',
-                            ip: req.ip
-                        },
-                        req.method + ' ' + req.path,
-                        t
-                    );
-                });
-
-                await Promise.all(createdUsersActivitiesCreatePromises);
-            }
-
-            // Go through the newly created users and add them to the validUserIdMembers list so that they get invited
-            if (createdUsers && createdUsers.length) {
-                _(createdUsers).forEach(function (u) {
-                    const member = {
-                        userId: u.id
-                    };
-
-                    // Sequelize defaultValue has no effect if "undefined" or "null" is set for attribute...
-                    const level = _.find(validEmailMembers, { userId: u.email }).level;
-                    if (level) {
-                        member.level = level;
-                    }
-
-                    validUserIdMembers.push(member);
-                });
-            }
 
             // Need the Topic just for the activity
             const topic = await Topic.findOne({
@@ -3536,6 +3464,7 @@ module.exports = function (app) {
             validUserIdMembers = validUserIdMembers.filter(function (member) {
                 return member.userId !== req.user.userId; // Make sure user does not invite self
             });
+
             const currentMembers = await TopicMemberUser.findAll({
                 where: {
                     topicId: topicId
@@ -3627,10 +3556,6 @@ module.exports = function (app) {
                 return !!invite;
             });
 
-            for (let invite of createdInvites) {
-                invite.inviteMessage = inviteMessage;
-            }
-
             await emailLib.sendTopicMemberUserInviteCreate(createdInvites);
 
             t.afterCommit(() => {
@@ -3640,7 +3565,7 @@ module.exports = function (app) {
                         rows: createdInvites
                     });
                 } else {
-                    return res.badRequest('No invites were created. Possibly because no valid userId-s (uuidv4s or emails) were provided.', 1);
+                    return res.badRequest('No invites were created. Possibly because no valid userId-s (uuidv4s) were provided.', 1);
                 }
             });
         });

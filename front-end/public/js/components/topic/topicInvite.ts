@@ -10,7 +10,6 @@ let topicInvite = {
     controller: ['$stateParams', '$log', '$timeout', 'ngDialog', 'sSearch', 'sLocation', 'sNotification', 'sAuth', 'TopicInviteUser', 'TopicInviteUserService', 'TopicMemberUser', 'TopicMemberGroup', 'TopicJoin', 'Topic', 'AppService', class TopicInviteController {
         private EMAIL_SEPARATOR_REGEXP = /[;,\s]/ig;
         public memberGroups = ['groups', 'users'];
-        public inviteMessageMaxLength = 1000;
         public topic;
         public topicList = {
             searchFilter: '',
@@ -25,8 +24,7 @@ let topicInvite = {
                 level: null,
                 token: null
             },
-            joinUrl: null,
-            inviteMessage: null
+            joinUrl: null
         };
 
         public members = [];
@@ -320,7 +318,6 @@ let topicInvite = {
                 } else {
                     topicMemberUsersToSave.push({
                         userId: member.userId || member.id,
-                        inviteMessage: this.form.inviteMessage,
                         level: member.level
                     })
                 }

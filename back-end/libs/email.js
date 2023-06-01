@@ -405,7 +405,7 @@ module.exports = function (app) {
         let logoFile = emailHeaderLogo;
         let templateName = 'inviteTopic';
         let linkToApplication = urlLib.getFe();
-        let message = invites[0].inviteMessage;
+        let message = "Sei stato invitato su Piazza 3.0!";
         let customStyles = EMAIL_OPTIONS_DEFAULT.styles;
 
         const emailsSendPromises = toUsers.map(function (toUser) {
@@ -510,7 +510,7 @@ module.exports = function (app) {
         let logoFile = emailHeaderLogo;
         let templateName = 'inviteGroup';
         let linkToApplication = urlLib.getFe();
-        let message = invites[0].inviteMessage;
+        let message = "Sei stato invitato su Piazza 3.0!";
         let customStyles = EMAIL_OPTIONS_DEFAULT.styles;
 
         const emailsSendPromises = toUsers.map(function (toUser) {
