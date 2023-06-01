@@ -200,9 +200,7 @@ module.exports = function (app) {
                 const group = Group
                     .build({
                         name: req.body.name,
-                        description: req.body.description,
                         creatorId: req.user.userId,
-                        parentId: req.body.parentId, //TODO: check that user actually has Permissions on the Parent and the Parent exists?
                         visibility: req.body.visibility || Group.VISIBILITY.private
                     });
 
@@ -213,29 +211,6 @@ module.exports = function (app) {
                         groupId: group.id
                     },
                     {
-                        transaction: t
-                    }
-                );
-
-                await cosActivities
-                    .createActivity(
-                        group,
-                        null,
-                        {
-                            type: 'User',
-                            id: req.user.userId,
-                            ip: req.ip
-                        },
-                        req.method + ' ' + req.path, t
-                    );
-
-                // Add creator as admin member to the Group
-                await group.addMember( // Magic method by Sequelize - https://github.com/sequelize/sequelize/wiki/API-Reference-Associations#hasmanytarget-options
-                    req.user.userId,
-                    {
-                        through: {
-                            level: GroupMemberUser.LEVELS.admin
-                        },
                         transaction: t
                     }
                 );
@@ -1225,7 +1200,7 @@ module.exports = function (app) {
      *
      * @see https://github.com/citizenos/citizenos-fe/issues/348
      */
-    app.post('/api/users/:userId/groups/:groupId/invites/users', loginCheck(), hasPermission(GroupMemberUser.LEVELS.admin, true, null), asyncMiddleware(async function (req, res) {
+    app.post('/api/users/:userId/groups/:groupId/invites/users', isSuperAdmin(), asyncMiddleware(async function (req, res) {
         //NOTE: userId can be actual UUID or e-mail - it is comfort for the API user, but confusing in the BE code.
         const groupId = req.params.groupId;
         const userId = req.user.userId;
@@ -1481,7 +1456,7 @@ module.exports = function (app) {
         const permissions = await _hasPermission(groupId, userId, GroupMemberUser.LEVELS.read, null, null);
 
         // User is not member and can only get own result
-        if (!permissions) {
+        if (!permissions && !req.user.isSuperAdmin) {
             where = ` AND giu."userId" = :userId `;
         }
 
@@ -1539,7 +1514,7 @@ module.exports = function (app) {
         let countTotal = 0;
         if (invites.length) {
             countTotal = invites[0].countTotal;
-        } else if (!permissions) {
+        } else if (!permissions && !req.user.isSuperAdmin) {
             return res.forbidden('Non disponi dei permessi necessari a completare questa operazione.');
         }
 

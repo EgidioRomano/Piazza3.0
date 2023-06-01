@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="$ctrl.app.user.loggedIn" id="create_group" class="blue_button_wrap">
+            <div ng-if="$ctrl.app.user.isSuperAdmin" id="create_group" class="blue_button_wrap">
                 <button ng-click="$ctrl.createGroup()" class="blue_button" translate="VIEWS.PUBLIC_GROUPS.BTN_CREATE_PUBLIC_GROUP">Create public group</button>
             </div>
         </div>
@@ -56,15 +56,6 @@
                     </div>
                     <div class="group_name">
                         <span ng-bind="group.name"></span>
-                    </div>
-                    <div class="group_details">
-                        <span ng-bind="group.description"></span>
-                    </div>
-                </div>
-                <div class="join_button">
-                    <div class="blue_button_wrap">
-                        <button class="blue_button" ng-if="!group.userLevel" ng-click="$ctrl.joinGroup(group);$event.stopPropagation();" translate="VIEWS.PUBLIC_GROUPS.BTN_JOIN_GROUP">Join group</button>
-                        <button class="blue_button" ng-if="group.userLevel" ng-click="$ctrl.goToGroupView(group);$event.stopPropagation();" translate="VIEWS.PUBLIC_GROUPS.BTN_VIEW_GROUP">View group</button>
                     </div>
                 </div>
             </div>
