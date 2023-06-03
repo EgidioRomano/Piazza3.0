@@ -36,7 +36,7 @@ let myMenuItem = {
                 return this.$state.go('my/groups/groupId', {groupId: this.item.id, filter: 'grouped'});
             }
 
-            return this.$state.go('my/topics/topicId', {topicId: this.item.id, filter: 'all'});
+            return this.$state.go('my/topics/topicId', {topicId: this.item.id, filter: this.$state.params.filter});
         }
 
         isActiveItem () {
