@@ -42,8 +42,17 @@
   },
   "email": {
     "provider": {
-      "name": "noop"
-    }
+      "name": "nodemailer",
+      "options": {
+        "service": "gmail",
+        "auth": {
+          "user": "piazzatrepuntozero@gmail.com",
+          "pass": "*****"
+        }
+      }
+    },
+    "from": "Piazza 3.0 <piazzatrepuntozero@gmail.com>",
+    "trap": false
   },
   "services": {
     "idCard": {
