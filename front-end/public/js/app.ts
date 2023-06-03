@@ -237,97 +237,14 @@ import * as angular from 'angular';
                     parent: 'main',
                     template: '<public-topics></public-topics>'
                 })
-                .state('citizenos', {
-                    url: '/citizenos',
-                    parent: 'main',
-                    template: '<public-topics></public-topics>'
-                })
-                .state('family', {
-                    url: '/family',
-                    parent: 'main',
-                    template: '<public-topics></public-topics>'
-                })
-                .state('socialinclusion', {
-                    url: '/socialinclusion?topicStatus',
-                    parent: 'main',
-                    template: '<public-topics></public-topics>'
-                })
-                .state('urbandecorum', {
-                    url: '/urbandecorum?topicStatus',
-                    parent: 'main',
-                    template: '<public-topics></public-topics>'
-                })
-                .state('security', {
-                    url: '/security?topicStatus',
-                    parent: 'main',
-                    template: '<public-topics></public-topics>'
-                })
-                .state('culture', {
-                    url: '/culture?topicStatus',
-                    parent: 'main',
-                    template: '<public-topics></public-topics>'
-                })
-                .state('school', {
-                    url: '/school?topicStatus',
-                    parent: 'main',
-                    template: '<public-topics></public-topics>'
-                })
-                .state('economy', {
-                    url: '/economy?topicStatus',
-                    parent: 'main',
-                    template: '<public-topics></public-topics>'
-                })
-                .state('environment', {
-                    url: '/environment?topicStatus',
-                    parent: 'main',
-                    template: '<public-topics></public-topics>'
-                })
-                .state('account', {
-                    url: '/account',
-                    abstract: true,
-                    parent: 'main',
-                    template: '<home></home>'
-                })
                 .state('account/settings', {
                     url: '/myaccount?tab',
                     parent: 'main',
                     template: '<my-account></my-account>'
                 })
-                .state('account/tos', {
-                    url: '/tos?redirectSuccess',
-                    parent: 'account',
-                    controller: ['$scope', 'ngDialog', function ($scope, ngDialog) {
-                        ngDialog.open({
-                            template: '<privacy-policy></privacy-policy>',
-                            closeByEscape: false,
-                            closeByNavigation: false,
-                            plain: true
-                        });
-                    }]
-                })
-                .state('account/signup', {
-                    parent: 'account',
-                    url: '/signup?name&redirectSuccess&email',  // NOTE: Also supports email via "params" conf and rHiddenParams
-                    controller: ['$scope', '$state', '$stateParams', '$log', 'ngDialog', 'sAuthResolve', function ($scope, $state, $stateParams, $log, ngDialog, sAuthResolve) {
-                        if (sAuthResolve) {
-                            return $state.go('home');
-                        }
-
-                        var dialog = ngDialog.open({
-                            template: '<sign-up-form></sign-up-form>',
-                            plain: true
-                        });
-
-                        dialog.closePromise.then(function (data) {
-                            if (data.value !== '$navigation') { // Avoid running state change when ngDialog is already closed by a state change
-                                return $state.go('home', {}, { supercede: false });
-                            }
-                        });
-                    }]
-                })
                 .state('account/login', {
-                    parent: 'account',
-                    url: '/login?userId&redirectSuccess&email', // NOTE: Also supports email via "params" conf and rHiddenParams
+                    parent: 'main',
+                    url: '/account/login?userId&redirectSuccess&email', // NOTE: Also supports email via "params" conf and rHiddenParams
                     reloadOnSearch: false,
                     controller: ['$state', 'ngDialog', 'sAuthResolve', function ($state, ngDialog, sAuthResolve) {
                         let template = '<login-form></login-form>'
@@ -344,8 +261,8 @@ import * as angular from 'angular';
                     }]
                 })
                 .state('account/passwordForgot', {
-                    url: '/password/forgot',
-                    parent: 'account',
+                    url: '/account/password/forgot',
+                    parent: 'main',
                     controller: ['ngDialog', function (ngDialog) {
                         ngDialog.open({
                             template: '<password-forgot></password-forgot>',
@@ -354,8 +271,8 @@ import * as angular from 'angular';
                     }]
                 })
                 .state('account/passwordReset', {
-                    url: '/password/reset/:passwordResetCode?email',
-                    parent: 'account',
+                    url: '/account/password/reset/:passwordResetCode?email',
+                    parent: 'main',
                     controller: ['ngDialog', function (ngDialog) {
                         ngDialog.open({
                             template: '<password-reset></password-reset>',
