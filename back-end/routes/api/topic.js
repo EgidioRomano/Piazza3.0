@@ -4715,7 +4715,7 @@ module.exports = function (app) {
     /**
      * Create Topic Comment
      */
-    app.post('/api/users/:userId/topics/:topicId/comments', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true), asyncMiddleware(async function (req, res) {
+    app.post('/api/users/:userId/topics/:topicId/comments', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, false), asyncMiddleware(async function (req, res) {
         let type = req.body.type;
         const parentId = req.body.parentId;
         const parentVersion = req.body.parentVersion;
@@ -5597,7 +5597,7 @@ module.exports = function (app) {
     /**
      * Create a Comment Vote
      */
-    app.post('/api/topics/:topicId/comments/:commentId/votes', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true), async function (req, res, next) {
+    app.post('/api/topics/:topicId/comments/:commentId/votes', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, false), async function (req, res, next) {
         const value = parseInt(req.body.value, 10);
         try {
             const comment = await Comment
@@ -6259,7 +6259,7 @@ module.exports = function (app) {
      * TODO: Should simplify all of this routes code. It's a mess cause I decided to keep one endpoint for all of the voting. Maybe it's a better idea to move authType===hard to separate endpont
      * TODO: create an alias /api/topics/:topicId/votes/:voteId for un-authenticated signing? I's weird to call /users/self when user has not logged in...
      */
-    app.post('/api/users/:userId/topics/:topicId/votes/:voteId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.voting]), async function (req, res, next) {
+    app.post('/api/users/:userId/topics/:topicId/votes/:voteId', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, false, [Topic.STATUSES.voting]), async function (req, res, next) {
         try {
             const vote = await handleTopicVotePreconditions(req, res);
             return handleTopicVoteSoft(vote, req, res, next);
@@ -6312,7 +6312,7 @@ module.exports = function (app) {
     /**
      * Delegate a Vote
      */
-    app.post('/api/users/:userId/topics/:topicId/votes/:voteId/delegations', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, null, [Topic.STATUSES.voting]), async function (req, res, next) {
+    app.post('/api/users/:userId/topics/:topicId/votes/:voteId/delegations', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, false, [Topic.STATUSES.voting]), async function (req, res, next) {
         const topicId = req.params.topicId;
         const voteId = req.params.voteId;
 
@@ -6446,7 +6446,7 @@ module.exports = function (app) {
     /**
      * Delete Vote delegation
      */
-    app.delete('/api/users/:userId/topics/:topicId/votes/:voteId/delegations', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, null, [Topic.STATUSES.voting]), async function (req, res, next) {
+    app.delete('/api/users/:userId/topics/:topicId/votes/:voteId/delegations', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, false, [Topic.STATUSES.voting]), async function (req, res, next) {
         try {
             const topicId = req.params.topicId;
             const voteId = req.params.voteId;
