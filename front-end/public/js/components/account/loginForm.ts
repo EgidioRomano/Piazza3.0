@@ -121,8 +121,17 @@ let loginFormComponent = {
 
             this.errors = null;
             const success = (response) => {
-                if (this.$stateParams.redirectSuccess) {
-                    this.$window.location.href = this.$stateParams.redirectSuccess;
+                let redirectSuccess = this.$stateParams.redirectSuccess;
+                try {
+                    const parsedURL = new URL(redirectSuccess);
+                    // Check if the URL's origin matches the current origin
+                    redirectSuccess = (parsedURL.origin === window.location.origin) ? redirectSuccess : false;
+                } catch (e) {
+                    // URL parsing failed, so it is not a valid URL
+                    redirectSuccess = false;
+                }
+                if (redirectSuccess) {
+                    this.$window.location.href = redirectSuccess;
                 } else {
                     this.$window.location = '/';
                 }
