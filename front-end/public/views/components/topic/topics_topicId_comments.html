@@ -34,7 +34,7 @@
 
                     </div>
 
-                    <div class="blue_button" ng-if="$ctrl.app.user.loggedIn" ng-click="$ctrl.doAddComment()" translate="VIEWS.TOPICS_TOPICID.BTN_ADD_ARGUMENT">Add argument</div>
+                    <div class="blue_button" ng-if="$ctrl.app.user.loggedIn && $ctrl.app.topic.permission.level !== 'none '" ng-click="$ctrl.doAddComment()" translate="VIEWS.TOPICS_TOPICID.BTN_ADD_ARGUMENT">Add argument</div>
 
                 </div>
             </div>
@@ -535,7 +535,7 @@
 
         </div>
 
-        <post-argument topic-id="$ctrl.topicId"></post-argument>
+        <post-argument ng-if="$ctrl.app.user.loggedIn && $ctrl.app.topic.permission.level !== 'none '" topic-id="$ctrl.topicId"></post-argument>
 
     </div>
 

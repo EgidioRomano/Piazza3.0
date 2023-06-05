@@ -2,7 +2,8 @@
 
     <div class="vote_casting_header">
         <div class="vote_casting_header_section">
-            <div class="table_cell bold vote_casting_description" ng-if="!$ctrl.hasVoteEndedExpired() && !$ctrl.hasVoteEnded()" translate="VIEWS.TOPICS_TOPICID.VOTE_CAST_YOUR_VOTE">Cast your vote</div>
+            <div class="table_cell bold vote_casting_description" ng-if="$ctrl.topic.permission.level === 'none '">Votazioni in corso...</div>
+            <div class="table_cell bold vote_casting_description" ng-if="!$ctrl.hasVoteEndedExpired() && !$ctrl.hasVoteEnded() && $ctrl.topic.permission.level !== 'none '" translate="VIEWS.TOPICS_TOPICID.VOTE_CAST_YOUR_VOTE">Cast your vote</div>
             <div class="table_cell bold vote_casting_description" ng-if="$ctrl.hasVoteEndedExpired() || $ctrl.hasVoteEnded()" translate="VIEWS.TOPICS_TOPICID.LBL_VOTE_RESULTS">Cast your vote</div>
         </div>
         <div class="vote_casting_header_section">
@@ -95,7 +96,7 @@
     </div>
     <div class="line lightest_line multiplechoice" ng-if="!$ctrl.hasVoteEnded()"></div>
     <div class="vote_multiple_submit_section" ng-if="!$ctrl.hasVoteEnded()">
-        <div class="table_cell" cos-disabled="!$ctrl.canSubmit()">
+        <div class="table_cell" cos-disabled="$ctrl.topic.permission.level === 'none '">
             <div class="blue_button" ng-click="$ctrl.doVote()" translate="VIEWS.TOPICS_TOPICID.VOTE_SUBMIT">Submit your vote</div>
         </div>
     </div>

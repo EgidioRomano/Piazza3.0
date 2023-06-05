@@ -343,7 +343,7 @@ export class Topic {
     };
 
     canVote (topic) {
-        return topic.vote && ((topic.permission.level !== 'none' || (topic.vote.authType === this.TopicVote.VOTE_AUTH_TYPES.hard && topic.visibility === this.VISIBILITY.public)) && topic.status === this.STATUSES.voting);
+        return (topic.vote && topic.permission.level !== 'none ' && topic.status === this.STATUSES.voting);
     };
 
     canDelegate (topic) {
