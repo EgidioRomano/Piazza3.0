@@ -360,19 +360,18 @@ module.exports = function (app) {
             if (str.length >= 3) {
                 const groupId = (await GroupMemberUser.findOne({where:{userId: req.user.userId}})).groupId;
                 userResult = await db.query(
-                        `SELECT
-                            u.id,
-                            u.name,
-                            u.birthday,
-                            u."imageUrl"
-                        FROM "GroupMemberUsers" gm
-                            JOIN "Users" u ON (u.id = gm."userId")
-                        WHERE gm."groupId" = :groupId
-                        AND gm."deletedAt" IS NULL
-                        AND u.id <> :userId
-                        AND u.name ILIKE :search
-                        LIMIT 100;
-                        `,
+                    `SELECT
+                        u.id,
+                        u.name,
+                        u.birthday,
+                        u."imageUrl"
+                    FROM "GroupMemberUsers" gm
+                        JOIN "Users" u ON (u.id = gm."userId")
+                    WHERE gm."groupId" = :groupId
+                    AND gm."deletedAt" IS NULL
+                    AND u.id <> :userId
+                    AND u.name ILIKE :search
+                    LIMIT 10;`,
                     {
                         replacements: {
                             groupId,
