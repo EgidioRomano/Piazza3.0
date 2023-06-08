@@ -4050,7 +4050,7 @@ module.exports = function (app) {
      * Get PUBLIC Topic information for given token.
      * Returns 404 for PRIVATE Topic even if it exists.
      */
-    app.get('/api/topics/join/:token', async function (req, res) {
+    /*app.get('/api/topics/join/:token', async function (req, res) {
         const token = req.params.token;
 
         const topicJoin = await TopicJoin.findOne({
@@ -4069,7 +4069,7 @@ module.exports = function (app) {
         }
 
         return res.ok(topic);
-    });
+    });*/
 
 
     /**
@@ -4077,7 +4077,7 @@ module.exports = function (app) {
      *
      * Allows sharing of private join urls for example in forums, on conference screen...
      */
-    app.post('/api/topics/join/:token', loginCheck(), asyncMiddleware(async function (req, res) {
+    /*app.post('/api/topics/join/:token', loginCheck(), asyncMiddleware(async function (req, res) {
         const token = req.params.token;
         const userId = req.user.userId;
 
@@ -4145,7 +4145,7 @@ module.exports = function (app) {
                 return res.ok(resObject);
             });
         });
-    }));
+    }));*/
 
 
     /**

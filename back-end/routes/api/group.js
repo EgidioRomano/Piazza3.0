@@ -1131,7 +1131,7 @@ module.exports = function (app) {
      *
      * Allows sharing of private join urls for example in forums, on conference screen...
      */
-    app.post('/api/groups/join/:token', loginCheck(), asyncMiddleware(async function (req, res) {
+    /*app.post('/api/groups/join/:token', loginCheck(), asyncMiddleware(async function (req, res) {
         const token = req.params.token;
         const userId = req.user.userId;
 
@@ -1191,7 +1191,7 @@ module.exports = function (app) {
                 return res.ok(resObject);
             });
         });
-    }));
+    }));*/
 
     /**
      * Invite new Members to the Group
