@@ -20,22 +20,6 @@
 
                 <div class="clearer"></div>
 
-                <div class="header_row_wrap">
-                    <div class="header_row" slide-controller identifier="topicSettingsSlider">
-                        <div class="tab_button" ng-click="$ctrl.tabSelected = 'invite'" ng-class="$ctrl.tabSelected === 'invite' ? 'active' : ''">
-                            <div class="tab_buttom_wrap">
-                                <div class="tab_button_text" translate="MODALS.TOPIC_INVITE_TAB_INVITE">INVITE</div>
-                                <div class="blue_bottom_line"></div>
-                            </div>
-                        </div>
-                        <div class="tab_button" ng-click="$ctrl.tabSelected = 'share'" ng-class="$ctrl.tabSelected === 'share' ? 'active' : ''">
-                            <div class="tab_buttom_wrap">
-                                <div class="tab_button_text" translate="MODALS.TOPIC_INVITE_TAB_SHARE">SHARE</div>
-                                <div class="blue_bottom_line"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
 
@@ -346,82 +330,7 @@
                 </div>
 
             </div>
-
-            <!-- SHARE -->
-            <div class="lightbox_content invite_url" ng-if="$ctrl.tabSelected === 'share'">
-
-                <div class="lightbox_section" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)">
-                    <h3 translate="MODALS.TOPIC_SETTINGS_HEADING_LINK_SHARING">Link sharing</h3>
-                    <div class="share_link">
-                        <div class="table_row">
-                            <div class="searchbox_with_icon_and_text only_text">
-                                <input id="url_invite_topic_input" ng-model="$ctrl.form.joinUrl" placeholder="{{'MODALS.TOPIC_SETTINGS_PLACEHOLDER_CREATE_NEW_LINK' | translate}}">
-                                <div class="regenerate_link not_mobile" ng-click="$ctrl.generateTokenJoin()">
-                                    <div class="sprite sprite-icon-refresh"></div>
-                                </div>
-                            </div>
-                            <div class="blue_button not_mobile" ng-click="$ctrl.copyInviteLink()" translate="MODALS.TOPIC_SETTINGS_BTN_COPY_LINK">Copy
-                                link
-                            </div>
-                        </div>
-                        <div class="permissions">
-                            <div class="label" translate="MODALS.TOPIC_SETTINGS_LABEL_DROPDOWN_PERMISSION_DESCRIPTION">Anyone with the link can</div>
-                            <div cos-dropdown class="classic_dropdown">
-                                <div class="dropdown_selection">
-                                    <div class="dropdown_text">
-                                        {{('TXT_TOPIC_LEVELS_' + $ctrl.form.join.level | uppercase) | translate}}
-                                    </div>
-
-                                    <div class="arrow_holder">
-                                        <div class="table_cell">
-                                            <div class="sprite sprite-icon-dropdown-arrowdown2x"></div>
-
-                                            <div class="v_line"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="dropdown">
-                                    <div class="dropdown_item" ng-repeat="level in $ctrl.Topic.LEVELS">
-                                        <div ng-if="level !== $ctrl.Topic.LEVELS.none" class="item_name" ng-click="$ctrl.doUpdateJoinToken(level)">
-                                            {{('TXT_TOPIC_LEVELS_' + level | uppercase) | translate}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="table_row mobile_only">
-                            <div class="blue_button" ng-click="$ctrl.copyInviteLink()" translate="MODALS.TOPIC_SETTINGS_BTN_COPY_LINK">Copy link</div>
-                        </div>
-                        <div class="table_row mobile_only">
-                            <div class="white_button" ng-click="$ctrl.generateTokenJoin()" translate="MODALS.TOPIC_SETTINGS_LNK_CREATE_NEW_LINK">Create a new link</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lightbox_section social_sharing" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)">
-                    <h3 translate="MODALS.TOPIC_SETTINGS_HEADING_SOCIAL_SHARING">Social sharing</h3>
-                    <a href="#" socialshare socialshare-provider="facebook" socialshare-text="{{$ctrl.topic.title}}" socialshare-url="{{$ctrl.form.joinUrl}}">
-                        <div class="sprite sprite-icon-social-facebook-v2"></div>
-                    </a>
-                    <a href="#" socialshare socialshare-provider="linkedin" socialshare-text="{{$ctrl.topic.title}}" socialshare-url="{{$ctrl.form.joinUrl}}">
-                        <div class="sprite sprite-icon-social-linkedin-v2"></div>
-                    </a>
-                    <a href="#" socialshare socialshare-provider="twitter" socialshare-text="{{$ctrl.topic.title}}" socialshare-url="{{$ctrl.form.joinUrl}}">
-                        <div class="sprite sprite-icon-social-twitter-v2"></div>
-                    </a>
-                </div>
-
-                <div class="lightbox_section" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)">
-                    <h3 translate="MODALS.TOPIC_SETTINGS_HEADING_QR_SHARING">QR sharing</h3>
-                    <div class="qr_code">
-                        <qrcode data="{{$ctrl.form.joinUrl}}" size="120" version="4" error-correction-level="L" download class="qr_img"></qrcode>
-                    </div>
-                    <!--a href="#fixme" class="table_cell" translate="MODALS.TOPIC_SETTINGS_LINK_QR_CODE_PDF">Download QR code PDF</a-->
-                </div>
-
-            </div>
-
+            
             <div class="lightbox_footer" ng-if="$ctrl.Topic.canEdit($ctrl.topic) && $ctrl.tabSelected === 'invite'">
                 <div class="line lightest_line"></div>
                 <div class="blue_button_wrap">
