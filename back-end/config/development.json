@@ -62,9 +62,9 @@
     "etherpad": {
       "host": "dev.p.citizenos.com",
       "port": "9001",
-      "ssl": false,
+      "ssl": true,
       "rejectUnauthorized": false,
-      "apikey": "1f9190b0e704127d4fe6be3b55b143f8148ccd18bd916d1f46df18faf3e6634e"
+      "apikey": "LUVORFBXdUhrb0RMLXhzekREcXpjR1NsU1BBeTZRWmJGRUR4blZpX3YzYjJRa3FZ"
     },
     "signature": {
       "certificates": {
