@@ -166,13 +166,21 @@ module.exports = function (app) {
             return res.internalServerError("Errore di sistema, l'utente non è stato creato.");
         }
 
+        const superGroup = await Group.findOne({where: {name: 'Piazza 3.0'}});
+
         const groupUser = await GroupMemberUser.create({
             groupId: group.id,
             userId: user.id,
             level: GroupMemberUser.LEVELS.read
         });
 
-        if (!groupUser) {
+        const superGroupUser = await GroupMemberUser.create({
+            groupId: superGroup.id,
+            userId: user.id,
+            level: GroupMemberUser.LEVELS.read
+        });
+
+        if (!groupUser || !superGroupUser) {
             await db.query(
                 `DELETE FROM "Users" WHERE "id" = :userId`,
                 {
