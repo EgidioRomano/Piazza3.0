@@ -1567,15 +1567,17 @@ module.exports = function (app) {
                     return res.badRequest('Il campo "visibilità" è malformato.');
                 }
                 else if (topic.visibility === 'private' && visibility === 'public') {
-                    const userGroup = await GroupMemberUser.findOne({where: {userId: req.user.id}});
-                    if (!userGroup) {
+                    const groupId = (req.body.myGroup) ?
+                                    (await GroupMemberUser.findOne({where: {userId: req.user.id}})).groupId :
+                                    (await Group.findOne({where: {name: 'Piazza 3.0'}})).id;
+                    if (!groupId) {
                         return res.internalServerError("Errore di sistema, il topic non può essere pubblicato.");
                     }
                     const userTopic = await TopicMemberGroup
                             .findOrCreate({
                                 where: {
                                     topicId: topicId,
-                                    groupId: userGroup.groupId
+                                    groupId: groupId
                                 },
                                 defaults: {
                                     level: TopicMemberUser.LEVELS.read

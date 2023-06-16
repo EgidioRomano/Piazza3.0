@@ -144,7 +144,7 @@ export class Topic {
     }
 
     update(data: any) {
-        const updateFields = ['visibility', 'status', 'categories', 'endsAt'];
+        const updateFields = ['visibility', 'status', 'categories', 'endsAt', 'myGroup'];
         const sendData = {};
 
         updateFields.forEach(function (field) {
@@ -236,7 +236,7 @@ export class Topic {
             });
     }
 
-    publishTopic (topic) {
+    publishTopic (topic, myGroup) {
         this.ngDialog
             .openConfirm({
                 template: '/views/modals/topic_publish_confirm.html'
@@ -244,7 +244,8 @@ export class Topic {
             .then(() => {
                 return this.update({
                     id: topic.id,
-                    visibility: 'public'
+                    visibility: 'public',
+                    myGroup: myGroup
                 });
             })
             .then(() => {
