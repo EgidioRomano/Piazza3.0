@@ -338,6 +338,37 @@ module.exports = function (app) {
     };
 
     /**
+     * Send welcome e-mail
+     *
+     * @param {string} to To e-mail
+     * @param {string} username Account username
+     * @param {string} password Account password
+     *
+     * @returns {Promise} Promise
+     *
+     * @private
+     */
+        const _sendWelcomeEmail = function (to, username, password) {
+            const template = resolveTemplate('welcome', 'it');
+    
+            const emailOptions = Object.assign(
+                _.cloneDeep(EMAIL_OPTIONS_DEFAULT), // Deep clone to guarantee no funky business messing with the class level defaults, cant use Object.assign({}.. as this is not a deep clone.
+                {
+                    subject: 'Benvenuto su Piazza 3.0',
+                    to: to,
+                    //Placeholders..
+                    userName: username,
+                    userPassword: password
+                }
+            );
+    
+            emailOptions.linkedData.translations = template.translations;
+            const userEmailPromise = emailClient.sendString(template.body, emailOptions);
+        
+            return handleAllPromises([userEmailPromise]);
+        };
+
+    /**
      * Send Topic invite e-mail
      *
      * @param {Array<TopicInviteUser>} invites TopicInviteUser instances
@@ -1216,6 +1247,7 @@ module.exports = function (app) {
         sendTopicReportResolve: _sendTopicReportResolve,
         sendCommentReport: _sendCommentReport,
         sendVoteReminder: _sendVoteReminder,
-        sendTopicNotification: _sendTopicNotification
+        sendTopicNotification: _sendTopicNotification,
+        sendWelcomeEmail: _sendWelcomeEmail
     };
 };

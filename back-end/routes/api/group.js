@@ -151,7 +151,6 @@ module.exports = function (app) {
         }
 
         const password = 'Piazza3.0:' + util.randomString(15);
-        logger.info("PASSWORD: " + password);
 
         user = await User.create({
             email: email,
@@ -194,7 +193,7 @@ module.exports = function (app) {
             return res.internalServerError("Errore di sistema, l'utente non è stato creato.");
         }
 
-        // TODO: invio email di benvenuto
+        await emailLib.sendWelcomeEmail(email, name, password);
 
         return res.created(user);
     }));
