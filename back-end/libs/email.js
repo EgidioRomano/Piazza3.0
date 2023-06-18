@@ -15,7 +15,6 @@ module.exports = function (app) {
     const config = app.get('config');
     const util = app.get('util');
     const fs = app.get('fs');
-    const path = require('path');
     const moment = app.get('moment');
     const cosJwt = app.get('cosJwt');
     const Mustache = require('mustache');
@@ -28,28 +27,9 @@ module.exports = function (app) {
     const templateRoot = app.get('EMAIL_TEMPLATE_ROOT');
     const templateRootLocal = app.get('EMAIL_TEMPLATE_ROOT_LOCAL');
 
-    const emailHeaderLogoName = 'logo.png';
-    const emailFooterLogoName = 'logo_footer.png';
-    let emailHeaderLogo = path.join(templateRoot, 'images/logo-email.png');
-    const emailFooterLogo = path.join(templateRoot, 'images/logo-email-small.png');
-    if (fs.existsSync(path.join(templateRootLocal, 'images/logo-email.png'))) { //eslint-disable-line no-sync
-        emailHeaderLogo = path.join(templateRootLocal, 'images/logo-email.png');
-    }
-    logger.debug('Using email header logo from', emailHeaderLogo);
-
     // Default e-mail sending options common to all e-mails
     // NOTE: ALWAYS CLONE (_.cloneDeep) this, do not modify!
     const EMAIL_OPTIONS_DEFAULT = {
-        images: [
-            {
-                name: emailHeaderLogoName,
-                file: emailHeaderLogo
-            },
-            {
-                name: emailFooterLogoName,
-                file: emailFooterLogo
-            }
-        ],
         styles: config.email.styles,
         linkedData: {
             footerLinks: {
@@ -402,7 +382,6 @@ module.exports = function (app) {
 
         const [fromUser, topic, toUsers] = await Promise.all([fromUserPromise, topicPromise, toUsersPromise]);
 
-        let logoFile = emailHeaderLogo;
         let templateName = 'inviteTopic';
         let linkToApplication = urlLib.getFe();
         let message = "Sei stato invitato su Piazza 3.0!";
@@ -434,16 +413,6 @@ module.exports = function (app) {
                 // from: from, - comes from emailClient.js configuration
                 subject: subject,
                 to: toUser.email,
-                images: [
-                    {
-                        name: emailHeaderLogoName,
-                        file: logoFile
-                    },
-                    {
-                        name: emailFooterLogoName,
-                        file: emailFooterLogo
-                    }
-                ],
                 toUser: toUser,
                 message,
                 fromUser: fromUser,
@@ -507,7 +476,6 @@ module.exports = function (app) {
 
         const [fromUser, group, toUsers] = await Promise.all([fromUserPromise, groupPromise, toUsersPromise]);
 
-        let logoFile = emailHeaderLogo;
         let templateName = 'inviteGroup';
         let linkToApplication = urlLib.getFe();
         let message = "Sei stato invitato su Piazza 3.0!";
@@ -540,16 +508,6 @@ module.exports = function (app) {
                 // from: from, - comes from emailClient.js configuration
                 subject: subject,
                 to: toUser.email,
-                images: [
-                    {
-                        name: emailHeaderLogoName,
-                        file: logoFile
-                    },
-                    {
-                        name: emailFooterLogoName,
-                        file: emailFooterLogo
-                    }
-                ],
                 toUser: toUser,
                 message,
                 fromUser: fromUser,
@@ -1207,7 +1165,6 @@ module.exports = function (app) {
         }
         const linkViewTopic = urlLib.getFe('/topics/:topicId', {topicId: topicId});
         const linkToApplication = urlLib.getFe();
-        const logoFile = emailHeaderLogo;
         let templateName = 'voteReminder';
         let customStyles = EMAIL_OPTIONS_DEFAULT.styles;
 
@@ -1231,16 +1188,6 @@ module.exports = function (app) {
                 // from: from, - comes from emailClient.js configuration
                 subject: subject,
                 to: toUser.email,
-                images: [
-                    {
-                        name: emailHeaderLogoName,
-                        file: logoFile
-                    },
-                    {
-                        name: emailFooterLogoName,
-                        file: emailFooterLogo
-                    }
-                ],
                 toUser: toUser,
                 topic: topic,
                 voteEndsAt: moment(vote.endsAt).locale(toUser.language).format('LLL'),
