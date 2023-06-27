@@ -1084,7 +1084,7 @@
     },
     "node_modules/campaign": {
       "version": "4.1.7",
-      "resolved": "git+ssh://git@github.com/citizenos/campaign.git#9904ac1e3628ffa3a49beb87914679c7b61a0e06",
+      "resolved": "git+https://git@github.com/citizenos/campaign.git#9904ac1e3628ffa3a49beb87914679c7b61a0e06",
       "integrity": "sha512-QyQJN5u2BMJ6lw88kLs3W/mcFYir2SOgMNyItNxtm13pl8Bp5+VOqLyojgO4h+1+BrQmrNftCDvxUjnDR9Imng==",
       "dependencies": {
         "mime": "3.0.0",
@@ -1093,7 +1093,7 @@
     },
     "node_modules/campaign-mailgun": {
       "version": "1.0.7",
-      "resolved": "git+ssh://git@github.com/citizenos/campaign-mailgun.git#7551766491c2a6ad6cbd0367f1d6740aae9fa353",
+      "resolved": "git+https://git@github.com/citizenos/campaign-mailgun.git#7551766491c2a6ad6cbd0367f1d6740aae9fa353",
       "integrity": "sha512-4/QkkM7BNzn4gZE3Baut3K1bOIrZQpaNBlQwYerOzmHtGIyBmidomb/KuV/yDpP2gaQKC48JSAU9C07kyQd7VA==",
       "dependencies": {
         "email-addresses": "5.0.0",
@@ -1271,7 +1271,7 @@
     },
     "node_modules/campaign-mustache": {
       "version": "1.0.0",
-      "resolved": "git+ssh://git@github.com/citizenos/campaign-mustache.git#0e6021098a3104011ced756e6409501cd0651f90",
+      "resolved": "git+https://git@github.com/citizenos/campaign-mustache.git#0e6021098a3104011ced756e6409501cd0651f90",
       "integrity": "sha512-P4/HW57fFthGrKeXNY4AwRMVcz/yBGOl6S//jeZro0Rs2OG/+c0GjW2GNjevD4Mn/fazkqnA55Fh49JDIArvAA==",
       "license": "MIT",
       "dependencies": {
@@ -1285,7 +1285,7 @@
     },
     "node_modules/campaign-terminal": {
       "version": "1.0.4",
-      "resolved": "git+ssh://git@github.com/citizenos/campaign-terminal.git#83bca04d61f8730b23c5439601d513ceae7c4012",
+      "resolved": "git+https://git@github.com/citizenos/campaign-terminal.git#83bca04d61f8730b23c5439601d513ceae7c4012",
       "integrity": "sha512-70epMZdUEbYCWO1uSYTC/3cy+hTCIMvzEfkApcYm+1grBdt1PxKy5vTxgmU/g/NGC4Ysj6tGfak+G4x+8bdmDQ==",
       "dependencies": {
         "html-md-2": "3.0.0",
@@ -2822,7 +2822,7 @@
     },
     "node_modules/etherpad-lite-client": {
       "version": "0.9.0",
-      "resolved": "git+ssh://git@github.com/EgidioRomano/etherpad-lite-client-js.git#86e06b78f159f1abc7916ee5c817adb096a951f5",
+      "resolved": "git+https://git@github.com/EgidioRomano/etherpad-lite-client-js.git#86e06b78f159f1abc7916ee5c817adb096a951f5",
       "integrity": "sha512-985HKw4Yzc6o2rM50vbt7I6snYqwNcfGdoSnE4avDVK29lGPqXMAAvPJFzxyxMx4QOcREPyFjpQCiEKNg2Kmww==",
       "license": "MIT",
       "dependencies": {
@@ -2959,7 +2959,7 @@
     },
     "node_modules/express-rate-limit": {
       "version": "6.6.0",
-      "resolved": "git+ssh://git@github.com/EgidioRomano/express-rate-limit.git#824644466bb9d0b5103d02c4b987d6708c03b546",
+      "resolved": "git+https://git@github.com/EgidioRomano/express-rate-limit.git#824644466bb9d0b5103d02c4b987d6708c03b546",
       "integrity": "sha512-vJ2/DBhFRg0ElrRTGi2Dh+b2AJSctwxVXIPJz/fsUO6a6dPYjeGdn8eRtICHz5lXOaNNbFv0uQPxMuAgWWGdkg==",
       "license": "MIT",
       "engines": {
@@ -10367,7 +10367,7 @@
       "dev": true
     },
     "campaign": {
-      "version": "git+ssh://git@github.com/citizenos/campaign.git#9904ac1e3628ffa3a49beb87914679c7b61a0e06",
+      "version": "git+https://git@github.com/citizenos/campaign.git#9904ac1e3628ffa3a49beb87914679c7b61a0e06",
       "integrity": "sha512-QyQJN5u2BMJ6lw88kLs3W/mcFYir2SOgMNyItNxtm13pl8Bp5+VOqLyojgO4h+1+BrQmrNftCDvxUjnDR9Imng==",
       "from": "campaign@git+https://github.com/citizenos/campaign#9904ac1e3628ffa3a49beb87914679c7b61a0e06",
       "requires": {
@@ -10388,7 +10388,7 @@
       }
     },
     "campaign-mailgun": {
-      "version": "git+ssh://git@github.com/citizenos/campaign-mailgun.git#7551766491c2a6ad6cbd0367f1d6740aae9fa353",
+      "version": "git+https://git@github.com/citizenos/campaign-mailgun.git#7551766491c2a6ad6cbd0367f1d6740aae9fa353",
       "integrity": "sha512-4/QkkM7BNzn4gZE3Baut3K1bOIrZQpaNBlQwYerOzmHtGIyBmidomb/KuV/yDpP2gaQKC48JSAU9C07kyQd7VA==",
       "from": "campaign-mailgun@git+https://github.com/citizenos/campaign-mailgun.git#7551766491c2a6ad6cbd0367f1d6740aae9fa353",
       "requires": {
@@ -10534,7 +10534,7 @@
       }
     },
     "campaign-mustache": {
-      "version": "git+ssh://git@github.com/citizenos/campaign-mustache.git#0e6021098a3104011ced756e6409501cd0651f90",
+      "version": "git+https://git@github.com/citizenos/campaign-mustache.git#0e6021098a3104011ced756e6409501cd0651f90",
       "integrity": "sha512-P4/HW57fFthGrKeXNY4AwRMVcz/yBGOl6S//jeZro0Rs2OG/+c0GjW2GNjevD4Mn/fazkqnA55Fh49JDIArvAA==",
       "from": "campaign-mustache@git+https://github.com/citizenos/campaign-mustache#0e6021098a3104011ced756e6409501cd0651f90",
       "requires": {
@@ -10547,7 +10547,7 @@
       "integrity": "sha1-cfHRlDGoOXI3FO6GXtHg6A3I++U="
     },
     "campaign-terminal": {
-      "version": "git+ssh://git@github.com/citizenos/campaign-terminal.git#83bca04d61f8730b23c5439601d513ceae7c4012",
+      "version": "git+https://git@github.com/citizenos/campaign-terminal.git#83bca04d61f8730b23c5439601d513ceae7c4012",
       "integrity": "sha512-70epMZdUEbYCWO1uSYTC/3cy+hTCIMvzEfkApcYm+1grBdt1PxKy5vTxgmU/g/NGC4Ysj6tGfak+G4x+8bdmDQ==",
       "from": "campaign-terminal@git+https://github.com/citizenos/campaign-terminal#83bca04d61f8730b23c5439601d513ceae7c4012",
       "requires": {
@@ -11729,7 +11729,7 @@
       "integrity": "sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg=="
     },
     "etherpad-lite-client": {
-      "version": "git+ssh://git@github.com/EgidioRomano/etherpad-lite-client-js.git#86e06b78f159f1abc7916ee5c817adb096a951f5",
+      "version": "git+https://git@github.com/EgidioRomano/etherpad-lite-client-js.git#86e06b78f159f1abc7916ee5c817adb096a951f5",
       "integrity": "sha512-985HKw4Yzc6o2rM50vbt7I6snYqwNcfGdoSnE4avDVK29lGPqXMAAvPJFzxyxMx4QOcREPyFjpQCiEKNg2Kmww==",
       "from": "etherpad-lite-client@git+https://github.com/EgidioRomano/etherpad-lite-client-js#86e06b78f159f1abc7916ee5c817adb096a951f5",
       "requires": {
@@ -11903,7 +11903,7 @@
       "integrity": "sha1-iLnEAWSv2aVSeGKbKUjmrOe/9F8="
     },
     "express-rate-limit": {
-      "version": "git+ssh://git@github.com/EgidioRomano/express-rate-limit.git#824644466bb9d0b5103d02c4b987d6708c03b546",
+      "version": "git+https://git@github.com/EgidioRomano/express-rate-limit.git#824644466bb9d0b5103d02c4b987d6708c03b546",
       "integrity": "sha512-vJ2/DBhFRg0ElrRTGi2Dh+b2AJSctwxVXIPJz/fsUO6a6dPYjeGdn8eRtICHz5lXOaNNbFv0uQPxMuAgWWGdkg==",
       "from": "express-rate-limit@git+https://github.com/EgidioRomano/express-rate-limit#824644466bb9d0b5103d02c4b987d6708c03b546",
       "requires": {}
