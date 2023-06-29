@@ -8,7 +8,7 @@
         "*",
         "self",
         "data:",
-        "https://dev.api.citizenos.com:3003",
+        "https://api.piazzatrepuntozero.it",
         "https://citizenos-test.s3.eu-west-1.amazonaws.com",
         "https://lh3.googleusercontent.com"
       ],
@@ -36,9 +36,8 @@
       ],
       "connect-src": [
         "self",
-        "https://p.citizenos.com",
-        "https://id.citizenos.com",
-        "https://api.citizenos.com",
+        "https://api.piazzatrepuntozero.it",
+        "https://ep.piazzatrepuntozero.it",
         "https://stats.citizenos.com",
         "https://sentry.io",
         "https://cdn.jsdelivr.net/",
@@ -51,12 +50,12 @@
         "none"
       ],
       "frame-src": [
-        "https://citizenos.com",
-        "https://p.citizenos.com",
+        "https://piazzatrepuntozero.it",
+        "https://ep.piazzatrepuntozero.it",
         "https://accounts.google.com/",
         "https://docs.google.com"
       ]
     },
-    "reportUri": "https://api.citizenos.com/api/internal/report"
+    "reportUri": "https://api.piazzatrepuntozero.it/api/internal/report"
   }
 }
