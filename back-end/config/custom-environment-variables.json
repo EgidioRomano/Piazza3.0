@@ -48,5 +48,6 @@
         "__format": "json"
       }
     }
-  }
+  },
+  "admins": "CITIZENOS_ADMINS"
 }
