@@ -58,7 +58,17 @@ if (cspConfig) {
 }
 
 
-app.use(prerender.set('prerenderToken', 'CrrAflHAEiF44KMFkrs7'));
+app.use(prerender.set('prerenderToken', process.env.PRERENDER_TOKEN));
+
+app.set('x-powered-by', false);
+app.set('trust proxy', true);
+
+app.use(function(req, res, next) {
+    if (process.env.NODE_ENV === 'production' && req.headers['x-forwarded-proto'] !== 'https') {
+        return res.redirect("https://" + req.headers.host + req.url);
+    }
+    next();
+});
 
 app.use(express.static(__dirname + '/public'));
 
@@ -97,8 +107,8 @@ app.get('/*', browserDetect, function (req, res) {
 });
 
 const host = process.env.HOST || null;
-
 const portHttp = process.env.PORT || 3000;
+
 http.createServer(app).listen(portHttp, host, function (err, res) {
     if (err) {
         console.log('Failed to start HTTP server on port' + portHttp, err);

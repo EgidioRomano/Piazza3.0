@@ -9,12 +9,11 @@
         "self",
         "data:",
         "https://api.piazzatrepuntozero.it",
-        "https://citizenos-test.s3.eu-west-1.amazonaws.com",
+        "https://piazza3punto0.s3.eu-west-1.amazonaws.com",
         "https://lh3.googleusercontent.com"
       ],
       "script-src": [
         "self",
-        "https://stats.citizenos.com",
         "https://cdn.crowdin.com",
         "https://apis.google.com",
         "https://cdn.jsdelivr.net/",
@@ -38,7 +37,6 @@
         "self",
         "https://api.piazzatrepuntozero.it",
         "https://ep.piazzatrepuntozero.it",
-        "https://stats.citizenos.com",
         "https://sentry.io",
         "https://cdn.jsdelivr.net/",
         "https://graph.microsoft.com"
