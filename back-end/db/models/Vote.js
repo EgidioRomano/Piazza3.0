@@ -67,9 +67,21 @@ module.exports = function (sequelize, DataTypes) {
                 defaultValue: null,
                 comment: 'Deadline when voting closes. If NULL then no deadline at all.',
                 validate: {
-                    isAfter: {
-                        args: [new Date().toString()],
-                        msg: 'Voting deadline must be in the future.'
+                    isAfterThirtyDays: function (value) {
+                        if (!value) return; // Since Sequelize 5.x custom validators are run when allowNull is true.
+                        
+                        var endsAtDate = new Date(value);
+
+                        if (isNaN(endsAtDate)) {
+                            throw new Error('Not a valid date.');
+                        }
+
+                        var futureDate = new Date();
+                        futureDate.setDate(new Date().getDate() + 30);
+
+                        if (futureDate > endsAtDate) {
+                            throw new Error('Voting deadline must be at least 30 days in the future.');
+                        }
                     }
                 }
             },
