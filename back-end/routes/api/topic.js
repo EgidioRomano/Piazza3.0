@@ -1601,6 +1601,15 @@ module.exports = function (app) {
                     isBackToVoting = true;
                 } else if (statuses.indexOf(topic.status) > statuses.indexOf(statusNew) || [Topic.STATUSES.voting].indexOf(statusNew) > -1) { // You are not allowed to go "back" in the status flow nor you are allowed to set "voting" directly, it can only be done creating a Vote.
                     return res.badRequest('Invalid status flow. Cannot change Topic status from ' + topic.status + ' to ' + statusNew);
+                } else if (statusNew === Topic.STATUSES.followUp) {
+                    if (!vote) {
+                        return res.badRequest('Invalid status flow. Cannot change Topic status from ' + topic.status + ' to ' + statusNew + ' when the Topic has no Vote created');
+                    }
+                    const maxDate = new Date(vote.createdAt);
+                    maxDate.setDate(maxDate.getDate() + 30);
+                    if (new Date() < maxDate) {
+                        return res.badRequest("Non sono ancora trascorsi 30 giorni dall'inizio delle votazioni, per cui non possono ancora essere terminate.");
+                    }
                 }
             }
 
