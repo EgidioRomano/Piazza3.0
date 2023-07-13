@@ -11,7 +11,7 @@ let topicVoteCreate = {
         private topicId;
         public userHasVoted;
 
-        public datePickerMin = new Date();
+        public datePickerMin = new Date().setDate(new Date().getDate() + 31);
         public HCount = 24;
         public timezones = [];
 
@@ -198,7 +198,7 @@ let topicVoteCreate = {
         };
 
         setEndsAtTime () {
-            this.voteForm.endsAt.date = this.voteForm.endsAt.date || new Date();
+            this.voteForm.endsAt.date = this.voteForm.endsAt.date || new Date().setDate(new Date().getDate() + 31);
             this.voteForm.deadline = new Date(this.voteForm.endsAt.date);
 
             let hour = this.voteForm.endsAt.h;
