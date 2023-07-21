@@ -65,10 +65,12 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.DATE,
                 allowNull: true,
                 defaultValue: null,
-                comment: 'Deadline when voting closes. If NULL then no deadline at all.',
+                comment: 'Deadline when voting closes.',
                 validate: {
                     isAfterThirtyDays: function (value) {
-                        if (!value) return; // Since Sequelize 5.x custom validators are run when allowNull is true.
+                        if (!value) {
+                            throw new Error('Voting deadline cannot be null.');
+                        }
                         
                         var endsAtDate = new Date(value);
 
