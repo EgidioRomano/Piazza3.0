@@ -158,7 +158,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="info_section" ng-if="$ctrl.app.wWidth < 767">
+                                <div class="info_section" ng-if="$ctrl.app.wWidth <= 767">
                                     <div class="info_section_title">
                                         <span translate="VIEWS.TOPICS_TOPICID.LBL_ATTACHMENTS">Attachments:</span>
                                     </div>
@@ -173,6 +173,31 @@
                                         <div ui-sref="topics/view/files" ng-if="$ctrl.Topic.canEdit($ctrl.topic)" class="blue_link info_section_add_attachments"
                                              translate="VIEWS.TOPICS_TOPICID.LNK_ADD_MANAGE_FILES">Add/manage files
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="line lightest_line" ng-if="$ctrl.app.wWidth <= 767"></div>
+                                <div class="info_section" ng-if="$ctrl.app.user.loggedIn && $ctrl.app.wWidth <= 767">
+                                    <div class="info_section_title">
+                                        <br><span>Opzioni:</span>
+                                    </div>
+                                    <div class="options_content">
+                                        <div ng-if="!($ctrl.topic.vote.id && $ctrl.topic.status===$ctrl.STATUSES.voting) && $ctrl.Topic.canSendToVote($ctrl.topic)" class="blue_link" ng-click="$ctrl.Topic.changeState($ctrl.topic, 'vote', null)"
+                                                translate="VIEWS.TOPICS_TOPICID.NAV_LNK_SEND_TO_VOTE">Send to vote
+                                        </div>
+                                        <div ng-if="($ctrl.topic.vote.id && $ctrl.topic.status===$ctrl.STATUSES.voting && $ctrl.Topic.canSendToFollowUp($ctrl.topic))" class="blue_link" ng-click="$ctrl.Topic.changeState($ctrl.topic, 'followUp', null)"
+                                                translate="VIEWS.TOPICS_TOPICID.NAV_LNK_SEND_TO_FOLLOW_UP">Send to follow up
+                                        </div>
+                                        <div class="blue_link" ng-if="($ctrl.Topic.canUpdate($ctrl.topic) && $ctrl.topic.visibility === 'private')" ng-click="$ctrl.Topic.publishTopic($ctrl.topic, true)">Pubblica topic nella tua comunità</div>
+                                        <div class="blue_link" ng-if="($ctrl.Topic.canUpdate($ctrl.topic) && $ctrl.topic.visibility === 'private')" ng-click="$ctrl.Topic.publishTopic($ctrl.topic, false)">Pubblica topic per tutta l'Associazione</div>
+                                        <div class="blue_link" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)" ng-click="$ctrl.Topic.changeState($ctrl.topic, 'closed', null)" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC">Close topic</div>
+                                        <div class="blue_link" ng-if="$ctrl.Topic.canDelete($ctrl.topic) || $ctrl.topic.canLeave()" ui-sref="topics/view/settings({topicId: $ctrl.topic.id, tab: 'categories'})" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_ACTIONS">Actions</div>
+                                        <div class="blue_link" ng-if="($ctrl.Topic.canUpdate($ctrl.topic) && $ctrl.topic.status === $ctrl.STATUSES.inProgress)" ui-sref="topics/view/invite({topicId: $ctrl.topic.id, tab: 'invite'})" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_INVITE_USERS">Invite users</div>
+                                        <div class="blue_link" ng-if="($ctrl.Topic.canUpdate($ctrl.topic) && $ctrl.topic.status === $ctrl.STATUSES.inProgress)" ui-sref="topics/view/participants({topicId: $ctrl.topic.id, tab: 'participants'})" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_PARTICIPANTS">Manage participants</div>
+                                        <div class="blue_link" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)" ng-click="$ctrl.duplicateTopic()" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_DUPLICATE_TOPIC">Duplicate topic</div>
+                                        <div ng-if="$ctrl.topic.visibility === $ctrl.VISIBILITY.public && !$ctrl.topic.report" class="blue_link" ui-sref="topics/view/report" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_REPORT">Report
+                                            topic
+                                        </div>
+                                        <div class="blue_link" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_SET_TOPIC_NOTIFICATIONS" ng-click="$ctrl.app.doShowTopicNotificationSettings($ctrl.topic.id)">Set topic notifications</div>
                                     </div>
                                 </div>
                             </div>
