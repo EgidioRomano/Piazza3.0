@@ -141,10 +141,7 @@
                                     <div class="info_section_title">
                                         <span translate="VIEWS.TOPICS_TOPICID.LBL_AUTHORS">Authors:</span>
                                     </div>
-                                    <div class="info_section_content"><span ng-repeat="author in $ctrl.topic.authors" ng-if="$ctrl.author.email" class="blue_link"
-                                                                            tooltips tooltip-class="tooltip_author"
-                                                                            tooltip-template="<span class='creator_data_tooltip_row'>{{author.email}}</span><span class='creator_data_tooltip_row'>{{author.phoneNumber}}</span>"
-                                                                            tooltip-smart="true">{{author.name}}<span ng-if="!$last" class="info_section_separator"> | </span></span><span ng-repeat="author in $ctrl.topic.authors" ng-if="!author.email">{{author.name}}<span ng-if="!$last" class="info_section_separator"> | </span></span>
+                                    <div class="info_section_content"><span ng-repeat="author in $ctrl.topic.authors" class="blue_link">{{author.name}}<span ng-if="!$last" class="info_section_separator"> | </span></span>
                                     </div>
                                 </div>
                                 <div class="info_section">
@@ -175,7 +172,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="line lightest_line" ng-if="$ctrl.app.wWidth <= 767"></div>
+                                <div class="line lightest_line" ng-if="$ctrl.app.user.loggedIn && $ctrl.app.wWidth <= 767"></div>
                                 <div class="info_section" ng-if="$ctrl.app.user.loggedIn && $ctrl.app.wWidth <= 767">
                                     <div class="info_section_title">
                                         <br><span>Opzioni:</span>
