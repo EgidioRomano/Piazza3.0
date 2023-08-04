@@ -1412,7 +1412,7 @@ ALTER SEQUENCE public."UserNotificationSettings_id_seq" OWNED BY public."UserNot
 CREATE TABLE public."Users" (
     id uuid NOT NULL,
     name character varying(255),
-    birthday character varying(255),
+    alias character varying(255),
     language character varying(5) DEFAULT 'it'::character varying,
     email character varying(254),
     password character varying(64),
@@ -1438,10 +1438,10 @@ COMMENT ON COLUMN public."Users".name IS 'Full name of the user.';
 
 
 --
--- Name: COLUMN "Users".birthday; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN "Users".alias; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN public."Users".birthday IS 'User birthday.';
+COMMENT ON COLUMN public."Users".alias IS 'User alias.';
 
 
 --

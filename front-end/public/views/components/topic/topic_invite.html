@@ -42,7 +42,7 @@
                                         </div>
                                         <div class="search_dropdown_item" typeahead-item="user" ng-repeat="user in $ctrl.searchResults.users">
                                             <div class="table_cell search_item_text">
-                                                <b>{{user.name}}</b> {{user.birthday}}
+                                                <b>{{user.name}}</b> {{user.alias}}
                                             </div>
                                             <div class="table_cell blue_link">
                                                 <span class="submit_link" ng-click="$ctrl.addTopicMemberUser(user)" translate="MODALS.TOPIC_SETTINGS_TXT_PRESS_ENTER_OR_CLICK_TO_ADD">Press enter or click to add</span>
@@ -236,7 +236,7 @@
                                 <div class="name_wrap">
                                     <div class="table_cell">
                                         <div class="blue_link" ng-click="$ctrl.removeTopicMemberUser(member)">{{member.name}}</div>
-                                        <div class="via">{{member.birthday}}</div>
+                                        <div class="via">{{member.alias}}</div>
                                         <div class="via" translate="MODALS.TOPIC_SETTINGS_INVITE_EXPIRES" translate-values="{expiresAt: ($ctrl.getExpiresAt() | amTimeAgo)}">{{$ctrl.getExpiresAt() | amTimeAgo}}</div>
                                     </div>
                                 </div>

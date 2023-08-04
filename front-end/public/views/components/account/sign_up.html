@@ -42,11 +42,11 @@
                                     <span translate="{{$ctrl.errors.email}}"></span>
                                 </div>
                             </label>
-                            <input id="birthday" ng-model="$ctrl.form.birthday" placeholder="{{'MODALS.SIGN_UP_PLACEHOLDER_BIRTHDAY' | translate}}" ng-class="{'error_input': $ctrl.errors.birthday}" maxlength="255">
-                            <label for="birthday" class="error_label" ng-if="$ctrl.errors.birthday">
+                            <input id="alias" ng-model="$ctrl.form.alias" placeholder="{{'MODALS.SIGN_UP_PLACEHOLDER_alias' | translate}}" ng-class="{'error_input': $ctrl.errors.alias}" maxlength="255">
+                            <label for="alias" class="error_label" ng-if="$ctrl.errors.alias">
                                 <div class="table_cell">
                                     <div class="sprite sprite-icon-inputfield-error2x"></div>
-                                    <span translate="{{$ctrl.errors.birthday}}"></span>
+                                    <span translate="{{$ctrl.errors.alias}}"></span>
                                 </div>
                             </label>
                             <input id="password" ng-model="$ctrl.form.password" type="password" placeholder="{{'MODALS.SIGN_UP_PLACEHOLDER_PASSWORD' | translate}}" ng-class="{'error_input': $ctrl.errors.password}" maxlength="64" required>

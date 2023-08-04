@@ -26,7 +26,7 @@ let groupSettings = {
             joinUrl: null,
             email: null,
             name: null,
-            birthday: null
+            alias: null
         };
 
         public memberGroups = ['users', 'emails'];
@@ -336,7 +336,7 @@ let groupSettings = {
             const userData = {
                 email: this.form.email,
                 name: this.form.name,
-                birthday: this.form.birthday,
+                alias: this.form.alias,
                 groupId: this.group.id
             };
 

@@ -12,13 +12,13 @@ export class User {
 
     constructor (private $http, private $q, private sLocation) {}
 
-    update (name?, email?, password?, birthday?, imageUrl?, preferences?, language?, newPassword?) {
+    update (name?, email?, password?, alias?, imageUrl?, preferences?, language?, newPassword?) {
         const path = this.sLocation.getAbsoluteUrlApi('/api/users/self');
         const userData = {
             name: null,
             password: null,
             email: email,
-            birthday: birthday,
+            alias: alias,
             imageUrl: imageUrl,
             language: language,
             preferences: preferences,

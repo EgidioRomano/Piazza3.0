@@ -4091,7 +4091,7 @@ suite('Users', function () {
                         };
 
                         expectedInvite.creator = {
-                            birthday: null,
+                            alias: null,
                             id: userCreator.id,
                             imageUrl: null,
                             name: userCreator.name
@@ -4134,7 +4134,7 @@ suite('Users', function () {
                         };
 
                         expectedInvite.creator = {
-                            birthday: null,
+                            alias: null,
                             id: userCreator.id,
                             imageUrl: null,
                             name: userCreator.name
@@ -4184,7 +4184,7 @@ suite('Users', function () {
                         };
 
                         expectedInvite.creator = {
-                            birthday: null,
+                            alias: null,
                             id: userCreator.id,
                             imageUrl: null,
                             name: userCreator.name
@@ -4227,7 +4227,7 @@ suite('Users', function () {
                         };
 
                         expectedInvite.creator = {
-                            birthday: null,
+                            alias: null,
                             id: userCreator.id,
                             imageUrl: null,
                             name: userCreator.name
@@ -4365,7 +4365,7 @@ suite('Users', function () {
                         };
 
                         expectedInvite.creator = {
-                            birthday: null,
+                            alias: null,
                             id: userCreator.id,
                             imageUrl: null,
                             name: userCreator.name
@@ -4737,7 +4737,7 @@ suite('Users', function () {
                         id: user.id,
                         type: 'User',
                         level: TopicJoin.LEVELS.edit,
-                        birthday: user.birthday,
+                        alias: user.alias,
                         name: user.name
                     },
                     object: {
@@ -4865,7 +4865,7 @@ suite('Users', function () {
                                 "type": "User",
                                 "id": creator.id,
                                 "name": creator.name,
-                                "birthday": creator.birthday
+                                "alias": creator.alias
                             },
                             "object": {
                                 "@type": "TopicJoin",
@@ -4945,7 +4945,7 @@ suite('Users', function () {
                                     "type": "User",
                                     "id": creator.id,
                                     "name": creator.name,
-                                    "birthday": creator.birthday
+                                    "alias": creator.alias
                                 },
                                 "object": {
                                     "@type": "TopicJoin",
@@ -10480,7 +10480,7 @@ suite('Topics', function () {
                     const expected = {
                         rows: [
                             {
-                                birthday: null,
+                                alias: null,
                                 imageUrl: null,
                                 createdAt: commentVote.createdAt,
                                 updatedAt: commentVote.updatedAt,

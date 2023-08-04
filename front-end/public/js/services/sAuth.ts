@@ -18,12 +18,12 @@ export class Auth {
 
     constructor (private $http, private $q, private $log, private sLocation, private cosConfig) {}
 
-    signUp (email, password, name, birthday, redirectSuccess, preferences) {
+    signUp (email, password, name, alias, redirectSuccess, preferences) {
         const data = {
             email: email,
             password: password,
             name: name,
-            birthday: birthday,
+            alias: alias,
             redirectSuccess: redirectSuccess,
             preferences: preferences
         };

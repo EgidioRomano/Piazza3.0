@@ -363,7 +363,7 @@ module.exports = function (app) {
                     `SELECT
                         u.id,
                         u.name,
-                        u.birthday,
+                        u.alias,
                         u."imageUrl"
                     FROM "GroupMemberUsers" gm
                         JOIN "Users" u ON (u.id = gm."userId")

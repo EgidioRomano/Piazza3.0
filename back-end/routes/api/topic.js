@@ -595,7 +595,7 @@ module.exports = function (app) {
                      t."hashtag",
                      c.id as "creator.id",
                      c.name as "creator.name",
-                     c.birthday as "creator.birthday",
+                     c.alias as "creator.alias",
                      'none' as "permission.level",
                      muc.count as "members.users.count",
                      COALESCE(mgc.count, 0) as "members.groups.count",
@@ -836,7 +836,7 @@ module.exports = function (app) {
                     t."updatedAt",
                     c.id as "creator.id",
                     c.name as "creator.name",
-                    c.birthday as "creator.birthday",
+                    c.alias as "creator.alias",
                     COALESCE(
                         tmup.level,
                         tmgp.level,
@@ -1993,7 +1993,7 @@ module.exports = function (app) {
                      t."createdAt",
                      c.id as "creator.id",
                      c.name as "creator.name",
-                     c.birthday as "creator.birthday",
+                     c.alias as "creator.alias",
                      COALESCE(tmup.level, tmgp.level, 'none') as "permission.level",
                      muc.count as "members.users.count",
                      COALESCE(mgc.count, 0) as "members.groups.count",
@@ -2301,7 +2301,7 @@ module.exports = function (app) {
                         c.id as "creator.id",
                         c.name as "creator.name",
                         COALESCE(MAX(a."updatedAt"), t."updatedAt") as "lastActivity",
-                        c.birthday as "creator.birthday",
+                        c.alias as "creator.alias",
                         muc.count as "members.users.count",
                         COALESCE(mgc.count, 0) as "members.groups.count",
                         CASE WHEN t.status = 'voting' THEN 1
@@ -2541,7 +2541,7 @@ module.exports = function (app) {
                         tm."level",
                         tmu."level" as "levelUser",
                         u.name,
-                        u.birthday,
+                        u.alias,
                         ${extraUserInfo}
                         u."imageUrl"
                     FROM "Topics" t
@@ -2664,7 +2664,7 @@ module.exports = function (app) {
                     tm.level,
                     tmu.level AS "levelUser",
                     tm.name,
-                    tm.birthday,
+                    tm.alias,
                     tm."imageUrl",
                     ${dataForModeratorAndAdmin}
                     json_agg(
@@ -2679,7 +2679,7 @@ module.exports = function (app) {
                         tm."memberId" as id,
                         tm."level",
                         u.name,
-                        u.birthday,
+                        u.alias,
                         u."imageUrl"
                     FROM "Topics" t
                     JOIN (
@@ -2717,7 +2717,7 @@ module.exports = function (app) {
                 LEFT JOIN "GroupMemberUsers" gmu ON (gmu."groupId" = tmg."groupId" AND gmu."userId" = :userId)
                 LEFT JOIN "UserConnections" uc ON (uc."userId" = tm.id AND uc."connectionId" = 'esteid')
                 ${where}
-                GROUP BY tm.id, tm.level, tmu.level, tm.name, tm.birthday, tm."imageUrl", uc."connectionData"::jsonb
+                GROUP BY tm.id, tm.level, tmu.level, tm.name, tm.alias, tm."imageUrl", uc."connectionData"::jsonb
                 ${sortSql}
                 LIMIT :limit
                 OFFSET :offset
@@ -3204,7 +3204,7 @@ module.exports = function (app) {
                         t."updatedAt" as "Topic.updatedAt",
                         u.id as "User.id",
                         u.name as "User.name",
-                        u.birthday as "User.birthday",
+                        u.alias as "User.alias",
                         u.language as "User.language",
                         u.email as "User.email",
                         u."imageUrl" as "User.imageUrl"
@@ -3707,7 +3707,7 @@ module.exports = function (app) {
                     },
                     {
                         model: User,
-                        attributes: ['id', 'name', 'birthday', 'imageUrl'],
+                        attributes: ['id', 'name', 'alias', 'imageUrl'],
                         as: 'creator',
                         required: true
                     },
@@ -3754,7 +3754,7 @@ module.exports = function (app) {
                         },
                         {
                             model: User,
-                            attributes: ['id', 'name', 'birthday', 'imageUrl'],
+                            attributes: ['id', 'name', 'alias', 'imageUrl'],
                             as: 'creator',
                             required: true
                         },
@@ -3942,7 +3942,7 @@ module.exports = function (app) {
                         },
                         {
                             model: User,
-                            attributes: ['id', 'name', 'birthday', 'imageUrl'],
+                            attributes: ['id', 'name', 'alias', 'imageUrl'],
                             as: 'creator',
                             required: true
                         },
@@ -4893,7 +4893,7 @@ module.exports = function (app) {
                     c.subject,
                     c.text,
                     pg_temp.editCreatedAtToJson(c.edits) as edits,
-                    jsonb_build_object('id', u.id,'name',u.name, 'birthday', u.birthday ${dataForModerator}) as creator,
+                    jsonb_build_object('id', u.id,'name',u.name, 'alias', u.alias ${dataForModerator}) as creator,
                     CASE
                         WHEN c."deletedById" IS NOT NULL THEN jsonb_build_object('id', c."deletedById", 'name', dbu.name )
                         ELSE jsonb_build_object('id', c."deletedById")
@@ -4931,7 +4931,7 @@ module.exports = function (app) {
                     c.subject,
                     c.text,
                     pg_temp.editCreatedAtToJson(c.edits) as edits,
-                    jsonb_build_object('id', u.id,'name',u.name, 'birthday', u.birthday ${dataForModerator}) as creator,
+                    jsonb_build_object('id', u.id,'name',u.name, 'alias', u.alias ${dataForModerator}) as creator,
                     CASE
                         WHEN c."deletedById" IS NOT NULL THEN jsonb_build_object('id', c."deletedById", 'name', dbu.name )
                         ELSE jsonb_build_object('id', c."deletedById")
@@ -5571,7 +5571,7 @@ module.exports = function (app) {
                 `
                 SELECT
                     u.name,
-                    u.birthday,
+                    u.alias,
                     u."imageUrl",
                     CAST(CASE
                         WHEN cv.value=1 Then 'up'

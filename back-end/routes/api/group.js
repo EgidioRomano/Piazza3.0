@@ -119,11 +119,11 @@ module.exports = function (app) {
     app.post('/api/groups/createuser', isSuperAdmin(), asyncMiddleware(async function (req, res) {
         const email = req.body.email;
         const name = req.body.name;
-        const birthday = req.body.birthday;
+        const alias = req.body.alias;
         const groupId = req.body.groupId;
 
-        if (!email || !name || !birthday || !groupId) {
-            return res.badRequest('I seguenti parametri sono necessari: email, name, birthday e groupId.', 1);
+        if (!email || !name || !alias || !groupId) {
+            return res.badRequest('I seguenti parametri sono necessari: email, name, alias e groupId.', 1);
         }
 
         if (!validator.isEmail(email)) {
@@ -156,7 +156,7 @@ module.exports = function (app) {
             email: email,
             password: password,
             name: name,
-            birthday: birthday,
+            alias: alias,
             emailIsVerified: true,
             source: User.SOURCES.citizenos
         });
@@ -766,7 +766,7 @@ module.exports = function (app) {
                 `SELECT
                         u.id,
                         u.name,
-                        u.birthday,
+                        u.alias,
                         u."imageUrl",
                         gm.level,
                         MAX(a."updatedAt") AS "latestActivity",
@@ -861,7 +861,7 @@ module.exports = function (app) {
                 `SELECT
                         u.id,
                         u.name,
-                        u.birthday,
+                        u.alias,
                         u."imageUrl",
                         ${dataForAdmin}
                         gm.level,
@@ -1562,7 +1562,7 @@ module.exports = function (app) {
                         },
                         {
                             model: User,
-                            attributes: ['id', 'name', 'birthday', 'imageUrl'],
+                            attributes: ['id', 'name', 'alias', 'imageUrl'],
                             as: 'creator',
                             required: true
                         },
@@ -1616,7 +1616,7 @@ module.exports = function (app) {
                         },
                         {
                             model: User,
-                            attributes: ['id', 'name', 'birthday', 'imageUrl'],
+                            attributes: ['id', 'name', 'alias', 'imageUrl'],
                             as: 'creator',
                             required: true
                         },
@@ -1764,7 +1764,7 @@ module.exports = function (app) {
                         },
                         {
                             model: User,
-                            attributes: ['id', 'name', 'birthday', 'imageUrl'],
+                            attributes: ['id', 'name', 'alias', 'imageUrl'],
                             as: 'creator',
                             required: true
                         },
@@ -2032,7 +2032,7 @@ module.exports = function (app) {
                         COALESCE(MAX(a."updatedAt"), t."updatedAt") as "lastActivity",
                         u.id as "creator.id",
                         u.name as "creator.name",
-                        u.birthday as "creator.birthday",
+                        u.alias as "creator.alias",
                         u."imageUrl" as "creator.imageUrl",
                         muc.count as "members.users.count",
                         COALESCE(mgc.count, 0) as "members.groups.count",
@@ -2183,7 +2183,7 @@ module.exports = function (app) {
                     ${memberLevel}
                     c.id as "creator.id",
                     c.name as "creator.name",
-                    c.birthday as "creator.birthday",
+                    c.alias as "creator.alias",
                     count(*) OVER()::integer AS "countTotal"
                 FROM "Groups" g
                 JOIN "Users" c ON c.id = g."creatorId"

@@ -188,7 +188,7 @@ module.exports = function (app) {
                     {
                         name: user.name + ' (rimosso)',
                         email: null,
-                        birthday: null,
+                        alias: null,
                         imageUrl: null,
                         sourceId: null
 

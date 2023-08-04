@@ -11,7 +11,7 @@ let signUpForm = {
             email: null,
             password: null,
             passwordConfirm: null,
-            birthday: null,
+            alias: null,
             redirectSuccess: null,
             preferences: { },
             settings: null
@@ -54,7 +54,7 @@ let signUpForm = {
             } else {
                 this.$log.error('doSignUp NEW USER', this.form);
                 this.sAuth
-                    .signUp(this.form.email, this.form.password, this.form.name, this.form.birthday, this.form.redirectSuccess, this.form.settings)
+                    .signUp(this.form.email, this.form.password, this.form.name, this.form.alias, this.form.redirectSuccess, this.form.settings)
                     .then(success, error);
             }
         };

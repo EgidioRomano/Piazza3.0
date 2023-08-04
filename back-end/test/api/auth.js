@@ -257,13 +257,13 @@ const logout = async function (agent) {
  * @param {string} language Users preferred language ISO 2 char language code
  * @param {object} preferences ?
  * @param {string} name
- * @param {string} birthday
+ * @param {string} alias
  * @param {number} expectedHttpCode Expected HTTP status code
  *
  * @return {void}
  */
 
-const _signup = async function (agent, email, password, language, preferences, name, birthday, expectedHttpCode) {
+const _signup = async function (agent, email, password, language, preferences, name, alias, expectedHttpCode) {
     const path = '/api/auth/signup';
 
     return agent
@@ -275,14 +275,14 @@ const _signup = async function (agent, email, password, language, preferences, n
             language,
             preferences,
             name,
-            birthday
+            alias
         })
         .expect(expectedHttpCode)
         .expect('Content-Type', /json/);
 };
 
-const signup = async function (agent, email, password, language, preferences, name, birthday) {
-    return _signup(agent, email, password, language, preferences, name, birthday, 200);
+const signup = async function (agent, email, password, language, preferences, name, alias) {
+    return _signup(agent, email, password, language, preferences, name, alias, 200);
 };
 
 /**
@@ -634,7 +634,7 @@ suite('Auth', function () {
                     delete responseData.id;
                     assert.deepEqual(responseData, {
                         name: 'Mary Änn O’Connež-Šuslik Testnumber',
-                        birthday: null,
+                        alias: null,
                         language: 'en',
                         email: null,
                         imageUrl: null,
@@ -1142,7 +1142,7 @@ suite('Auth', function () {
             const email = 'test_' + new Date().getTime() + '_invited@test.ee';
             const password = 'Test123';
             const name = 'Test name';
-            const birthday = 'Test birthday';
+            const alias = 'Test alias';
             const language = 'et';
 
             const user = await User.create({
@@ -1152,12 +1152,12 @@ suite('Auth', function () {
                 source: User.SOURCES.citizenos
             });
 
-            const userSignedup = (await signup(agent, user.email, password, language, null, name, birthday)).body.data;
+            const userSignedup = (await signup(agent, user.email, password, language, null, name, alias)).body.data;
 
             assert.equal(userSignedup.email, email);
             assert.equal(userSignedup.language, language);
             assert.equal(userSignedup.name, name);
-            assert.equal(userSignedup.birthday, birthday);
+            assert.equal(userSignedup.alias, alias);
         });
 
         test('Success - invited user - User with NULL password and source != citizenos should NOT be able to change password', async function () {

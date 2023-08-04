@@ -41,12 +41,12 @@ module.exports = function (sequelize, DataTypes) {
                     }
                 }
             },
-            birthday: {
+            alias: {
                 type: DataTypes.STRING(255),
-                comment: 'User birthday.',
+                comment: 'User alias.',
                 len: {
                     args: [1, 255],
-                    msg: 'User birthday can be 1 to 255 characters long.'
+                    msg: 'User alias can be 1 to 255 characters long.'
                 }
             },
             language: {
@@ -192,7 +192,7 @@ module.exports = function (sequelize, DataTypes) {
         const user = {
             id: this.dataValues.id,
             name: this.dataValues.name,
-            birthday: this.dataValues.birthday,
+            alias: this.dataValues.alias,
             language: this.dataValues.language,
             email: this.dataValues.email, //TODO: probably should take this out of the responses, is email sensitive? Seems a bit so as used for log-in.
             imageUrl: this.dataValues.imageUrl

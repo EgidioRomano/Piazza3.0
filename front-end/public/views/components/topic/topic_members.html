@@ -88,8 +88,8 @@
                                         <div ng-bind="user.name" tooltips tooltip-hidden="{{(!user.email && !user.pid && !user.phoneNumber)}}" tooltip-class="tooltip_author"
                                             tooltip-template="<span class='creator_data_tooltip_row'>{{user.email}}</span><span class='creator_data_tooltip_row'>{{user.phoneNumber}}</span><span class='creator_data_tooltip_row'>{{user.pid}}</span>"
                                             tooltip-smart="true">user.name</div>
-                                        <div class="via" ng-if="user.birthday">
-                                            <span ng-bind="user.birthday"></span>
+                                        <div class="via" ng-if="user.alias">
+                                            <span ng-bind="user.alias"></span>
                                         </div>
                                     </div>
                                 </div>

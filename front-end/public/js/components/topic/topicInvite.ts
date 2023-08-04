@@ -169,7 +169,7 @@ let topicInvite = {
                 this.$log.debug('go to addTopicMemberUser');
                 return this.addTopicMemberUser();
             }
-            if (member.hasOwnProperty('birthday')) {
+            if (member.hasOwnProperty('alias')) {
                 return this.addTopicMemberUser(member);
             } else {
                 return this.addTopicMemberGroup(member);
