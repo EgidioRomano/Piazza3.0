@@ -119,11 +119,10 @@ module.exports = function (app) {
     app.post('/api/groups/createuser', isSuperAdmin(), asyncMiddleware(async function (req, res) {
         const email = req.body.email;
         const name = req.body.name;
-        const alias = req.body.alias;
         const groupId = req.body.groupId;
 
-        if (!email || !name || !alias || !groupId) {
-            return res.badRequest('I seguenti parametri sono necessari: email, name, alias e groupId.', 1);
+        if (!email || !name || !groupId) {
+            return res.badRequest('I seguenti parametri sono necessari: email, name e groupId.', 1);
         }
 
         if (!validator.isEmail(email)) {
@@ -150,13 +149,22 @@ module.exports = function (app) {
             return res.badRequest('Un gruppo con questo ID non è presente nel sistema.', 5);
         }
 
+        let userAlias = null;
+        let aliasExists = false;
+        const randomItalianWords = ["gatto", "bicchiere", "tavolo", "quaderno", "ventaglio", "scarpa", "frigorifero", "televisione", "libreria", "occhiali", "ombrellone", "cuscino", "computer", "asciugamano", "ciabatta", "finestra", "pomodoro", "cetriolo", "limone", "arancia", "anguria", "fragola", "mango", "zucchero", "sale", "pepe", "caffè", "tè", "latte", "cioccolato", "biscotto", "torta", "gelato", "panino", "formaggio", "insalata", "melanzana", "patata", "carota", "cetriolo", "cavolfiore", "melone", "ananas", "uva", "mela", "pera", "pesca", "kiwi", "lampone", "albicocca"];
+        
+        do {
+            userAlias = randomItalianWords[Math.floor(Math.random() * randomItalianWords.length)] + '-' + util.randomString(6);
+            aliasExists = await User.findOne({where: {alias: userAlias}});
+        } while (aliasExists);
+
         const password = 'Piazza3.0:' + util.randomString(15);
 
         user = await User.create({
             email: email,
             password: password,
             name: name,
-            alias: alias,
+            alias: userAlias,
             emailIsVerified: true,
             source: User.SOURCES.citizenos
         });
