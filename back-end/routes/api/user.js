@@ -168,63 +168,6 @@ module.exports = function (app) {
     }));
 
     /**
-     * Delete User
-     */
-    app.delete('/api/users/:userId', loginCheck(), asyncMiddleware(async function (req, res) {
-        const user = await User
-            .findOne({
-                where: {
-                    id: req.user.userId
-                }
-            });
-
-        if (!user) {
-            return res.notFound();
-        }
-
-        await db
-            .transaction(async function (t) {
-                await User.update(
-                    {
-                        name: user.name + ' (rimosso)',
-                        email: null,
-                        alias: null,
-                        imageUrl: null,
-                        sourceId: null
-
-                    },
-                    {
-                        where: {
-                            id: req.user.userId
-                        },
-                        limit: 1,
-                        returning: true,
-                        transaction: t
-                    }
-                );
-
-                await User.destroy({
-                    where: {
-                        id: req.user.userId
-                    },
-                    transaction: t
-                });
-
-                await UserConnection.destroy({
-                    where: {
-                        userId: req.user.userId
-                    },
-                    force: true,
-                    transaction: t
-                });
-
-                t.afterCommit(() => {
-                    return res.ok();
-                });
-            });
-    }));
-
-    /**
      * Get UserConnections
      *
      * Get UserConnections, that is list of methods User can use to authenticate.
