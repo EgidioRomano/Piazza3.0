@@ -191,7 +191,6 @@
     "MY_ACCOUNT_UPLOAD_AVATAR": "Carica immagine",
     "MY_ACCOUNT_DELETE_AVATAR": "Cancella",
     "MY_ACCOUNT_AVATAR_RESTRICTIONS": "Max 500kb jpg, gif o png",
-    "MY_ACCOUNT_LNK_DELETE": "Cancella account",
     "MY_ACCOUNT_BTN_SAVE": "@:DIRECTIVES.COS_MODAL.BTN_SAVE",
     "MY_ACCOUNT_BTN_CANCEL": "@:LNK_CANCEL",
     "MY_ACCOUNT_TAB_PROFILE": "Profilo",

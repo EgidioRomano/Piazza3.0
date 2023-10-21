@@ -384,15 +384,10 @@
             margin: 0 40px 40px 40px;
             padding: 10px 32px 38px;
 
-            .delete_account {
+            .save_changes {
                 display: inline-block;
                 padding-top: 25px;
                 width: max-content;
-
-                span {
-                    display: inline-block;
-                    color: vars.$pinky_red;
-                }
             }
 
             .blue_button_wrap {

@@ -1089,13 +1089,8 @@
             }
 
             .lightbox_footer {
-                .delete_account {
+                .save_changes {
                     margin-left: 20px;
-
-                    span {
-                        display: inline-block;
-                        color: vars.$pinky_red;
-                    }
                 }
             }
         }
