@@ -1606,8 +1606,9 @@ module.exports = function (app) {
                         return res.badRequest('Invalid status flow. Cannot change Topic status from ' + topic.status + ' to ' + statusNew + ' when the Topic has no Vote created');
                     }
                     const maxDate = new Date(vote.createdAt);
+                    const today = new Date();
                     maxDate.setDate(maxDate.getDate() + 30);
-                    if (new Date() < maxDate) {
+                    if (today < maxDate && vote.endsAt > today) {
                         return res.badRequest("Non sono ancora trascorsi 30 giorni dall'inizio delle votazioni, per cui non possono ancora essere terminate.");
                     }
                 }
@@ -6116,6 +6117,7 @@ module.exports = function (app) {
                     const topicMembers = await _getAllTopicMembers(topicId, userId, false);
                     const voteResults = await getVoteResults(voteId, userId);
                     if (voteResults.length && topicMembers.users.count === voteResults[0].votersCount) {
+                        vote.closed = true;
                         vote.endsAt = (new Date()).toISOString();
                         await vote.save();
 

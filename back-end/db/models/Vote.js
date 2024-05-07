@@ -67,7 +67,7 @@ module.exports = function (sequelize, DataTypes) {
                 defaultValue: null,
                 comment: 'Deadline when voting closes.',
                 validate: {
-                    isAfterThirtyDays: function (value) {
+                    isValid: function (value) {
                         if (!value) {
                             throw new Error('Voting deadline cannot be null.');
                         }
@@ -81,7 +81,7 @@ module.exports = function (sequelize, DataTypes) {
                         var futureDate = new Date();
                         futureDate.setDate(new Date().getDate() + 30);
 
-                        if (futureDate > endsAtDate) {
+                        if (futureDate > endsAtDate && !this.closed) {
                             throw new Error('Voting deadline must be at least 30 days in the future.');
                         }
                     }
