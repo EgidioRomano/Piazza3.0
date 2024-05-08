@@ -67,7 +67,7 @@ module.exports = function (app) {
      * Update User info
      */
     app.put('/api/users/:userId', loginCheck(), asyncMiddleware(async function (req, res) {
-        const fields = ['email', 'imageUrl', 'preferences'];
+        const fields = ['alias', 'email', 'imageUrl', 'preferences'];
         const data = req.body;
         if (data.password && data.newPassword) {
             fields.push('password');
@@ -79,6 +79,17 @@ module.exports = function (app) {
                 id: req.user.userId
             }
         });
+
+        data.alias = (data.alias || '').toString();
+
+        if (!/^[a-zA-Z0-9_-]+$/.test(data.alias)) {
+            return res.badRequest('Alias non valido: può contenere solo trattini, lettere e numeri.');
+        }
+
+        if (data.alias.toLowerCase() !== user.alias.toLowerCase()) {
+            const aliasExists = await User.findOne({where: db.where(db.fn('lower', db.col('alias')), data.alias.toLowerCase())});
+            if (aliasExists) return res.badRequest('Questo alias è già utilizzato da un altro utente.');
+        }
 
         if (data.email && data.email !== user.email) {
             updateEmail = true;
