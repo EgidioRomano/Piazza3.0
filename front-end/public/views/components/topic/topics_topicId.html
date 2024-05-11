@@ -114,10 +114,6 @@
                                         </div>
                                         <span translate="VIEWS.TOPICS_TOPICID.LNK_TOPIC_DETAILS">Topic details</span>
                                     </div>
-                                    <div class="more_info_attachment_wrap">
-                                        <div class="more_info_attachment_icon sprite sprite-icon-attachment"></div>
-                                        <span class="more_info_attachment_count">{{$ctrl.topicAttachments.length}}</span>
-                                    </div>
                                 </div>
                             </div>
 
@@ -144,6 +140,14 @@
                                     <div class="info_section_content"><span ng-repeat="author in $ctrl.topic.authors" class="blue_link">{{author.name}}<span ng-if="!$last" class="info_section_separator"> | </span></span>
                                     </div>
                                 </div>
+                                <div class="info_section" ng-if="$ctrl.topic.group">
+                                    <div class="info_section_title">
+                                        <span>Comunità:</span>
+                                    </div>
+                                    <div class="info_section_content">
+                                        <span class="blue_link">{{$ctrl.topic.group.name}}</span>
+                                    </div>
+                                </div>
                                 <div class="info_section">
                                     <div class="info_section_title">
                                         <span translate="VIEWS.TOPICS_TOPICID.LBL_ACTIVITY">Activity:</span>
@@ -155,20 +159,17 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="info_section" ng-if="$ctrl.app.wWidth <= 767">
+                                <div class="info_section" ng-if="$ctrl.app.wWidth <= 767 && $ctrl.TopicAttachmentService.attachments.length">
                                     <div class="info_section_title">
                                         <span translate="VIEWS.TOPICS_TOPICID.LBL_ATTACHMENTS">Attachments:</span>
                                     </div>
                                     <div class="info_section_content">
-                                        <div class="blue_link" ng-repeat="attachment in $ctrl.topicAttachments">
+                                        <div class="blue_link" ng-repeat="attachment in $ctrl.TopicAttachmentService.attachments">
                                             <a ng-if="attachment.source === $ctrl.ATTACHMENT_SOURCES.upload" class="blue_link info_section_attachment"
                                                ng-click="$event.preventDefault(); $ctrl.downloadAttachment(attachment);" href="{{attachment.link}}">{{attachment.name}}<span
                                                 class="btn blue_button file_type">.{{attachment.type}}</span></a>
                                             <a ng-if="attachment.source !== $ctrl.ATTACHMENT_SOURCES.upload" class="blue_link info_section_attachment" target="_blank" href="{{attachment.link}}">{{attachment.name}} <span
                                                 class="btn blue_button file_type">{{attachment.type}}</span></a>
-                                        </div>
-                                        <div ui-sref="topics/view/files" ng-if="$ctrl.Topic.canEdit($ctrl.topic)" class="blue_link info_section_add_attachments"
-                                             translate="VIEWS.TOPICS_TOPICID.LNK_ADD_MANAGE_FILES">Add/manage files
                                         </div>
                                     </div>
                                 </div>
@@ -195,6 +196,7 @@
                                             topic
                                         </div>
                                         <div class="blue_link" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_SET_TOPIC_NOTIFICATIONS" ng-click="$ctrl.app.doShowTopicNotificationSettings($ctrl.topic.id)">Set topic notifications</div>
+                                        <div ui-sref="topics/view/files" ng-if="$ctrl.Topic.canEdit($ctrl.topic)" class="blue_link" translate="VIEWS.TOPICS_TOPICID.LNK_ADD_MANAGE_FILES">Add/manage files</div>
                                     </div>
                                 </div>
                             </div>

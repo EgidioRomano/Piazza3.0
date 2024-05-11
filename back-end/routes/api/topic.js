@@ -1491,6 +1491,12 @@ module.exports = function (app) {
                 return res.notFound();
             }
 
+            let topicGroup = await TopicMemberGroup.findOne({where: {topicId: topicId}, attributes: ['groupId']});
+            if (topicGroup) {
+                topicGroup = await Group.findOne({where: {id: topicGroup.groupId}, attributes: ['id', 'name']});
+                topic.group = {id: topicGroup.id, name: topicGroup.name};
+            }
+
             return res.ok(topic);
         } catch (err) {
             return next(err);
@@ -1510,6 +1516,12 @@ module.exports = function (app) {
 
             if (!topic) {
                 return res.notFound();
+            }
+
+            let topicGroup = await TopicMemberGroup.findOne({where: {topicId: topicId}, attributes: ['groupId']});
+            if (topicGroup) {
+                topicGroup = await Group.findOne({where: {id: topicGroup.groupId}, attributes: ['id', 'name']});
+                topic.group = {id: topicGroup.id, name: topicGroup.name};
             }
 
             return res.ok(topic);

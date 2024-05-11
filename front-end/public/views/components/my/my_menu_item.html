@@ -37,7 +37,7 @@
     <div class="line lightest_line"></div>
 
     <div class="small_topic_footer">
-        <div class="small_topic_left_cont">
+        <div class="small_topic_left_cont" ng-if="$ctrl.Topic.canEdit($ctrl.item)">
             <div class="small_topic_link" ng-click="$ctrl.goToView(true); $event.stopPropagation();" ng-if="$ctrl.item.status==='inProgress'">
                 <div class="small_topic_icon">
                     <div class="sprite" ng-class="$ctrl.isActiveItem() ? 'sprite-icon-edit-topic_white': 'sprite-icon-edit-topic_black'"></div>
