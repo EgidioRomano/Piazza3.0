@@ -360,8 +360,8 @@
                 <div class="blue_link"
                     ng-click="$ctrl.userList.isSearchVisible = !$ctrl.userList.isSearchVisible; $ctrl.doShowMemberUserList(); $event.stopPropagation();"
                     translate="VIEWS.MY_TOPICS_TOPICID.LNK_SEARCH">search</div>
-                <span ng-if="$ctrl.Topic.canUpdate($ctrl.topic)">|</span>
-                <div class="blue_link" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)"
+                <span ng-if="$ctrl.Topic.canUpdate($ctrl.topic) && $ctrl.topic.visibility === 'private'">|</span>
+                <div class="blue_link" ng-if="$ctrl.Topic.canUpdate($ctrl.topic) && $ctrl.topic.visibility === 'private'"
                     translate="VIEWS.MY_TOPICS_TOPICID.LNK_INVITE"
                     ui-sref="my/topics/topicId/invite({topicId: $ctrl.topic.id, tab: 'invite'})"
                     ng-click="$event.stopPropagation()">invite</div>

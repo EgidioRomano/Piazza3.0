@@ -65,28 +65,18 @@ let topicInvite = {
                 if (str.match(this.EMAIL_SEPARATOR_REGEXP)) {
                     this.searchResults = angular.merge({}, {users: [], groups: [], emails: [], combined: [str]});
                 } else {
-                    const include = ['my.group'];
                     this.sSearch
-                        .search(str, {include: include})
-                        .then((groupresponse) => {
-                            this.sSearch
-                                .searchUsers(str)
-                                .then((userrespons) => {
-                                    this.searchResults = angular.merge({}, {users: [], groups: [], emails: [], combined: []});
-                                    if (userrespons.data.data.results.public.users.rows.length) {
-                                        userrespons.data.data.results.public.users.rows.forEach((user) => {
-                                            this.searchResults.users.push(user);
-                                        });
-                                    } else if (validator.isEmail(str)) {
-                                        this.searchResults.emails.push(this.searchString);
-                                    }
-                                    if (groupresponse.data.data.results.my.groups.rows.length) {
-                                        groupresponse.data.data.results.my.groups.rows.forEach((group) => {
-                                            this.searchResults.groups.push(group);
-                                        });
-                                    }
-                                    this.searchResults.combined = this.searchResults.users.concat(this.searchResults.groups).concat(this.searchResults.emails);
+                        .searchUsers(str)
+                        .then((userrespons) => {
+                            this.searchResults = angular.merge({}, {users: [], groups: [], emails: [], combined: []});
+                            if (userrespons.data.data.results.public.users.rows.length) {
+                                userrespons.data.data.results.public.users.rows.forEach((user) => {
+                                    this.searchResults.users.push(user);
                                 });
+                            } else if (validator.isEmail(str)) {
+                                this.searchResults.emails.push(this.searchString);
+                            }
+                            this.searchResults.combined = this.searchResults.users.concat(this.searchResults.groups).concat(this.searchResults.emails);
                         });
                 }
             } else {

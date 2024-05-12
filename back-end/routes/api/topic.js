@@ -1585,6 +1585,30 @@ module.exports = function (app) {
                     if (!groupId) {
                         return res.internalServerError("Errore di sistema, il topic non può essere pubblicato.");
                     }
+                    if (req.body.myGroup) {
+                        await db
+                        .query(
+                            `
+                            DELETE FROM
+                                "TopicMemberUsers"
+                            WHERE "topicId" = :topicId
+                            AND "userId" =
+                            (SELECT t."userId" FROM
+                                "TopicMemberUsers" t JOIN "GroupMemberUsers" g ON (t."userId" = g."userId")
+                             WHERE t."topicId" = :topicId
+                             AND g."groupId" <> :groupId
+                             AND g."groupId" <> (SELECT id FROM "Groups" WHERE name = 'Piazza 3.0'))
+                            `,
+                            {
+                                replacements: {
+                                    topicId: topicId,
+                                    groupId: groupId
+                                },
+                                type: db.QueryTypes.DELETE,
+                                raw: true
+                            }
+                        );
+                    }
                     const userTopic = await TopicMemberGroup
                             .findOrCreate({
                                 where: {
@@ -3449,6 +3473,16 @@ module.exports = function (app) {
             return res.badRequest("Maximum user limit reached");
         }
 
+        const topic = await Topic.findOne({
+            where: {
+                id: topicId
+            }
+        });
+
+        if (topic.visibility !== Topic.VISIBILITY.private) {
+            return res.badRequest("Non puoi invitare utenti in un topic che è già stato pubblicato.");
+        }
+
         let validUserIdMembers = [];
 
         _(members).forEach(function (m) {
@@ -3465,25 +3499,8 @@ module.exports = function (app) {
             }
         });
 
-        const userGroupId = (await GroupMemberUser.findOne({where:{userId: userId}})).groupId;
-
-        for (var i = 0; i < validUserIdMembers.length; i++) {
-            const group = await GroupMemberUser.findOne({where:{userId: validUserIdMembers[i].userId}});
-            const groupId = group ? group.groupId : false;
-            if (groupId !== userGroupId) {
-                return res.badRequest('Non puoi aggiungere utenti al di fuori del tuo gruppo.');
-            }
-        }
-
         await db.transaction(async function (t) {
             let createdUsers;
-
-            // Need the Topic just for the activity
-            const topic = await Topic.findOne({
-                where: {
-                    id: topicId
-                }
-            });
 
             validUserIdMembers = validUserIdMembers.filter(function (member) {
                 return member.userId !== req.user.userId; // Make sure user does not invite self

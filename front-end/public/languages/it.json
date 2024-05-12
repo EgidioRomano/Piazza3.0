@@ -256,7 +256,7 @@
     "TOPIC_SETTINGS_LBL_DELETE_TOPIC_EXT": "Si prega di tenere a mente che la cancellazione di un topic è un'azione irreversibile.",
     "TOPIC_SETTINGS_BTN_DELETE_TOPIC": "@:MODALS.TOPIC_SETTINGS_LBL_DELETE_TOPIC",
     "TOPIC_SETTINGS_TXT_ASSIGN_CATEGORIES": "Assegna un massimo di 3 categorie",
-    "TOPIC_SETTINGS_TXT_INVITE_USERS_AND_GROUPS": "Invita utenti al topic cercando il loro nome",
+    "TOPIC_SETTINGS_TXT_INVITE_USERS_AND_GROUPS": "Invita utenti al topic cercando il loro nome o alias",
     "TOPIC_SETTINGS_PLACEHOLDER_INVITE_USERS_AND_GROUPS": "Cerca nome...",
     "TOPIC_SETTINGS_RESULT_GROUP_USERS": "Utenti",
     "TOPIC_SETTINGS_RESULT_GROUP_GROUPS": "Gruppi",
