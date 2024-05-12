@@ -14,7 +14,7 @@ export class TopicNotification {
         if (!params.topicId) params.topicId = params.id;
         let path = this.sLocation.getAbsoluteUrlApi('/api/users/self/topics/:topicId/notificationsettings', params);
 
-        return this.$http.get(path, {params})
+        return this.$http.get(path)
             .then((res) => {
                 return res.data.data
             });
