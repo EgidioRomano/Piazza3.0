@@ -1592,7 +1592,7 @@ module.exports = function (app) {
                             DELETE FROM
                                 "TopicMemberUsers"
                             WHERE "topicId" = :topicId
-                            AND "userId" =
+                            AND "userId" IN
                             (SELECT t."userId" FROM
                                 "TopicMemberUsers" t JOIN "GroupMemberUsers" g ON (t."userId" = g."userId")
                              WHERE t."topicId" = :topicId
