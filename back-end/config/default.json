@@ -214,6 +214,6 @@
   },
   "storage": {
     "allowedFileTypes": ["txt", "pdf", "doc", "docx", "ddoc", "bdoc", "asice", "odf", "odt", "jpg", "jpeg", "png", "rtf", "xls", "xlsx", "ppt", "pptx", "pps", "xlt", "zip"],
-    "allowedMimeTypes": ["application\/vnd\\.etsi\\.asic-e\\+zip"]
+    "allowedMimeTypes": ["application\/vnd\\.etsi\\.asic-e\\+zip", "application\/zip"]
   }
 }
