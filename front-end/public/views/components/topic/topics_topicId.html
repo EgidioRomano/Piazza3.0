@@ -68,8 +68,8 @@
 
                 <div class="main_content_wrap" ng-click="$ctrl.app.topicsSettings = false">
 
-                    <!-- Create a milestone -->
-                    <topic-milestones ng-if="('topics/view/followUp' | isState) && $ctrl.Topic.canEdit($ctrl.topic)"></topic-milestones>
+                    <!-- Milestones -->
+                    <topic-milestones ng-if="('topics/view/followUp' | isState)"></topic-milestones>
 
                     <!-- Cast your vote container-->
                     <topic-vote-cast ng-if="('topics/view/votes/view' | isState) && $ctrl.topic.vote.id" vote="$ctrl.topic.vote"></topic-vote-cast>

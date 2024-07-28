@@ -110,6 +110,10 @@
 
                 &.days_left_follow_up {
                     left: 75%;
+
+                    @media (max-width: 767px) {
+                        left: 68%;
+                    }
                 }
 
                 &.days_left_closed {
