@@ -188,6 +188,11 @@ import * as angular from 'angular';
                     parent: 'main',
                     template: '<home></home>'
                 })
+                .state('press', {
+                    url: '/press',
+                    parent: 'main',
+                    templateUrl: '/views/press.html'
+                })
                 .state('public/groups', {
                     url: '/groups?groupStatus',
                     parent: 'main',
