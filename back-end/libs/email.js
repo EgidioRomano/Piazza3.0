@@ -23,6 +23,7 @@ module.exports = function (app) {
     const Topic = models.Topic;
     const Group = models.Group;
     const TopicMemberUser = models.TopicMemberUser;
+    const GroupMemberUser = models.GroupMemberUser;
 
     const templateRoot = app.get('EMAIL_TEMPLATE_ROOT');
     const templateRootLocal = app.get('EMAIL_TEMPLATE_ROOT_LOCAL');
@@ -1236,6 +1237,52 @@ module.exports = function (app) {
         return handleAllPromises(emailsSendPromises);
     };
 
+    const _sendTopicPublished = async (topic, groupId, publisherUserId) => {
+        const groupMemberUsers = await GroupMemberUser.findAll({
+            where: {
+                groupId: groupId,
+                level: GroupMemberUser.LEVELS.read
+            },
+            attributes: ['userId'],
+            raw: true
+        });
+
+        const publisher = await User.findOne({
+            where: {
+                id: publisherUserId
+            }
+        });
+
+        const linkViewTopic = urlLib.getFe('/topics/:topicId', {topicId: topic.id});
+
+        const emailsSendPromises = groupMemberUsers.map(async function (currentUser) {
+            if (currentUser.userId === publisherUserId) {
+                return Promise.resolve();
+            }
+
+            const template = resolveTemplate('topicPublished', 'it');
+
+            const toUser = await User.findOne({
+                where: {
+                    id: currentUser.userId
+                }
+            });
+
+            const emailOptions = {
+                subject: 'Nuovo topic pubblicato!',
+                to: toUser.email,
+                toUsername: toUser.name,
+                topicTitle: topic.title,
+                publisher: publisher.name,
+                linkViewTopic: linkViewTopic
+            };
+
+            return emailClient.sendString(template.body, emailOptions);
+        });
+
+        return handleAllPromises(emailsSendPromises);
+    };
+
     return {
         sendAccountVerification: _sendAccountVerification,
         sendPasswordReset: _sendPasswordReset,
@@ -1248,6 +1295,7 @@ module.exports = function (app) {
         sendCommentReport: _sendCommentReport,
         sendVoteReminder: _sendVoteReminder,
         sendTopicNotification: _sendTopicNotification,
-        sendWelcomeEmail: _sendWelcomeEmail
+        sendWelcomeEmail: _sendWelcomeEmail,
+        sendTopicPublished: _sendTopicPublished
     };
 };

@@ -1622,6 +1622,7 @@ module.exports = function (app) {
                     if (!userTopic) {
                         return res.internalServerError("Errore di sistema, il topic non può essere pubblicato.");
                     }
+                    await emailLib.sendTopicPublished(topic, groupId, req.user.userId);
                 }
             }
 
