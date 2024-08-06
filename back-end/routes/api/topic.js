@@ -5883,6 +5883,7 @@ module.exports = function (app) {
                 });
 
                 t.afterCommit(() => {
+                    emailLib.sendTopicInVoting(topic, vote.endsAt, req.user.userId);
                     return res.created(vote.toJSON());
                 });
             });

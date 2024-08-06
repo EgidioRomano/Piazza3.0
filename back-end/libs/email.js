@@ -1283,6 +1283,59 @@ module.exports = function (app) {
         return handleAllPromises(emailsSendPromises);
     };
 
+    const _sendTopicInVoting = async (topic, voteEndsAt, adminUserId) => {
+        const groupId = (await GroupMemberUser.findOne({where: {userId: adminUserId}})).groupId;
+
+        const groupMemberUsers = await GroupMemberUser.findAll({
+            where: {
+                groupId: groupId,
+                level: GroupMemberUser.LEVELS.read
+            },
+            attributes: ['userId'],
+            raw: true
+        });
+
+        const adminUser = await User.findOne({
+            where: {
+                id: adminUserId
+            }
+        });
+
+        const linkViewTopic = urlLib.getFe('/topics/:topicId', {topicId: topic.id});
+
+        const emailsSendPromises = groupMemberUsers.map(async function (currentUser) {
+            if (currentUser.userId === adminUserId) {
+                return Promise.resolve();
+            }
+
+            const template = resolveTemplate('topicInVoting', 'it');
+
+            const toUser = await User.findOne({
+                where: {
+                    id: currentUser.userId
+                }
+            });
+
+            const emailOptions = {
+                subject: 'Una nuova votazione è appena cominciata!',
+                to: toUser.email,
+                toUsername: toUser.name,
+                topicTitle: topic.title,
+                adminUser: adminUser.name,
+                linkViewTopic: linkViewTopic,
+                voteEndsAt: voteEndsAt.toLocaleDateString('it-IT', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                })
+            };
+
+            return emailClient.sendString(template.body, emailOptions);
+        });
+
+        return handleAllPromises(emailsSendPromises);
+    };
+
     return {
         sendAccountVerification: _sendAccountVerification,
         sendPasswordReset: _sendPasswordReset,
@@ -1296,6 +1349,7 @@ module.exports = function (app) {
         sendVoteReminder: _sendVoteReminder,
         sendTopicNotification: _sendTopicNotification,
         sendWelcomeEmail: _sendWelcomeEmail,
-        sendTopicPublished: _sendTopicPublished
+        sendTopicPublished: _sendTopicPublished,
+        sendTopicInVoting: _sendTopicInVoting
     };
 };
