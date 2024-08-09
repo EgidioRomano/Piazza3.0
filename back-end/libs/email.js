@@ -1323,11 +1323,7 @@ module.exports = function (app) {
                 topicTitle: topic.title,
                 adminUser: adminUser.name,
                 linkViewTopic: linkViewTopic,
-                voteEndsAt: voteEndsAt.toLocaleDateString('it-IT', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                })
+                voteEndsAt: moment(voteEndsAt).locale(toUser.language).format('LLL')
             };
 
             return emailClient.sendString(template.body, emailOptions);
