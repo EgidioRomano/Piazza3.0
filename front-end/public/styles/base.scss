@@ -3499,6 +3499,11 @@ a:link, a:visited {
             border: solid 1px vars.$lightest_gray;
             border-radius: 4px;
             width: 400px;
+
+            @media (max-width: 460px) {
+                width: 85%;
+            }
+
             margin-right: auto;
             margin-left: auto;
             padding-bottom: 15px;
@@ -3605,7 +3610,7 @@ a:link, a:visited {
 
 
     .bubble_description, .date_picker_wrap {
-        display: none;
+        display: block;
     }
 
     &.active {
