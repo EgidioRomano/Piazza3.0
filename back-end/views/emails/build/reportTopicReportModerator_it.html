@@ -1,39 +1,39 @@
 <!-- E-mail sent to moderators when a Topic is reported -->
 <p>
-    Hello <span class="blue">{{userModerator.name}}</span>,
+    Ciao <span class="blue">{{userModerator.name}}</span>,
 </p>
 <p class="important">
-    <b>You are receiving this email as a Citizen OS community moderator.</b>
+    <b>Stai ricevendo questa email in quanto moderatore della community di Piazza 3.0.</b>
     <br><br>
-    A Citizen OS user thinks there is a violation of community guidelines in the topic "<a href="{{linkViewTopic}}">{{topic.title}}</a>". Please find below the report they filed.
+    Un utente pensa che ci sia stata una violazione delle linee guida della community nel topic "<a href="{{linkViewTopic}}">{{topic.title}}</a>". Di seguito troverete i dettagli che sono stati inviati.
 </p>
 
-<h1>Details of the report</h1>
-<p>Topic: <b>"<a href="{{linkViewTopic}}">{{topic.title}}</a>"</b>
-<p>Report reference number: <b>{{report.id}}</b>
-<p>Type of violation: <b>"{{report.type}}"</b>
-<p>Your explanation: <b>"{{report.text}}"</b>
-
-<h1>What happens next?</h1>
+<h1>Cosa succede adesso?</h1>
 <p>
 <ol>
     <li class="li">
-        Please review the report, the topic, and then decide:
+        Si prega di rivedere il rapporto, il topic e quindi decidere:
         <ul>
-            <li><b>YES</b>, there is a violation of community guidelines, restrict access to the topic.</li>
-            <li></b>NO</b> violation, dismiss the report.</li>
+            <li><b>SI</b>, c'è stata una violazione delle linee guida della community, limitare l'accesso al topic.</li>
+            <li><b>NO</b>, non c'è stata nessuna violazione, archiviare il rapporto.</li>
         </ul>
     </li>
-    <li class="li">Admins and editors of the topic have also received this report. They can edit the topic at any time to clear possible violations. They can then send the topic to moderators for
-        review.
+    <li class="li">
+        Anche gli amministratori e gli editor del topic hanno ricevuto questo report. Possono modificare il topic in qualsiasi momento per eliminare possibili violazioni. Possono quindi inviare il topic ai moderatori per la revisione.
     </li>
-    <li class="li">Upon a review request, you can review the topic and remove all restrictions if violations have been cleared.
+    <li class="li">
+        Dopo una richiesta di revisione, puoi rivedere il topic e rimuovere tutte le restrizioni se le violazioni sono state eliminate.
     </li>
 </ol>
 </p>
-<p><a href="{{linkViewModerationGuidelines}}">You can find more details about Citizen OS moderation process here.</a></p>
+
+<h1>Dettagli del report</h1>
+<p>Topic: <b>"<a href="{{linkViewTopic}}">{{topic.title}}</a>"</b>
+<p>Numero di riferimento: <b>{{report.id}}</b>
+<p>Tipo di violazione: <b>"{{report.type}}"</b>
+<p>Spiegazione: <b>"{{report.text}}"</b>
 
 <hr/>
 <p>
-    Thank you! Together we can maintain a high quality of content in Citizen OS user community.
+    Grazie!
 </p>

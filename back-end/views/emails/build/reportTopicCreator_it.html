@@ -1,38 +1,33 @@
 <!-- E-mail sent to User who reports a Topic -->
 <p>
-    Hello <span class="blue">{{userReporter.name}}</span>,
+    Ciao <span class="blue">{{userReporter.name}}</span>,
 </p>
 <p class="important">
-    <b>Your report <span class="blue">#{{report.id}}</span> regarding topic "<a href="{{linkViewTopic}}">{{topic.title}}</a>" has been sent to Citizen OS moderators</b>
+    <b>Il tuo report <span class="blue">#{{report.id}}</span> riguardo il topic "<a href="{{linkViewTopic}}">{{topic.title}}</a>" è stato inoltrato ai moderatori</b>
 </p>
 
-<h1>What happens next?</h1>
+<h1>Cosa succede adesso?</h1>
 <p>
 <ol>
-    <li class="li">Moderators will review the report. If a violation is confirmed, access to the topic will be restricted and a warning of
-        inappropriate content will be displayed.
-    </li>
-    <li class="li">Meanwhile admins and editors of the reported topic will be asked to modify it. When topic's inappropriate content has been
-        improved, the moderators will once again review and will remove restrictions if all violations have been cleared.
-    </li>
+    <li class="li">I moderatori esamineranno la segnalazione. Se una violazione sarà confermata, l'accesso al topic verrà limitato e verrà visualizzato un avviso di contenuto inappropriato.</li>
+    <li class="li">Nel frattempo, agli amministratori e agli editor del topic segnalato verrà chiesto di modificarlo. Quando il contenuto inappropriato del topic sarà stato migliorato, i moderatori lo esamineranno di nuovo e rimuoveranno le restrizioni se tutte le violazioni saranno state eliminate.</li>
     <li class="li">
-        We will notify you if:
+        Ti invieremo una notifica se:
         <ul>
-            <li>moderators apply restrictions to the topic</li>
-            <li>all violations have been cleared and restrictions removed.</li>
+            <li>i moderatori applicano restrizioni al topic</li>
+            <li>tutte le violazioni sono state chiarite e le restrizioni rimosse</li>
         </ul>
     </li>
 </ol>
 </p>
-<p><a href="{{linkViewModerationGuidelines}}">You can find more details about Citizen OS moderation process here.</a></p>
 
-<h1>Report summary</h1>
+<h1>Riepilogo della segnalazione</h1>
 <p>Topic: <b>"<a href="{{linkViewTopic}}">{{topic.title}}</a>"</b>
-<p>Report reference number: <b>{{report.id}}</b>
-<p>Type of violation: <b>"{{report.type}}"</b>
-<p>Your explanation: <b>"{{report.text}}"</b>
+<p>Numero di riferimento: <b>{{report.id}}</b>
+<p>Tipo di violazione: <b>"{{report.type}}"</b>
+<p>La tua spiegazione: <b>"{{report.text}}"</b>
 
 <hr/>
 <p>
-    Thank you for helping us ensure a high quality of content in Citizen OS user community!
+    Grazie per averci aiutato a garantire un'elevata qualità dei contenuti nella community di Piazza 3.0!
 </p>

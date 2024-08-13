@@ -1,36 +1,35 @@
 <!-- E-mail sent to User who reported the Topic -->
 <p>
-    Hello <span class="blue">{{userReporter.name}}</span>,
+    Ciao <span class="blue">{{userReporter.name}}</span>,
 </p>
 <p class="important">
-    <b>A moderator has reviewed your report <span class="blue">#{{report.id}}</span>, which you submitted on {{report.createdAt}} about Citizen OS topic "<a href="{{linkViewTopic}}">{{topic.title}}</a>" being inappropriate.</b>
+    <b>Un moderatore ha revisionato il tuo report <span class="blue">#{{report.id}}</span>, che hai inviato il {{report.createdAt}} e che riguarda contenuti inappropiati nel topic "<a href="{{linkViewTopic}}">{{topic.title}}</a>".</b>
     <br><br>
-    There is nothing you need to do, this email is for your information.
+    Non devi fare nulla, questa email è solo a scopo informativo.
 </p>
 
-<h1>Decision of the moderator:</h1>
+<h1>Decisione del moderatore:</h1>
 <p>
 <ul>
-    <li class="li">Violation type: "{{report.moderatedReasonType}}"</li>
-    <li class="li">Reasoning: "{{report.moderatedReasonText}}"</li>
+    <li class="li">Tipo di violazione: "{{report.moderatedReasonType}}"</li>
+    <li class="li">Motivazione: "{{report.moderatedReasonText}}"</li>
 </ul>
 </p>
 <p>
-    When accessing the topic, users will now see an overlay, warning about violations in the topic. However, viewers have an option to bypass the overlay and view topic content at their own risk anyway
+    Quando visualizzeranno il topic, gli utenti vedranno ora un messaggio che avvisa delle violazioni nel topic. Tuttavia, gli utenti hanno la possibilità di ignorare il messaggio e visualizzare comunque il contenuto del topic a proprio rischio.
 </p>
 
-<h1>What happens next?</h1>
+<h1>Cosa succede adesso?</h1>
 <p>
 <ol>
-    <li class="li">Admins and editors of the topic have also received the report. They can edit their topic at any time to clear possible violations. They can then send the topic to moderators for review.</li>
-    <li class="li">Upon a review request, moderators will review the topic and remove restrictions if violations have been cleared.</li>
-    <li class="li">Until such time, access to the topic will remain restricted.</li>
+    <li class="li">Anche gli amministratori e gli editor del topic hanno riceveuto questa segnalazione. Possono modificare il loro topic in qualsiasi momento per cancellare possibili violazioni. Possono quindi inviare il topic ai moderatori per la revisione.</li>
+    <li class="li">Su richiesta di revisione, i moderatori esamineranno il topic e rimuoveranno le restrizioni se le violazioni sono state eliminate.</li>
+    <li class="li">Fino ad allora, l'accesso al topic rimarrà limitato.</li>
 </ol>
 </p>
-<p><a href="{{linkViewModerationGuidelines}}">You can find more details about Citizen OS moderation process here.</a></p>
 
 <hr/>
 
 <p>
-    Thank you for helping us ensure a high quality of content in Citizen OS user community!
+    Grazie per averci aiutato a garantire un'elevata qualità dei contenuti nella community di Piazza 3.0!
 </p>

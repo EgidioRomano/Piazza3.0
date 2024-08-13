@@ -1,39 +1,36 @@
 <!-- E-mail sent to Topic members of a reporter Topic -->
 <p>
-    Hello <span class="blue">{{userMember.name}}</span>,
+    Ciao <span class="blue">{{userMember.name}}</span>,
 </p>
 <p class="important">
-    <b>A Citizen OS user thinks there is a violation of Citizen OS community guidelines in your topic "<a href="{{linkViewTopic}}">{{topic.title}}</a>" and has filed a report <span class="blue">#{{report.id}}</span>.</b>
+    <b>Un utente di Piazza 3.0 ritiene che ci sia una violazione delle linee guida della community nel tuo topic "<a href="{{linkViewTopic}}">{{topic.title}}</a>" ed ha inviato una segnalazione: <span class="blue">#{{report.id}}</span>.</b>
     <br><br>
-    All editors of the topic and community moderators are receiving this report, please see details below.
+    Tutti gli editor del topic e i moderatori della community stanno ricevendo questo rapporto.
 </p>
 
-<h1>Details of the report</h1>
-<p>Topic: <b>"<a href="{{linkViewTopic}}">{{topic.title}}</a>"</b>
-<p>Report reference number: <b>{{report.id}}</b>
-<p>Type of violation: <b>"{{report.type}}"</b>
-<p>Your explanation: <b>"{{report.text}}"</b>
-
-<h1>What happens next?</h1>
+<h1>Cosa succede adesso?</h1>
 <p>
 <ol>
-    <li class="li">Moderators are currently reviewing the topic. If they confirm a violation, they will restrict access to the topic.
-    </li>
-    <li class="li">However, you and other editors can edit the topic at any time to clear possible violations. If the violations have been cleared, the topic can be sent for review to Citizen OS
-        moderators.
-    </li>
-    <li class="li">Upon a review request, moderators will review the topic and withdraw all restrictions if violations have been removed.</li>
+    <li class="li">I moderatori stanno attualmente esaminando il topic. Se confermano una violazione, limiteranno l'accesso al topic.</li>
+    <li class="li">Tuttavia, tu e/o altri editor potete modificare il topic in qualsiasi momento per eliminare possibili violazioni. Se le violazioni sono state eliminate, il topic può essere inviato per la revisione ai moderatori.</li>
+    <li class="li">Su richiesta di revisione, i moderatori esamineranno il topic e ritireranno tutte le restrizioni se le violazioni sono state rimosse.</li>
     <li class="li">
-        We will notify you if:
+        Ti invieremo una notifica se:
         <ul>
-            <li>moderators apply restrictions to the topic</li>
-            <li>Removal of violations has been reviewed and restrictions withdrawn.</li>
+            <li>i moderatori applicano restrizioni al topic</li>
+            <li>La rimozione delle violazioni è stata esaminata e le restrizioni sono state ritirate.</li>
         </ul>
     </li>
 </ol>
 </p>
-<p><a href="{{linkViewModerationGuidelines}}">You can find more details about Citizen OS moderation process here.</a></p>
+
+<h1>Dettagli del report</h1>
+<p>Topic: <b>"<a href="{{linkViewTopic}}">{{topic.title}}</a>"</b>
+<p>Numero di riferimento: <b>{{report.id}}</b>
+<p>Tipo di violazione: <b>"{{report.type}}"</b>
+<p>Spiegazione: <b>"{{report.text}}"</b>
+
 <hr/>
 <p>
-    Please review your topic  "<a href="{{linkViewTopic}}">{{topic.title}}</a>" and see if it contains violations of community guidelines. Together we can maintain a high quality of content in Citizen OS user community.
+    Si prega di rivedere il topic "<a href="{{linkViewTopic}}">{{topic.title}}</a>" e vedere se contiene violazioni delle linee guida della community. Insieme possiamo mantenere un'alta qualità dei contenuti nella community di Piazza 3.0.
 </p>
