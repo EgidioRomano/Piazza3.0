@@ -158,7 +158,7 @@ module.exports = function (app) {
             aliasExists = await User.findOne({where: {alias: userAlias}});
         } while (aliasExists);
 
-        const password = 'Piazza3.0:' + util.randomString(15);
+        const password = 'Piazza3.0' + util.randomString(15);
 
         user = await User.create({
             email: email,
