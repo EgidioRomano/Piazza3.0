@@ -3,8 +3,7 @@ export class Topic {
     private STATUSES = {
         inProgress: 'inProgress', // Being worked on
         voting: 'voting', // Is being voted which means the Topic is locked and cannot be edited.
-        followUp: 'followUp', // Done editing Topic and executing on the follow up plan.
-        closed: 'closed' // Final status - Topic is completed and no editing/reopening/voting can occur.
+        followUp: 'followUp' // Done editing Topic and executing on the follow up plan.
     };
 
     private VISIBILITY = {
@@ -315,7 +314,7 @@ export class Topic {
     };
 
     canUpdate (topic) {
-        return (topic && topic.permission && topic.permission.level === this.LEVELS.admin && topic.status !== this.STATUSES.closed);
+        return (topic && topic.permission && topic.permission.level === this.LEVELS.admin);
     };
 
     /**
@@ -326,7 +325,7 @@ export class Topic {
      *
      */
     canEdit (topic) {
-        return (topic && [this.LEVELS.admin, this.LEVELS.edit].indexOf(topic.permission.level) > -1 && topic.status !== this.STATUSES.closed);
+        return (topic && [this.LEVELS.admin, this.LEVELS.edit].indexOf(topic.permission.level) > -1);
     };
 
     /**
@@ -356,7 +355,7 @@ export class Topic {
     };
 
     canSendToVote (topic) {
-        return this.canUpdate(topic) && [this.STATUSES.voting, this.STATUSES.closed].indexOf(topic.status) < 0;
+        return this.canUpdate(topic) && [this.STATUSES.voting].indexOf(topic.status) < 0;
     };
 
     canLeave () {
@@ -364,7 +363,7 @@ export class Topic {
     };
 
     hasVoteEnded (topic) {
-        if ([this.STATUSES.followUp, this.STATUSES.closed].indexOf(topic.status) > -1) {
+        if ([this.STATUSES.followUp].indexOf(topic.status) > -1) {
             return true;
         }
 
@@ -373,7 +372,7 @@ export class Topic {
 
     // TopicVote has ended due to expiry!
     hasVoteEndedExpired (topic) {
-        return [this.STATUSES.followUp, this.STATUSES.closed].indexOf(topic.status) < 0 && topic.vote && topic.vote.endsAt && new Date() > new Date(topic.vote.endsAt);
+        return [this.STATUSES.followUp].indexOf(topic.status) < 0 && topic.vote && topic.vote.endsAt && new Date() > new Date(topic.vote.endsAt);
     };
 
     togglePin (topic) {

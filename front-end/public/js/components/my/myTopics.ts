@@ -49,10 +49,6 @@ let my = {
                         name: 'VIEWS.MY.FILTERS.TOPICS_IN_FOLLOW_UP'
                     },
                     {
-                        id: 'closed',
-                        name: 'VIEWS.MY.FILTERS.TOPICS_CLOSED'
-                    },
-                    {
                         id: 'pinnedTopics',
                         name: 'VIEWS.MY.FILTERS.TOPICS_PINNED'
                     },

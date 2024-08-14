@@ -20,7 +20,6 @@
              ng-class="{'pin_yellow_background days_left_in_progress': $ctrl.status === $ctrl.STATUSES.inProgress,
                 'bar_green days_left_voting': $ctrl.status === $ctrl.STATUSES.voting,
                 'bar_blue days_left_follow_up': $ctrl.status === $ctrl.STATUSES.followUp,
-                'timeline_gray_background days_left_closed': $ctrl.status === $ctrl.STATUSES.closed,
              }">
             <div class="table_cell">
                 {{'TXT_TOPIC_STATUS_' + $ctrl.status | uppercase | translate}}

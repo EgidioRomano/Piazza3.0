@@ -3271,9 +3271,6 @@ module.exports = function (app) {
                 );
 
             const topic = Topic.build(topicMemberUser.Topic);
-            if (topic.status === Topic.STATUSES.closed && req.user.userId !== memberId) {
-                return res.forbidden();
-            }
             const user = User.build(topicMemberUser.User);
             topic.dataValues.id = topicId;
             user.dataValues.id = memberId;
@@ -5952,7 +5949,7 @@ module.exports = function (app) {
             voteInfo.dataValues.downloads = { };
         }
 
-        if (req.locals.topic.permissions.level === TopicMemberUser.LEVELS.admin && [Topic.STATUSES.followUp, Topic.STATUSES.closed].indexOf(req.locals.topic.status) > -1) {
+        if (req.locals.topic.permissions.level === TopicMemberUser.LEVELS.admin && [Topic.STATUSES.followUp].indexOf(req.locals.topic.status) > -1) {
             if (!voteInfo.dataValues.downloads) {
                 voteInfo.dataValues.downloads = {};
             }
@@ -6566,9 +6563,6 @@ module.exports = function (app) {
                         id: topicId
                     }
                 });
-            if (topic.status === Topic.STATUSES.closed) {
-                return res.forbidden();
-            }
 
             await db
                 .transaction(async function (t) {
@@ -6642,7 +6636,7 @@ module.exports = function (app) {
 
 
     /** List Events **/
-    app.get('/api/users/:userId/topics/:topicId/events', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.followUp, Topic.STATUSES.closed]), topicEventsList);
+    app.get('/api/users/:userId/topics/:topicId/events', loginCheck(), hasPermission(TopicMemberUser.LEVELS.read, true, [Topic.STATUSES.followUp]), topicEventsList);
 
 
     /**

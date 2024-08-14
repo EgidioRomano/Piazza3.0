@@ -20,7 +20,7 @@ let topicMilestones = {
         constructor (private app, $log, $state, $stateParams, private TopicEvent, private Topic,  private ngDialog) {
             $log.debug('TopicFollowUpCtrl');
             this.topic = app.topic;
-            if ([Topic.STATUSES.closed, Topic.STATUSES.followUp].indexOf(this.topic.status) > -1) {
+            if ([Topic.STATUSES.followUp].indexOf(this.topic.status) > -1) {
                 this.init();
                 return;
             }

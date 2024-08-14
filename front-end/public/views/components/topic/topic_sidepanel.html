@@ -20,7 +20,6 @@
         </div>
         <div class="blue_link" ng-if="($ctrl.Topic.canUpdate($ctrl.topic) && $ctrl.topic.visibility === 'private')" ng-click="$ctrl.Topic.publishTopic($ctrl.topic, true)">Pubblica topic nella tua comunità</div>
         <div class="blue_link" ng-if="($ctrl.Topic.canUpdate($ctrl.topic) && $ctrl.topic.visibility === 'private')" ng-click="$ctrl.Topic.publishTopic($ctrl.topic, false)">Pubblica topic per tutta l'Associazione</div>
-        <div class="blue_link" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)" ng-click="$ctrl.closeTopic()" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_CLOSE_TOPIC">Close topic</div>
         <div class="line lightest_line" ng-if="$ctrl.Topic.canUpdate($ctrl.topic)"></div>
         <div class="blue_link" ng-if="$ctrl.Topic.canDelete($ctrl.topic) || $ctrl.topic.canLeave()" ui-sref="topics/view/settings({topicId: $ctrl.topic.id, tab: 'categories'})" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_ACTIONS">Actions</div>
         <div class="blue_link" ng-if="($ctrl.Topic.canUpdate($ctrl.topic) && $ctrl.topic.visibility === 'private')" ui-sref="topics/view/invite({topicId: $ctrl.topic.id, tab: 'invite'})" translate="VIEWS.TOPICS_TOPICID.NAV_LNK_INVITE_USERS">Invite users</div>

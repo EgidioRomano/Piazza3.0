@@ -204,8 +204,7 @@ CREATE TYPE public."enum_TopicReports_type" AS ENUM (
 CREATE TYPE public."enum_Topics_status" AS ENUM (
     'inProgress',
     'voting',
-    'followUp',
-    'closed'
+    'followUp'
 );
 
 

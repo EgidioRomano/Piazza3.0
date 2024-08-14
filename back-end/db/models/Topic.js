@@ -22,8 +22,7 @@ module.exports = function (sequelize, DataTypes) {
     const STATUSES = {
         inProgress: 'inProgress', // Being worked on
         voting: 'voting', // Is being voted which means the Topic is locked and cannot be edited.
-        followUp: 'followUp', // Done editing Topic and executing on the follow up plan.
-        closed: 'closed' // Final status - Topic is completed and no editing/reopening/voting can occur.
+        followUp: 'followUp' // Done editing Topic and executing on the follow up plan.
     };
 
     const VISIBILITY = {

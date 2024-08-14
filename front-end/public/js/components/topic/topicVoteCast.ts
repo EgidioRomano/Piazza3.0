@@ -44,11 +44,11 @@ let topicVoteCast = {
         };
 
         hasVoteEndedExpired() {
-            return [this.STATUSES.followUp, this.STATUSES.closed].indexOf(this.topic.status) < 0 && this.vote && this.vote.endsAt && new Date() > new Date(this.vote.endsAt);
+            return [this.STATUSES.followUp].indexOf(this.topic.status) < 0 && this.vote && this.vote.endsAt && new Date() > new Date(this.vote.endsAt);
         };
 
         hasVoteEnded() {
-            if ([this.STATUSES.followUp, this.STATUSES.closed].indexOf(this.topic.status) > -1) {
+            if ([this.STATUSES.followUp].indexOf(this.topic.status) > -1) {
                 return true;
             }
 
