@@ -4,15 +4,15 @@
         <div class="background_line timeline_gray_background">
         </div>
 
-        <div ng-if="$ctrl.isValidStatus(2)" class="progress_line bar_blue follow_up_line"
+        <div ng-if="$ctrl.isValidStatus(1)" class="progress_line bar_blue follow_up_line"
              ng-class="{in_follow_up_line: $ctrl.STATUSES.followUp === $ctrl.status}">
         </div>
 
-        <div ng-if="$ctrl.isValidStatus(3)" class="progress_line voting_line bar_green"
+        <div ng-if="$ctrl.isValidStatus(2)" class="progress_line voting_line bar_green"
              ng-class="{in_voting_line: $ctrl.STATUSES.voting === $ctrl.status}">
         </div>
 
-        <div ng-if="$ctrl.isValidStatus(4)" class="progress_line pin_yellow_background progress_status_line"
+        <div ng-if="$ctrl.isValidStatus(3)" class="progress_line pin_yellow_background progress_status_line"
              ng-class="{in_progress_line: $ctrl.STATUSES.inProgress === $ctrl.status}">
         </div>
 
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div ng-if="$ctrl.isValidStatus(3)" class="checkmark checkmark_in_progress">
+        <div ng-if="$ctrl.isValidStatus(2)" class="checkmark checkmark_in_progress">
             <div class="table_cell">
                 <div class="sprite sprite-check-timeline-yellow2x">
                 </div>
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <div ng-if="$ctrl.isValidStatus(2)" class="checkmark checkmark_voting">
+        <div ng-if="$ctrl.isValidStatus(1)" class="checkmark checkmark_voting">
             <div class="table_cell">
                 <div class="sprite sprite-check-timeline-green2x">
                 </div>
