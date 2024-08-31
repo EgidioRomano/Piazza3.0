@@ -26,14 +26,14 @@ let topic = {
             TopicAttachmentService.reload();
             TopicCommentService.topicId = app.topic.id;
             TopicCommentService.reload();
-            if ($state.$current.name === 'topics/view' && this.topic.status === Topic.STATUSES.voting) {
+            /*if ($state.$current.name === 'topics/view' && this.topic.status === Topic.STATUSES.voting) {
                 $timeout(() => {
                     let stateParams = Object.assign({}, $stateParams)
                     stateParams.voteId = this.topic.voteId;
 
                     return $state.go('topics/view/votes/view', stateParams);
                 });
-            }
+            }*/
             if ($state.$current.name === 'topics/view/votes/create') {
                 this.showVoteCreateForm = !this.showVoteCreateForm;
             }
