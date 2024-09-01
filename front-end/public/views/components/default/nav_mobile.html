@@ -42,7 +42,7 @@
 </div>
 
 <div ng-if="$ctrl.app.wWidth <= 1024">
-    <div class="header_button edit" ng-if="$ctrl.Topic.canEdit($ctrl.app.topic)" ng-click="$ctrl.app.doToggleEditMode()" ng-class="$ctrl.app.editMode ? 'active': ''" ng-if="('topics.**' | includedByState) && $ctrl.app.user.loggedIn">
+    <div class="header_button edit" ng-if="($ctrl.Topic.canEdit($ctrl.app.topic) && (('my/topics/topicId' | isState) || ('topics/view' | isState)) && $ctrl.app.topic.status === $ctrl.Topic.STATUSES.inProgress)" ng-click="$ctrl.app.doToggleEditMode()" ng-class="$ctrl.app.editMode ? 'active': ''">
         <div class="header_button_icon">
             <div class="sprite sprite-icon-mobile-edit2x">
             </div>

@@ -615,7 +615,7 @@ import * as angular from 'angular';
                             let filterParam = $stateParams.filter || 'all';
                             return TopicService.filterTopics(filterParam).then(() => {
                                 const params = angular.extend({}, $stateParams);
-                                if (!params.topicId && TopicService.topics.length) {
+                                if (!params.topicId && TopicService.topics.length && AppService.wWidth > 750) {
                                     params.topicId = TopicService.topics[0].id;
                                     $state.transitionTo('my/topics/topicId', params, { reload: false });
                                 }
