@@ -93,6 +93,9 @@
                     .data_right {
                         float: right;
                         margin-top: 9px;
+                        @media (max-width: 460px) {
+                            margin-top: 39px;
+                        }
                         @media (max-width: 1200px) {
                             width: 100%;
                         }
