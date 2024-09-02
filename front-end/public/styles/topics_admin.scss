@@ -11,6 +11,11 @@
         box-sizing: border-box;
         width: 100%;
         font-size: 14px;
+
+        @media (max-width: 352px) {
+            font-size: 12.3px;
+        }
+
         margin-top: 15px;
         position: relative;
         background: vars.$light_gray;
@@ -96,6 +101,11 @@
                 display: table;
                 border-radius: 100px;
                 font-weight: vars.$bold;
+
+                @media (max-width: 360px) {
+                    font-weight: 600;
+                }
+
                 padding: 0 10px;
                 position: absolute;
                 margin-top: -12px;
@@ -277,6 +287,15 @@
                                 float: left;
                                 background: vars.$white;
                                 font-size: 14px;
+
+                                @media (max-width: 360px) {
+                                    font-size: 13.5px;
+                                }
+
+                                @media (max-width: 320px) {
+                                    font-size: 12px;
+                                }
+
                                 font-weight: bold;
                                 padding: 0 20px;
                                 box-sizing: border-box;
