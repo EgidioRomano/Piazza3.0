@@ -19,6 +19,8 @@ module.exports = function (app) {
 
     const User = models.User;
     const TokenRevocation = models.TokenRevocation;
+    const Group = models.Group;
+    const GroupMemberUser = models.GroupMemberUser;
 
     const setAuthCookie = function (req, res, userId) {
         const token = TokenRevocation.build();
@@ -79,6 +81,11 @@ module.exports = function (app) {
             }
 
             setAuthCookie(req, res, user.id);
+
+            const groupId = (await GroupMemberUser.findOne({where: {userId: user.id}, attributes: ['groupId']})).groupId;
+            const groupName = (await Group.findOne({where: {id: groupId}, attributes: ['name']})).name;
+
+            userData.group = {id: groupId, name: groupName};
 
             return res.ok(userData);
         } else {

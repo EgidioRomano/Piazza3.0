@@ -121,6 +121,7 @@ let loginFormComponent = {
 
             this.errors = null;
             const success = (response) => {
+                if (this.$window.AndroidInterface) this.$window.AndroidInterface.onLogin(this.sAuth.user.group.id);
                 let redirectSuccess = this.$stateParams.redirectSuccess;
                 try {
                     const parsedURL = new URL(redirectSuccess);
