@@ -22,10 +22,11 @@ module.exports = function (app) {
     const Group = models.Group;
     const GroupMemberUser = models.GroupMemberUser;
 
-    const setAuthCookie = function (req, res, userId) {
+    const setAuthCookie = function (req, res, userId, group) {
         const token = TokenRevocation.build();
         const authToken = jwt.sign({
             userId,
+            group,
             tokenId: token.tokenId,
             scope: 'all'
         }, config.session.privateKey, {
@@ -80,12 +81,12 @@ module.exports = function (app) {
                 return res.badRequest("La verifica dell'indirizzo e-mail non è stata ancora completata. Si prega di controllare la casella di posta elettronica.", 2);
             }
 
-            setAuthCookie(req, res, user.id);
-
             const groupId = (await GroupMemberUser.findOne({where: {userId: user.id}, attributes: ['groupId']})).groupId;
             const groupName = (await Group.findOne({where: {id: groupId}, attributes: ['name']})).name;
 
             userData.group = {id: groupId, name: groupName};
+
+            setAuthCookie(req, res, user.id, userData.group);
 
             return res.ok(userData);
         } else {
@@ -201,6 +202,7 @@ module.exports = function (app) {
 
         const userData = user.toJSON();
         userData.isSuperAdmin = req.user.isSuperAdmin;
+        userData.group = req.user.group;
 
         return res.ok(userData);
     }));

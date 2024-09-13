@@ -79,6 +79,10 @@
                             </label>
                         </div>
                         <div class="input_wrap">
+                            <span>Comunità</span>
+                            <input id="groupName" disabled ng-model="$ctrl.form.group.name">
+                        </div>
+                        <div class="input_wrap">
                             <span translate="MODALS.MY_ACCOUNT_PLACEHOLDER_ALIAS">alias</span>
                             <input id="alias" ng-model="$ctrl.form.alias" placeholder="{{'MODALS.MY_ACCOUNT_PLACEHOLDER_ALIAS' | translate}}" ng-class="{'error_input': $ctrl.errors.alias}" ng-pattern="/^[a-zA-Z0-9_-]+$/" maxlength="255" required>
                             <label for="alias" class="error_label" ng-if="$ctrl.errors.alias">
