@@ -205,10 +205,6 @@
                             ng-if="comment.deletedReasonType || comment.deleteReasonText">:</span>
                             <b ng-if="comment.deletedReasonType">{{('TXT_REPORT_TYPES_' + comment.deletedReasonType | uppercase) | translate}}</b><br>
                             <b ng-if="comment.deletedReasonText" class="italic">{{::comment.deletedReasonText}}</b>
-                            <br>
-                            <br>
-                            <span translate="VIEWS.TOPICS_TOPICID.ARGUMENT_READ_CODE_OF_CONDUCT" translate-values="{codeOfConduct: $ctrl.app.config.moderation.codeOfConduct}">Read our <a
-                                class="underlined_link" href="">code of conduct</a> for more information</span>
                         </div>
                         <div class="alert_argument" ng-if="comment.deletedAt && $ctrl.TopicComment.isVisible(comment)">
                             <span class="replys_reply italic"><b>{{::comment.subject}}</b></span><br>
@@ -481,9 +477,6 @@
                             ng-if="reply.deletedReasonType || reply.deletedReasonText">:</span>
                             <b ng-if="reply.deletedReasonType">::{{('TXT_REPORT_TYPES_' + ::reply.deletedReasonType | uppercase) | translate}}</b><br>
                             <b class="italic" ng-if="reply.deletedReasonText">{{::reply.deletedReasonText}}</b><br>
-                            <br>
-                            <br>
-                            <span translate="VIEWS.TOPICS_TOPICID.ARGUMENT_READ_CODE_OF_CONDUCT">Read our <a class="underlined_link" href="">code of conduct</a> for more information</span>
                         </div>
                         <div class="alert_argument" ng-if="reply.deletedAt && $ctrl.TopicComment.isVisible(reply)">
                             <span class="replys_reply" ui-sref="topics/view({topicId: topic.id, commentId: $ctrl.getCommentIdWithVersion(reply.parent.id, reply.parent.version)})"

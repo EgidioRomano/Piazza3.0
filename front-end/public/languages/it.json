@@ -808,7 +808,7 @@
       "ARGUMENT_HAS_BEEN_DELETED_BY_MODERATOR": "Questo commento è stato eliminato dall'utente {{usersFullName}} (moderatore)",
       "ARGUMENT_WHY": "Perché?",
       "ARGUMENT_VIEW_ARGUMENT_ANYWAY": "Mostra comunque il commento",
-      "ARGUMENT_FOUND_INAPPRIOPRIATE_BY": "This argument was found inappropriate by user <b>{{usersFullName}}</b>",
+      "ARGUMENT_FOUND_INAPPRIOPRIATE_BY": "Questo commento è stato ritenuto inappropriato dall'utente <b>{{usersFullName}}</b>",
       "ARGUMENT_READ_CODE_OF_CONDUCT": "Read our <a class=\"underlined_link\" href=\"{{codeOfConduct}}\">code of conduct</a> for more information",
       "ARGUMENT_LAST_EDITED": "Last edited: {{edittime}}",
       "PLACEHOLDER_EDIT_REPLY": "Modifica qui la tua risposta...",

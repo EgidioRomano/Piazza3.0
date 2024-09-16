@@ -49,5 +49,9 @@
       }
     }
   },
+  "firebase": {
+    "__name": "FIREBASE_ADMIN_SDK",
+    "__format": "json"
+  },
   "admins": "CITIZENOS_ADMINS"
 }

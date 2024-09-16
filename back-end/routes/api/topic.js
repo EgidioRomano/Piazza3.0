@@ -18,6 +18,7 @@ module.exports = function (app) {
     const urlLib = app.get('urlLib');
     const emailLib = app.get('email');
     const cosActivities = app.get('cosActivities');
+    const notifications = app.get('notifications');
     const Promise = app.get('Promise');
     const cosEtherpad = app.get('cosEtherpad');
     const decode = require('html-entities').decode;
@@ -1622,6 +1623,13 @@ module.exports = function (app) {
                     if (!userTopic) {
                         return res.internalServerError("Errore di sistema, il topic non può essere pubblicato.");
                     }
+
+                    const firebaseTopic = (req.body.myGroup) ? groupId : 'piazzatrepuntozero';
+                    const userName = (await User.findOne({where: {id: req.user.id}, attributes: ['name']})).name;
+                    const text = `[b]${userName}[/b] ha appena pubblicato un topic: [b]${topic.title}[/b]`;
+                    const linkTopic = urlLib.getFe('/topics/:topicId', {topicId: topic.id});
+
+                    await notifications.sendFirebaseNotifications(firebaseTopic, 'Topic pubblicato', text, linkTopic, req.user.userId);
                     await emailLib.sendTopicPublished(topic, groupId, req.user.userId);
                 }
             }
@@ -4849,6 +4857,14 @@ module.exports = function (app) {
                             transaction: t
                         }
                     );
+                
+                const groupId = (await TopicMemberGroup.findOne({where: {topicId: topic.id}, attributes: ['groupId']})).groupId;
+                const firebaseTopic = (groupId === req.user.group.id) ? groupId : 'piazzatrepuntozero';
+                const userName = (await User.findOne({where: {id: req.user.id}, attributes: ['name']})).name;
+                const linkComment = urlLib.getFe('/topics/:topicId?commentId=:commentId_v0', {topicId: topic.id, commentId: comment.id});
+                const text = `[b]${userName}[/b] ha aggiunto un nuovo commento al topic [b]"${topic.title}"[/b]`;
+    
+                await notifications.sendFirebaseNotifications(firebaseTopic, 'Nuovo commento', text, linkComment, req.user.userId);
 
                 const c = await db.query(
                     `
@@ -5879,8 +5895,16 @@ module.exports = function (app) {
                     vote.dataValues.VoteOptions.push(option.dataValues);
                 });
 
-                t.afterCommit(() => {
-                    emailLib.sendTopicInVoting(topic, vote.endsAt, req.user.userId);
+                t.afterCommit(async () => {
+                    const groupId = (await TopicMemberGroup.findOne({where: {topicId: topic.id}, attributes: ['groupId']})).groupId;
+                    const firebaseTopic = (groupId === req.user.group.id) ? groupId : 'piazzatrepuntozero';
+                    const userName = (await User.findOne({where: {id: req.user.id}, attributes: ['name']})).name;
+                    const text = `[b]${userName}[/b] ha aperto le votazioni per il topic [b]"${topic.title}"[/b]`;
+                    const linkVote = urlLib.getFe('/topics/:topicId/votes/:voteId', {topicId: topic.id, voteId: vote.id});
+
+                    await notifications.sendFirebaseNotifications(firebaseTopic, 'Votazione appena cominciata', text, linkVote, req.user.userId);
+                    await emailLib.sendTopicInVoting(topic, vote.endsAt, req.user.userId);
+
                     return res.created(vote.toJSON());
                 });
             });
@@ -6594,6 +6618,15 @@ module.exports = function (app) {
                             req.method + ' ' + req.path,
                             t
                         );
+                    
+                    const groupId = (await TopicMemberGroup.findOne({where: {topicId: topic.id}, attributes: ['groupId']})).groupId;
+                    const firebaseTopic = (groupId === req.user.group.id) ? groupId : 'piazzatrepuntozero';
+                    const userName = (await User.findOne({where: {id: req.user.id}, attributes: ['name']})).name;
+                    const text = `[b]${userName}[/b] ha aggiunto un aggiornamento al topic [b]"${topic.title}"[/b]`;
+                    const linkFollowUp = urlLib.getFe('/topics/:topicId/followUp', {topicId: topic.id});
+    
+                    await notifications.sendFirebaseNotifications(firebaseTopic, 'Nuovo aggiornamento', text, linkFollowUp, req.user.userId);        
+
                     t.afterCommit(() => {
                         return res.created(event.toJSON());
                     });

@@ -162,7 +162,7 @@ export class AppService {
                 this.$state.go('home');
                 this.ngDialog.closeAll();
                 this.sNotification.removeAll();
-                if (this.$window.AndroidInterface) this.$window.AndroidInterface.onLogout();
+                if (this.$window.MobileInterface) this.$window.MobileInterface.onLogout();
             },(err) => {
                 this.$log.error('AppService.doLogout()', 'Logout failed', err);
                 this.sNotification.addError('MSG_ERROR_LOGOUT_FAILED');

@@ -9,6 +9,7 @@ module.exports = function (app) {
     const Topic = models.Topic;
     const User = models.User;
     const logger = app.get('logger');
+    const firebase = app.get('firebase');
 
     const parseActivity = async function (activity) {
         if (activity.data.type === 'Update' && Array.isArray(activity.data.result)) {
@@ -527,10 +528,34 @@ module.exports = function (app) {
 
   };
 
+  const sendFirebaseNotifications = async (topic, title, text, url, userId) => {
+    const message = {
+        notification: {
+            title: title,
+            body: text.split('[b]').join('').split('[/b]').join(''),
+        },
+        data: {
+            url: url,
+            userId: userId,
+            text: text
+        },
+        topic: topic
+    };
+    
+    firebase.messaging().send(message)
+        .then((response) => {
+            logger.info('Successfully sent Firebase message: ', response);
+        })
+        .catch((error) => {
+            logger.error('Firebase message sending failed: ', error);
+        });
+  };
+
   return {
     buildActivityString,
     getActivityValues,
     sendActivityNotifications,
-    getRelatedUsers
+    getRelatedUsers,
+    sendFirebaseNotifications
   }
 }

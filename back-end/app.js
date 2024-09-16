@@ -23,6 +23,7 @@ const SevenZip = require('node-7z');
 const Busboy = require('busboy');
 const StreamUpload = require('stream_upload');
 const notifications = require('./libs/notifications');
+const firebase = require('firebase-admin');
 const SlowDown = require('express-slow-down');
 const rateLimit = require('express-rate-limit')
 
@@ -168,6 +169,9 @@ app.set('moment', moment);
 app.set('SevenZip', SevenZip);
 app.set('busboy', Busboy);
 app.set('stream_upload', StreamUpload);
+
+firebase.initializeApp({credential: firebase.credential.cert(config.firebase)});
+app.set('firebase', firebase);
 
 mu.root = TEMPLATE_ROOT;
 app.set('mu', mu);
