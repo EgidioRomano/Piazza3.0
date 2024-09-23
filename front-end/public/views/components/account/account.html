@@ -78,7 +78,7 @@
                                 </div>
                             </label>
                         </div>
-                        <div class="input_wrap">
+                        <div ng-if="!$ctrl.app.user.isSuperAdmin" class="input_wrap">
                             <span>Comunità</span>
                             <input id="groupName" disabled ng-model="$ctrl.form.group.name">
                         </div>

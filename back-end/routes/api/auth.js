@@ -81,12 +81,16 @@ module.exports = function (app) {
                 return res.badRequest("La verifica dell'indirizzo e-mail non è stata ancora completata. Si prega di controllare la casella di posta elettronica.", 2);
             }
 
-            const groupId = (await GroupMemberUser.findOne({where: {userId: user.id}, attributes: ['groupId']})).groupId;
-            const groupName = (await Group.findOne({where: {id: groupId}, attributes: ['name']})).name;
+            if (config.admins.indexOf(user.id) < 0) { 
+                const groupId = (await GroupMemberUser.findOne({where: {userId: user.id}, attributes: ['groupId']})).groupId;
+                const groupName = (await Group.findOne({where: {id: groupId}, attributes: ['name']})).name;
 
-            userData.group = {id: groupId, name: groupName};
+                userData.group = {id: groupId, name: groupName};
 
-            setAuthCookie(req, res, user.id, userData.group);
+                setAuthCookie(req, res, user.id, userData.group);
+            } else {
+                setAuthCookie(req, res, user.id, null);
+            }
 
             return res.ok(userData);
         } else {

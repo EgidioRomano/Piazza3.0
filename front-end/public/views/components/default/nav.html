@@ -68,7 +68,7 @@
         <div class="line light_line"></div>
 
         <!-- Nav section -->
-        <div class="section">
+        <div ng-if="!$ctrl.app.user.isSuperAdmin" class="section">
             <a ng-click="$ctrl.app.doShowActivityModal()" class="section_item" ng-class="{active: $ctrl.app.isShowActivityModal}">
                 <div class="section_icon">
                     <div class="table_cell">
@@ -82,10 +82,10 @@
             </a>
         </div>
 
-        <div class="line dark_line"></div>
-        <div class="line light_line"></div>
+        <div ng-if="!$ctrl.app.user.isSuperAdmin" class="line dark_line"></div>
+        <div ng-if="!$ctrl.app.user.isSuperAdmin" class="line light_line"></div>
 
-        <div class="section">
+        <div ng-if="!$ctrl.app.user.isSuperAdmin" class="section">
             <div class="section_item section_header bold_white">
                 <div class="section_icon">
                     <div class="table_cell">
