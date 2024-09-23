@@ -193,6 +193,11 @@ import * as angular from 'angular';
                     parent: 'main',
                     templateUrl: '/views/press.html'
                 })
+                .state('privacy', {
+                    url: '/privacy',
+                    parent: 'main',
+                    templateUrl: '/views/privacy.html'
+                })
                 .state('public/groups', {
                     url: '/groups?groupStatus',
                     parent: 'main',

@@ -87,6 +87,11 @@
             padding-top: 0;
         }
 
+        .privacy_description {
+            text-align: left;
+            padding: 1% 2%;
+        }
+
         @include mixins_n_extends.tablet {
             padding-top: 0;
         }
