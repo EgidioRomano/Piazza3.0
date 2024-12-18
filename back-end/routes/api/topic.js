@@ -5903,7 +5903,7 @@ module.exports = function (app) {
                     const linkVote = urlLib.getFe('/topics/:topicId/votes/:voteId', {topicId: topic.id, voteId: vote.id});
 
                     await notifications.sendFirebaseNotifications(firebaseTopic, 'Votazione appena cominciata', text, linkVote, req.user.userId);
-                    await emailLib.sendTopicInVoting(topic, vote.endsAt, req.user.userId);
+                    await emailLib.sendTopicInVoting(topic, vote.endsAt, userName, req.user.userId);
 
                     return res.created(vote.toJSON());
                 });

@@ -1283,53 +1283,40 @@ module.exports = function (app) {
         return handleAllPromises(emailsSendPromises);
     };
 
-    const _sendTopicInVoting = async (topic, voteEndsAt, adminUserId) => {
-        const groupId = (await GroupMemberUser.findOne({where: {userId: adminUserId}})).groupId;
-
-        const groupMemberUsers = await GroupMemberUser.findAll({
-            where: {
-                groupId: groupId,
-                level: GroupMemberUser.LEVELS.read
-            },
-            attributes: ['userId'],
-            raw: true
-        });
-
-        const adminUser = await User.findOne({
-            where: {
-                id: adminUserId
-            }
-        });
+    const _sendTopicInVoting = async (topic, voteEndsAt, adminUserName, adminUserId) => {
+        const topicMemberList = await _getTopicMemberUsers(topic.id, TopicMemberUser.LEVELS.read);
 
         const linkViewTopic = urlLib.getFe('/topics/:topicId', {topicId: topic.id});
+        const template = resolveTemplate('topicInVoting', 'it');
 
-        const emailsSendPromises = groupMemberUsers.map(async function (currentUser) {
-            if (currentUser.userId === adminUserId) {
-                return Promise.resolve();
+        const sendEmailPromises = [];
+
+        topicMemberList.forEach(function (topicMemberUser) {
+            if (topicMemberUser.email) {
+                const sendTopicMemberEmail = async function () {
+                    if (topicMemberUser.id === adminUserId) {
+                        return Promise.resolve();
+                    }
+
+                    const emailOptions = {
+                        subject: 'Una nuova votazione è appena cominciata!',
+                        to: topicMemberUser.email,
+                        toUsername: topicMemberUser.name,
+                        topicTitle: topic.title,
+                        adminUser: adminUserName,
+                        linkViewTopic: linkViewTopic,
+                        voteEndsAt: moment(voteEndsAt).locale(topicMemberUser.language).format('LLL')
+                    };
+
+                    return await emailClient.sendString(template.body, emailOptions);   
+                };
+                sendEmailPromises.push(sendTopicMemberEmail());
+            } else {
+                logger.info('Could not send e-mail to Topic member because e-mail address does not exist', topicMemberUser.id);
             }
-
-            const template = resolveTemplate('topicInVoting', 'it');
-
-            const toUser = await User.findOne({
-                where: {
-                    id: currentUser.userId
-                }
-            });
-
-            const emailOptions = {
-                subject: 'Una nuova votazione è appena cominciata!',
-                to: toUser.email,
-                toUsername: toUser.name,
-                topicTitle: topic.title,
-                adminUser: adminUser.name,
-                linkViewTopic: linkViewTopic,
-                voteEndsAt: moment(voteEndsAt).locale(toUser.language).format('LLL')
-            };
-
-            return emailClient.sendString(template.body, emailOptions);
         });
 
-        return handleAllPromises(emailsSendPromises);
+        return handleAllPromises(sendEmailPromises);
     };
 
     return {
