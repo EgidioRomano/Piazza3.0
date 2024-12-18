@@ -1237,50 +1237,39 @@ module.exports = function (app) {
         return handleAllPromises(emailsSendPromises);
     };
 
-    const _sendTopicPublished = async (topic, groupId, publisherUserId) => {
-        const groupMemberUsers = await GroupMemberUser.findAll({
-            where: {
-                groupId: groupId,
-                level: GroupMemberUser.LEVELS.read
-            },
-            attributes: ['userId'],
-            raw: true
-        });
-
-        const publisher = await User.findOne({
-            where: {
-                id: publisherUserId
-            }
-        });
+    const _sendTopicPublished = async (topic, publisherUserName, publisherUserId) => {
+        const topicMemberList = await _getTopicMemberUsers(topic.id, TopicMemberUser.LEVELS.read);
 
         const linkViewTopic = urlLib.getFe('/topics/:topicId', {topicId: topic.id});
+        const template = resolveTemplate('topicPublished', 'it');
 
-        const emailsSendPromises = groupMemberUsers.map(async function (currentUser) {
-            if (currentUser.userId === publisherUserId) {
-                return Promise.resolve();
+        const sendEmailPromises = [];
+
+        topicMemberList.forEach(function (topicMemberUser) {
+            if (topicMemberUser.email) {
+                const sendTopicMemberEmail = async function () {
+                    if (topicMemberUser.id === publisherUserId) {
+                        return Promise.resolve();
+                    }
+
+                    const emailOptions = {
+                        subject: 'Nuovo topic pubblicato!',
+                        to: topicMemberUser.email,
+                        toUsername: topicMemberUser.name,
+                        topicTitle: topic.title,
+                        publisher: publisherUserName,
+                        linkViewTopic: linkViewTopic
+                    };
+
+                    return await emailClient.sendString(template.body, emailOptions);   
+                };
+                sendEmailPromises.push(sendTopicMemberEmail());
+            } else {
+                logger.info('Could not send e-mail to Topic member because e-mail address does not exist', topicMemberUser.id);
             }
-
-            const template = resolveTemplate('topicPublished', 'it');
-
-            const toUser = await User.findOne({
-                where: {
-                    id: currentUser.userId
-                }
-            });
-
-            const emailOptions = {
-                subject: 'Nuovo topic pubblicato!',
-                to: toUser.email,
-                toUsername: toUser.name,
-                topicTitle: topic.title,
-                publisher: publisher.name,
-                linkViewTopic: linkViewTopic
-            };
-
-            return emailClient.sendString(template.body, emailOptions);
         });
 
-        return handleAllPromises(emailsSendPromises);
+        return handleAllPromises(sendEmailPromises);
     };
 
     const _sendTopicInVoting = async (topic, voteEndsAt, adminUserName, adminUserId) => {

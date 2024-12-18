@@ -1630,7 +1630,7 @@ module.exports = function (app) {
                     const linkTopic = urlLib.getFe('/topics/:topicId', {topicId: topic.id});
 
                     await notifications.sendFirebaseNotifications(firebaseTopic, 'Topic pubblicato', text, linkTopic, req.user.userId);
-                    await emailLib.sendTopicPublished(topic, groupId, req.user.userId);
+                    await emailLib.sendTopicPublished(topic, userName, req.user.userId);
                 }
             }
 
