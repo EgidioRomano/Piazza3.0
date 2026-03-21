@@ -203,6 +203,16 @@ import * as angular from 'angular';
                     parent: 'main',
                     templateUrl: '/views/rules.html'
                 })
+                .state('terms', {
+                    url: '/terms',
+                    parent: 'main',
+                    templateUrl: '/views/terms.html'
+                })
+                .state('about', {
+                    url: '/about',
+                    parent: 'main',
+                    templateUrl: '/views/about.html'
+                })
                 .state('public/groups', {
                     url: '/groups?groupStatus',
                     parent: 'main',
@@ -792,20 +802,6 @@ import * as angular from 'angular';
                                     }
                                 }
                             );
-                    }]
-                })
-                .state('about', {
-                    url: '/about',
-                    parent: 'main',
-                    controller: ['$state', '$window', 'cosConfig', function ($state, $window, cosConfig) {
-                        var aboutPage = cosConfig.links.about;
-
-                        if (aboutPage) {
-                            $window.location.href = aboutPage;
-
-                            return;
-                        }
-                        $state.go('error/404');
                     }]
                 })
                 .state('join', { // Join a Topic via shared url - DEPRECATED, use "topicJoin" instead - https://github.com/citizenos/citizenos-fe/issues/311
