@@ -295,7 +295,7 @@ export class AppService {
     transitionSuccessHandler () {
         this.$transitions.onSuccess({}, () => {
             this.$timeout(() => {
-                this.$log.debug('AppService.$stateChangeSuccess', 'prerenderReady', this.$state.$current.name);
+                this.$log.debug('AppService.$stateChangeSuccess', this.$state.$current.name);
 
                 const metaDataViews = ['topics/view', 'my/topics/topicId'];
                 let isView = false;
@@ -310,8 +310,6 @@ export class AppService {
                 }
 
                 this.metainfo.url = window.location.origin + window.location.pathname;
-
-                window.prerenderReady = true;
 
                 this.currentUrlAbs = this.$location.absUrl();
 

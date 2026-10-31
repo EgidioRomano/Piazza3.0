@@ -156,10 +156,6 @@
       "access_token": "743386047959212032-tJMA8osUwpwqF8DbMO71NAuS9CqJ1Vl",
       "access_token_secret": "WLw9aRslEi7nodftuicaU1I4ovjZDF7r4ZsE00fIij1Ia",
       "timeout_ms": 10000
-    },
-    "prerender": {
-      "serviceUrl": "https://dev.prerender.citizenos.com/",
-      "apiKey": "YOUR_KEY_HERE"
     }
   },
   "logging": {

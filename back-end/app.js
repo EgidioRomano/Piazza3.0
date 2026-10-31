@@ -93,9 +93,6 @@ if (app.get('env') === 'production' || app.get('env') === 'test') {
 }
 app.set('rateLimiter', rateLimiter);
 app.set('speedLimiter', speedLimiter);
-const prerender = require('prerender-node');
-prerender.set('prerenderServiceUrl', config.services.prerender.serviceUrl).set('prerenderToken', config.services.prerender.apiKey);
-app.use(prerender);
 
 app.set('x-powered-by', false);
 

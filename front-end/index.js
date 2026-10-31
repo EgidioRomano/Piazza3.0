@@ -11,8 +11,6 @@ const _ = require('lodash');
 const { expressCspHeader, INLINE, NONE, SELF } = require('express-csp-header');
 
 
-const prerender = require('prerender-node');
-
 const configFe = config.util.loadFileConfigs('./public/config');
 
 const pathSettings = path.resolve('./public/settings.js');
@@ -56,9 +54,6 @@ if (cspConfig) {
 
     app.use(expressCspHeader(cspOptions));
 }
-
-
-app.use(prerender.set('prerenderToken', process.env.PRERENDER_TOKEN));
 
 app.set('x-powered-by', false);
 app.set('trust proxy', true);

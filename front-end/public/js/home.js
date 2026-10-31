@@ -1,6 +1,3 @@
-// Prerender - https://prerender.io/documentation. Use local instance of Prerender if possible so that nothing is sent to 3rd party.
-window.prerenderReady = false;
-
 // Crowdin in-context localization - https://support.crowdin.com/in-context-localization/
 if (window.location.pathname.match(/^\/aa\/.*/)) {
     var _jipt = [];

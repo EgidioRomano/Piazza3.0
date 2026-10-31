@@ -176,10 +176,6 @@
       "access_token": null,
       "access_token_secret": null,
       "timeout_ms": 10000
-    },
-    "prerender": {
-      "serviceUrl": "https://citizenos-prerender-prod.herokuapp.com/",
-      "apiKey": "YOUR_KEY_HERE"
     }
   },
   "logging": {

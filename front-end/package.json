@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@uirouter/angularjs": "^1.0.30",
+    "@uirouter/core": "6.1.2",
     "angular": "1.8.3",
     "angular-cookies": "^1.8.3",
     "angular-datepicker": "1.0.5",
@@ -47,7 +48,6 @@
     "moment": "2.29.4",
     "moment-timezone": "^0.5.34",
     "ng-dialog": "^1.4.0",
-    "prerender-node": "3.5.0",
     "qrcode-generator": "^1.4.4",
     "validator": "^13.7.0"
   },
